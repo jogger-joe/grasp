@@ -18,6 +18,17 @@ The big advantage for our App user are:
 < Robert
 
 ## User Stories
+### 1. Record fitness activities
+Details:
+< note here
+
+### 2. Export and import all logs locally
+Details:
+< note here
+
+### 3. Get a log evaluation
+Details:
+< note here
 
 ## Examples
 - group: sport
@@ -35,4 +46,3 @@ The big advantage for our App user are:
     - episode: 1
     - progess: 100%
 ..
-
