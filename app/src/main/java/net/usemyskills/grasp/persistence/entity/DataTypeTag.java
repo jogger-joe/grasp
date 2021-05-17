@@ -15,6 +15,20 @@ public class DataTypeTag extends DataTag {
     }
 
     @Ignore
+    public DataTypeTag(String name, String description, int modifier, String unit) {
+        super(name, description);
+        this.modifier = modifier;
+        this.unit = unit;
+    }
+
+    @Ignore
+    public DataTypeTag(String name) {
+        super(name);
+        this.modifier = 1;
+        this.unit = "x";
+    }
+
+    @Ignore
     public DataTypeTag(int tagId, String name) {
         super(tagId, name);
         this.modifier = 1;

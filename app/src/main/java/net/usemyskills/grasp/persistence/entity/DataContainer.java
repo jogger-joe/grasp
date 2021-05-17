@@ -14,13 +14,13 @@ public class DataContainer implements BaseDataContainer {
     private Data data;
 
     @Relation(
-            parentColumn = "dataId",
+            parentColumn = "dataTypeId",
             entityColumn = "tagId"
     )
     private DataTypeTag dataType;
 
     @Relation(
-            parentColumn = "dataId",
+            parentColumn = "dataTagId",
             entityColumn = "tagId"
     )
     private DataTag dataTag;
@@ -76,7 +76,7 @@ public class DataContainer implements BaseDataContainer {
 
     @Override
     public String getTypeName() {
-        return this.getTypeTag().getName();
+        return this.getTypeTag() == null ? "" : this.getTypeTag().getName();
     }
 
     @Override
@@ -86,6 +86,6 @@ public class DataContainer implements BaseDataContainer {
 
     @Override
     public String getTagName() {
-        return this.getTag().getName();
+        return this.getTag() == null ? "" : this.getTag().getName();
     }
 }

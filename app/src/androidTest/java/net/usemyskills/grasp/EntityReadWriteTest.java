@@ -53,27 +53,54 @@ public class EntityReadWriteTest {
 
     @Test
     public void writeDataTagAndReadInList() throws Exception {
-        DataTag dataTag = new DataTag(1,"test");
+        DataTag dataTag = new DataTag(3,"test", "testdescription");
         dataTagDao.insertAll(dataTag);
         List<DataTag> allDataTags = dataTagDao.getAll();
         assertThat(allDataTags.size(), equalTo(1));
+        DataTag singleDataTag = allDataTags.get(0);
+        assertThat(singleDataTag.getName(), equalTo("test"));
+        assertThat(singleDataTag.getTagId(), equalTo(3));
+        assertThat(singleDataTag.getDescription(), equalTo("testdescription"));
+    }
+
+    @Test
+    public void writeDataTagWithoutIdAndReadInList() throws Exception {
+        DataTag dataTag = new DataTag("test", "testdescription");
+        dataTagDao.insertAll(dataTag);
+        List<DataTag> allDataTags = dataTagDao.getAll();
+        assertThat(allDataTags.size(), equalTo(1));
+        DataTag singleDataTag = allDataTags.get(0);
+        assertThat(singleDataTag.getName(), equalTo("test"));
+        assertThat(singleDataTag.getTagId(), equalTo(1));
+        assertThat(singleDataTag.getDescription(), equalTo("testdescription"));
     }
 
     @Test
     public void writeDataTypeTagAndReadInList() throws Exception {
-        DataTypeTag dataTypeTag = new DataTypeTag(2,"test");
+        DataTypeTag dataTypeTag = new DataTypeTag(7,"test", "testdescription", 60, "min");
         dataTypeTagDao.insertAll(dataTypeTag);
         List<DataTypeTag> allDataTypeTags = dataTypeTagDao.getAll();
         assertThat(allDataTypeTags.size(), equalTo(1));
+        DataTypeTag singleDataTypeTag = allDataTypeTags.get(0);
+        assertThat(singleDataTypeTag.getName(), equalTo("test"));
+        assertThat(singleDataTypeTag.getTagId(), equalTo(7));
+        assertThat(singleDataTypeTag.getDescription(), equalTo("testdescription"));
+        assertThat(singleDataTypeTag.getModifier(), equalTo(60));
+        assertThat(singleDataTypeTag.getUnit(), equalTo("min"));
     }
 
     @Test
-    public void writeDataContainerAndReadInList() throws Exception {
-        dataTagDao.insertAll(new DataTag(1,"test"));
-        dataTypeTagDao.insertAll(new DataTypeTag(2,"test"));
-        dataDao.insertAll(new Data(1,2,1, new Date(), 123));
+    public void writeDataContainerAndReadCheckSingle() throws Exception {
+        dataTypeTagDao.insertAll(new DataTypeTag(2,"Aphrodite", "", 60, "min"));
+        dataTagDao.insertAll(new DataTag(1,"High"));
+        dataDao.insertAll(new Data(1,2,1, new Date(2020-1900,11-1,22), 90));
         List<DataContainer> allDataContainers = dataContainerDao.getAll();
         assertThat(allDataContainers.size(), equalTo(1));
+        DataContainer singleDataContainer = allDataContainers.get(0);
+        assertThat(singleDataContainer.getTypeName(), equalTo("Aphrodite"));
+        assertThat(singleDataContainer.getTagName(), equalTo("High"));
+        assertThat(singleDataContainer.getDateString(), equalTo("22.11.2020"));
+        assertThat(singleDataContainer.getValue(), equalTo(1.5));
     }
 }
 

@@ -18,6 +18,17 @@ public class DataTag {
     }
 
     @Ignore
+    public DataTag(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    @Ignore
+    public DataTag(String name) {
+        this.name = name;
+    }
+
+    @Ignore
     public DataTag(int tagId, String name) {
         this.tagId = tagId;
         this.name = name;
