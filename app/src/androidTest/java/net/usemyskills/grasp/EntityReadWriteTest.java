@@ -2,6 +2,7 @@ package net.usemyskills.grasp;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -24,6 +25,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -94,9 +96,9 @@ public class EntityReadWriteTest {
         dataTypeTagDao.insertAll(new DataTypeTag(2,"Aphrodite", "", 60, "min"));
         dataTagDao.insertAll(new DataTag(1,"High"));
         dataDao.insertAll(new Data(1,2,1, new Date(2020-1900,11-1,22), 90));
-        List<DataContainer> allDataContainers = dataContainerDao.getAll();
-        assertThat(allDataContainers.size(), equalTo(1));
-        DataContainer singleDataContainer = allDataContainers.get(0);
+        LiveData<List<DataContainer>> allDataContainers = dataContainerDao.getAll();
+        assertThat(Objects.requireNonNull(allDataContainers.getValue()).size(), equalTo(1));
+        DataContainer singleDataContainer = allDataContainers.getValue().get(0);
         assertThat(singleDataContainer.getTypeName(), equalTo("Aphrodite"));
         assertThat(singleDataContainer.getTagName(), equalTo("High"));
         assertThat(singleDataContainer.getDateString(), equalTo("22.11.2020"));

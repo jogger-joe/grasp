@@ -18,6 +18,9 @@ public interface DataTypeTagDao {
     @Delete
     void delete(DataTypeTag dataTag);
 
+    @Query("DELETE FROM DataTypeTag")
+    void deleteAll();
+
     @Query("SELECT * FROM DataTypeTag")
     List<DataTypeTag> getAll();
 

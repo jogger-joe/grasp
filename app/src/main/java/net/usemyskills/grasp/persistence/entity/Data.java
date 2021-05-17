@@ -1,7 +1,7 @@
 package net.usemyskills.grasp.persistence.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -35,7 +35,7 @@ public class Data {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 

@@ -19,6 +19,9 @@ public interface DataDao {
     @Delete
     void delete(Data dataTag);
 
+    @Query("DELETE FROM Data")
+    void deleteAll();
+
     @Query("SELECT * FROM Data")
     List<Data> getAll();
 
