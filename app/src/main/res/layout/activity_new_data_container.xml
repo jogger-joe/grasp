@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_padding"
+        android:inputType="date" />
+
+    <Spinner
+        android:id="@+id/data_type_tag"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/big_padding"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/data_tag"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/big_padding"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_margin="@dimen/big_padding"/>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_save"
+        android:layout_margin="@dimen/big_padding" />
+
+</LinearLayout>

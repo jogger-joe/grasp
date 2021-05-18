@@ -23,7 +23,7 @@ public class DataContainerViewHolder extends RecyclerView.ViewHolder {
 
     public static DataContainerViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_item, parent, false);
+                .inflate(R.layout.data_container_item, parent, false);
         return new DataContainerViewHolder(view);
     }
 }

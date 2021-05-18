@@ -5,7 +5,9 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import net.usemyskills.grasp.persistence.entity.Data;
 import net.usemyskills.grasp.persistence.entity.DataContainer;
+import net.usemyskills.grasp.persistence.entity.DataTypeTag;
 import net.usemyskills.grasp.persistence.repository.DataContainerRepository;
 
 import java.util.List;
@@ -22,8 +24,9 @@ public class DataContainerViewModel extends AndroidViewModel {
         this.dataContainers = dataContainerRepository.getAll();
     }
 
-    LiveData<List<DataContainer>> getAll() { return dataContainers; }
+    public LiveData<List<DataContainer>> getAll() { return dataContainers; }
 
     public void insert(DataContainer dataContainer) { dataContainerRepository.insert(dataContainer); }
+    public void insert(Data data) { dataContainerRepository.insert(data); }
 }
 

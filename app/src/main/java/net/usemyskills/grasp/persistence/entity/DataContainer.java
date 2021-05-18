@@ -25,6 +25,12 @@ public class DataContainer implements BaseDataContainer {
     )
     private DataTag dataTag;
 
+    public DataContainer(Data data, DataTypeTag dataType, DataTag dataTag) {
+        this.data = data;
+        this.dataType = dataType;
+        this.dataTag = dataTag;
+    }
+
     @Override
     public int getId() {
         return this.data.getDataId();

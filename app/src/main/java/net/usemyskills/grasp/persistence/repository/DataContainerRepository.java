@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.DataContainerDao;
 import net.usemyskills.grasp.persistence.dao.DataDao;
+import net.usemyskills.grasp.persistence.entity.Data;
 import net.usemyskills.grasp.persistence.entity.DataContainer;
 
 import java.util.List;
@@ -37,6 +38,13 @@ public class DataContainerRepository {
     public void insert(DataContainer dataContainer) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             this.dataDao.insertAll(dataContainer.getData());
+        });
+    }
+    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
+    // that you're not doing any long running operations on the main thread, blocking the UI.
+    public void insert(Data data) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.dataDao.insertAll(data);
         });
     }
 
