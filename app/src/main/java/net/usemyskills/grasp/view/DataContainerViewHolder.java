@@ -8,17 +8,27 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.usemyskills.grasp.R;
+import net.usemyskills.grasp.persistence.entity.DataContainer;
 
 public class DataContainerViewHolder extends RecyclerView.ViewHolder {
-    private final TextView dataContainerItemView;
+    private final TextView mDateView;
+    private final TextView mTypeTagView;
+    private final TextView mTagView;
+    private final TextView mValueView;
 
     private DataContainerViewHolder(View itemView) {
         super(itemView);
-        this.dataContainerItemView = itemView.findViewById(R.id.textView);
+        this.mDateView = itemView.findViewById(R.id.dateView);
+        this.mTypeTagView = itemView.findViewById(R.id.typeTagView);
+        this.mTagView = itemView.findViewById(R.id.tagView);
+        this.mValueView = itemView.findViewById(R.id.valueView);
     }
 
-    public void bind(String text) {
-        dataContainerItemView.setText(text);
+    public void bind(DataContainer dataContainer) {
+        this.mDateView.setText(dataContainer.getDateString());
+        this.mTypeTagView.setText(dataContainer.getTypeName());
+        this.mTagView.setText(dataContainer.getTagName());
+        this.mValueView.setText(String.valueOf(dataContainer.getValue()));
     }
 
     public static DataContainerViewHolder create(ViewGroup parent) {

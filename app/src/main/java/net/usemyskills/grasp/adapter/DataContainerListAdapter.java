@@ -23,7 +23,7 @@ public class DataContainerListAdapter extends ListAdapter<DataContainer, DataCon
     @Override
     public void onBindViewHolder(DataContainerViewHolder holder, int position) {
         DataContainer current = getItem(position);
-        holder.bind(current.getDateString());
+        holder.bind(current);
     }
 
     public static class DataContainerDiff extends DiffUtil.ItemCallback<DataContainer> {

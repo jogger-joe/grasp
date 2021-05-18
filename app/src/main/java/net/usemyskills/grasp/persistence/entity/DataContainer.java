@@ -72,7 +72,7 @@ public class DataContainer implements BaseDataContainer {
 
     @Override
     public double getValue() {
-        return (double)this.data.getValue() / this.dataType.getModifier();
+        return (double)this.data.getValue() / (this.dataType == null ? 1 : this.dataType.getModifier());
     }
 
     @Override
