@@ -30,19 +30,7 @@ Details:
 Details:
 < note here
 
-## Examples
-- group: sport
-  - squat max
-    - date: 01.01.2001
-    - amount: 56x
-    - execution: hard
-  - aphrodite
-   - date: 02.01.2021
-   - duration: 46,23
-   - execution: easy
-- group: series
-  - game of thrones
-    - season: 1
-    - episode: 1
-    - progess: 100%
-..
+## Sources/Guides
+- https://developer.android.com/jetpack/guide
+- https://developer.android.com/codelabs/android-room-with-a-view#12
+- https://www.coding-made-easy.com/android-room-using-java/
