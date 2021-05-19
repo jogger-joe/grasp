@@ -11,8 +11,10 @@ public interface IDataContainer {
     Date getDate();
     String getDateString();
     double getValue();
+    String getValueLabel();
     DataTypeTag getTypeTag();
     String getTypeName();
     DataTag getTag();
     String getTagName();
+    String getTagsLabel();
 }

@@ -11,13 +11,7 @@
         android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/typeTagView"
-        android:layout_margin="@dimen/big_padding"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/tagView"
+        android:id="@+id/tagsView"
         android:layout_margin="@dimen/big_padding"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
@@ -25,7 +19,8 @@
     <TextView
         android:id="@+id/valueView"
         android:layout_margin="@dimen/big_padding"
-        android:layout_width="wrap_content"
+        android:gravity="right"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 </LinearLayout>
