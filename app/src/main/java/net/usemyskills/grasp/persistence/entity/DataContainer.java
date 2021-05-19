@@ -3,13 +3,13 @@ package net.usemyskills.grasp.persistence.entity;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import net.usemyskills.grasp.model.BaseDataContainer;
+import net.usemyskills.grasp.model.IDataContainer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DataContainer implements BaseDataContainer {
+public class DataContainer implements IDataContainer {
     @Embedded
     private Data data;
 

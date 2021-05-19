@@ -15,8 +15,8 @@ public class DataTagViewModel extends AndroidViewModel {
 
     private final DataTagRepository dataTagRepository;
 
-    private final List<DataTag> dataTags;
-    private final List<DataTypeTag> dataTypeTags;
+    private final LiveData<List<DataTag>> dataTags;
+    private final LiveData<List<DataTypeTag>> dataTypeTags;
 
     public DataTagViewModel(Application application) {
         super(application);
@@ -25,7 +25,7 @@ public class DataTagViewModel extends AndroidViewModel {
         this.dataTypeTags = this.dataTagRepository.getAllDataTypeTags();
     }
 
-    public List<DataTag> getAllDataTags() { return this.dataTags; }
-    public List<DataTypeTag> getAllDataTypeTags() { return this.dataTypeTags; }
+    public LiveData<List<DataTag>> getAllDataTags() { return this.dataTags; }
+    public LiveData<List<DataTypeTag>> getAllDataTypeTags() { return this.dataTypeTags; }
 }
 

@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import net.usemyskills.grasp.persistence.entity.DataTag;
 
@@ -23,6 +22,6 @@ public interface DataTagDao {
     void deleteAll();
 
     @Query("SELECT * FROM DataTag")
-    List<DataTag> getAll();
+    LiveData<List<DataTag>> getAll();
 
 }

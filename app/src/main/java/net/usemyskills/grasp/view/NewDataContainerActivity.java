@@ -1,6 +1,7 @@
 package net.usemyskills.grasp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -12,9 +13,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import net.usemyskills.grasp.R;
+import net.usemyskills.grasp.adapter.DataTagAdapter;
 import net.usemyskills.grasp.persistence.entity.DataTag;
 import net.usemyskills.grasp.persistence.entity.DataTypeTag;
 import net.usemyskills.grasp.viewmodel.DataTagViewModel;
+
+import java.util.List;
 
 public class NewDataContainerActivity extends AppCompatActivity {
 
@@ -41,10 +45,13 @@ public class NewDataContainerActivity extends AppCompatActivity {
 
         this.dataTagViewModel = new ViewModelProvider(this.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(DataTagViewModel.class);
 
-        ArrayAdapter<DataTypeTag> dataTypeTagsAdapter = new ArrayAdapter<>(this, R.layout.data_tag_item, this.dataTagViewModel.getAllDataTypeTags());
-        ArrayAdapter<DataTag> dataTagsAdapter = new ArrayAdapter<>(this, R.layout.data_tag_item, this.dataTagViewModel.getAllDataTags());
+        DataTagAdapter<DataTypeTag> dataTypeTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
         this.mDataTypeTagView.setAdapter(dataTypeTagsAdapter);
+        this.dataTagViewModel.getAllDataTypeTags().observe(this, dataTypeTagsAdapter::setDataTags);
+
+        DataTagAdapter<DataTag> dataTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
         this.mDataTagView.setAdapter(dataTagsAdapter);
+        this.dataTagViewModel.getAllDataTags().observe(this, dataTagsAdapter::setDataTags);
 
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(view -> {

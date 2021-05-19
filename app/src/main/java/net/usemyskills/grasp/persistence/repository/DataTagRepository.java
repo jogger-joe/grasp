@@ -15,8 +15,8 @@ import java.util.List;
 public class DataTagRepository {
     private final DataTypeTagDao dataTypeTagDao;
     private final DataTagDao dataTagDao;
-    private final List<DataTypeTag> liveDataTypeTags;
-    private final List<DataTag> liveDataTags;
+    private final LiveData<List<DataTypeTag>> liveDataTypeTags;
+    private final LiveData<List<DataTag>> liveDataTags;
 
     public DataTagRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -26,10 +26,7 @@ public class DataTagRepository {
         this.liveDataTags = dataTagDao.getAll();
     }
 
-    public List<DataTag> getAllDataTags() {
-        return this.liveDataTags;
-    }
-
-    public List<DataTypeTag> getAllDataTypeTags() { return this.liveDataTypeTags; }
+    public LiveData<List<DataTag>> getAllDataTags() { return this.liveDataTags; }
+    public LiveData<List<DataTypeTag>> getAllDataTypeTags() { return this.liveDataTypeTags; }
 
 }

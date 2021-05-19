@@ -23,6 +23,6 @@ public interface DataTypeTagDao {
     void deleteAll();
 
     @Query("SELECT * FROM DataTypeTag")
-    List<DataTypeTag> getAll();
+    LiveData<List<DataTypeTag>> getAll();
 
 }

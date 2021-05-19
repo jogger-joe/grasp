@@ -6,7 +6,7 @@ import net.usemyskills.grasp.persistence.entity.DataTypeTag;
 
 import java.util.Date;
 
-public interface BaseDataContainer {
+public interface IDataContainer {
     int getId();
     Date getDate();
     String getDateString();
