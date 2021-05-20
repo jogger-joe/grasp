@@ -41,7 +41,7 @@ public class ListDataContainerActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Intent intent = new Intent(ListDataContainerActivity.this, NewDataContainerActivity.class);
+            Intent intent = new Intent(ListDataContainerActivity.this, EditDataContainerActivity.class);
             startActivityForResult(intent, NEW_DATA_CONTAINER_ACTIVITY_REQUEST_CODE);
         });
 
@@ -66,10 +66,10 @@ public class ListDataContainerActivity extends AppCompatActivity {
 
     private Data buildData(Intent data) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        Date date = simpleDateFormat.parse(data.getStringExtra(NewDataContainerActivity.DATE_REPLY));
-        int value = data.getIntExtra(NewDataContainerActivity.VALUE_REPLY, 0);
-        int dataTypeTagId = data.getIntExtra(NewDataContainerActivity.DATA_TYPE_TAG_REPLY, 0);
-        int dataTagId = data.getIntExtra(NewDataContainerActivity.DATA_TAG_REPLY, 0);
+        Date date = simpleDateFormat.parse(data.getStringExtra(EditDataContainerActivity.DATE_REPLY));
+        int value = data.getIntExtra(EditDataContainerActivity.VALUE_REPLY, 0);
+        int dataTypeTagId = data.getIntExtra(EditDataContainerActivity.DATA_TYPE_TAG_REPLY, 0);
+        int dataTagId = data.getIntExtra(EditDataContainerActivity.DATA_TAG_REPLY, 0);
         return new Data(dataTypeTagId, dataTagId, date, value);
     }
 

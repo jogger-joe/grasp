@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Grasp">
-        <activity android:name=".view.NewDataContainerActivity" />
+        <activity android:name=".view.EditDataContainerActivity" />
         <activity android:name=".view.ListDataContainerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
