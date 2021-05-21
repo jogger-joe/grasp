@@ -3,21 +3,18 @@ package net.usemyskills.grasp.persistence.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
 @Entity
-public class Data {
-    @PrimaryKey(autoGenerate = true)
-    private int dataId;
+public class Data extends BaseEntity {
     private int dataTypeId;
     private int dataTagId;
     private Date date;
     private int value;
 
-    public Data(int dataId, int dataTypeId, int dataTagId, Date date, int value) {
-        this.dataId = dataId;
+    public Data(int id, int dataTypeId, int dataTagId, Date date, int value) {
+        this.id = id;
         this.dataTypeId = dataTypeId;
         this.dataTagId = dataTagId;
         this.date = date;
@@ -32,12 +29,10 @@ public class Data {
         this.value = value;
     }
 
-    public int getDataId() {
-        return dataId;
-    }
-
-    public void setDataId(int dataId) {
-        this.dataId = dataId;
+    @Ignore
+    public Data(Date date, int value) {
+        this.date = date;
+        this.value = value;
     }
 
     public Date getDate() {

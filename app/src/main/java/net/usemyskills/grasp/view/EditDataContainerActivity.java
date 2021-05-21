@@ -11,15 +11,16 @@ import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.DataTagAdapter;
 import net.usemyskills.grasp.persistence.entity.DataTag;
-import net.usemyskills.grasp.persistence.entity.DataTypeTag;
+import net.usemyskills.grasp.persistence.entity.DataType;
 import net.usemyskills.grasp.viewmodel.DataTagViewModel;
 
 import java.util.Date;
@@ -36,10 +37,10 @@ public class EditDataContainerActivity extends AppCompatActivity {
 
     public static final int DATE_PICKER_DIALOG = 1337;
 
-    private TextView mDateView;
     private Calendar calendar;
-    private Spinner mDataTypeTagView;
-    private Spinner mDataTagView;
+    private TextView mDateView;
+    private AutoCompleteTextView mDataTypeTagView;
+    private MultiAutoCompleteTextView mDataTagsView;
     private EditText mValueView;
 
     private Date selectedDate;
@@ -63,7 +64,7 @@ public class EditDataContainerActivity extends AppCompatActivity {
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     updateSelectedDate(new GregorianCalendar(year-1900, month, dayOfMonth).getTime());
                 }
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            }, calendar.get(Calendar.YEAR+1900), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         } else {
             return super.onCreateDialog(id);
         }
@@ -73,7 +74,7 @@ public class EditDataContainerActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_edit_data_container);
         this.mDateView = findViewById(R.id.date);
         this.mDataTypeTagView = findViewById(R.id.data_type_tag);
-        this.mDataTagView = findViewById(R.id.data_tag);
+        this.mDataTagsView = findViewById(R.id.data_tag);
         this.mValueView = findViewById(R.id.value);
     }
 
@@ -94,12 +95,13 @@ public class EditDataContainerActivity extends AppCompatActivity {
 
     private void initAdapter() {
         // init dataTypeTag element
-        DataTagAdapter<DataTypeTag> dataTypeTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
+        DataTagAdapter<DataType> dataTypeTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
         this.mDataTypeTagView.setAdapter(dataTypeTagsAdapter);
         this.dataTagViewModel.getAllDataTypeTags().observe(this, dataTypeTagsAdapter::setDataTags);
         // init dataTag element
         DataTagAdapter<DataTag> dataTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
-        this.mDataTagView.setAdapter(dataTagsAdapter);
+        this.mDataTagsView.setAdapter(dataTagsAdapter);
+        this.mDataTagsView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         this.dataTagViewModel.getAllDataTags().observe(this, dataTagsAdapter::setDataTags);
     }
 
@@ -109,12 +111,12 @@ public class EditDataContainerActivity extends AppCompatActivity {
             Intent replyIntent = new Intent();
             if (TextUtils.isEmpty(mDateView.getText()) ||
                     TextUtils.isEmpty(mValueView.getText()) ||
-                    this.mDataTypeTagView.getSelectedItemId() == 0) {
+                    this.mDataTypeTagView.getListSelection() == 0) {
                 setResult(RESULT_CANCELED, replyIntent);
             } else {
                 replyIntent.putExtra(DATE_REPLY, this.mDateView.getText().toString());
-                replyIntent.putExtra(DATA_TYPE_TAG_REPLY, this.mDataTypeTagView.getSelectedItemId());
-                replyIntent.putExtra(DATA_TAG_REPLY, this.mDataTagView.getSelectedItemId());
+                replyIntent.putExtra(DATA_TYPE_TAG_REPLY, this.mDataTypeTagView.getListSelection());
+                replyIntent.putExtra(DATA_TAG_REPLY, this.mDataTagsView.getListSelection());
                 replyIntent.putExtra(VALUE_REPLY, this.mValueView.getText().toString());
                 setResult(RESULT_OK, replyIntent);
             }

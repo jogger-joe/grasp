@@ -1,47 +1,28 @@
 package net.usemyskills.grasp.persistence.entity;
 
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 @Entity
-public class DataTag {
-    @PrimaryKey(autoGenerate = true)
-    private int tagId;
+public class DataTag extends BaseEntity {
     private String name;
     private String description;
 
-    public DataTag(int tagId, String name, String description) {
-        this.tagId = tagId;
-        this.name = name;
-        this.description = description;
+    public DataTag(int id, String name, String description) {
+        this(name, description);
+        this.id = id;
+    }
+
+    @Ignore
+    public DataTag(String name) {
+        this(name, "");
     }
 
     @Ignore
     public DataTag(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    @Ignore
-    public DataTag(String name) {
-        this.name = name;
-    }
-
-    @Ignore
-    public DataTag(int tagId, String name) {
-        this.tagId = tagId;
-        this.name = name;
-    }
-
-    public int getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(int tagId) {
-        this.tagId = tagId;
     }
 
     public String getName() {

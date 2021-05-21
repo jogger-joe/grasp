@@ -37,14 +37,14 @@ public class DataContainerRepository {
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public void insert(DataContainer dataContainer) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            this.dataDao.insertAll(dataContainer.getData());
+            this.dataDao.insert(dataContainer.getData());
         });
     }
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public void insert(Data data) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            this.dataDao.insertAll(data);
+            this.dataDao.insert(data);
         });
     }
 

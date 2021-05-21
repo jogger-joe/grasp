@@ -4,48 +4,44 @@ import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
-import net.usemyskills.grasp.model.IDataContainer;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DataContainer implements IDataContainer {
+public class DataContainer {
     @Embedded
     private Data data;
 
     @Relation(
             parentColumn = "dataTypeId",
-            entityColumn = "tagId"
+            entityColumn = "id"
     )
-    private DataTypeTag dataType;
+    private DataType dataType;
 
     @Relation(
             parentColumn = "dataTagId",
-            entityColumn = "tagId"
+            entityColumn = "id"
     )
     private DataTag dataTag;
 
-    public DataContainer(Data data, DataTypeTag dataType, DataTag dataTag) {
+    public DataContainer(Data data, DataType dataType, DataTag dataTag) {
         this.data = data;
         this.dataType = dataType;
         this.dataTag = dataTag;
     }
 
-    @Override
     @Ignore
-    public int getId() {
-        return this.data.getDataId();
+    public long getId() {
+        return this.data.getId();
     }
 
-    @Override
     @Ignore
     public Date getDate() {
         return this.data.getDate();
     }
 
-    @Override
     @Ignore
     public String getDateString() {
         return new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(this.getDate());
@@ -62,12 +58,12 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    public DataTypeTag getDataType() {
+    public DataType getDataType() {
         return dataType;
     }
 
     @Ignore
-    public void setDataType(DataTypeTag dataType) {
+    public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
 
@@ -82,13 +78,11 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    @Override
     public double getValue() {
         return this.data.getValue();
     }
 
     @Ignore
-    @Override
     public String getValueLabel() {
         DecimalFormat decimalFormat = new DecimalFormat("###.##");
         StringBuilder stringBuilder = new StringBuilder(decimalFormat.format(this.getValue()));
@@ -99,19 +93,16 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    @Override
-    public DataTypeTag getTypeTag() {
+    public DataType getTypeTag() {
         return this.dataType;
     }
 
     @Ignore
-    @Override
     public String getTypeName() {
         return this.getTypeTag() == null ? "" : this.getTypeTag().getName();
     }
 
     @Ignore
-    @Override
     public String getTagsLabel() {
         StringBuilder stringBuilder = new StringBuilder(this.getTypeName());
         if (this.getTagName() != null) {
@@ -121,13 +112,11 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    @Override
     public DataTag getTag() {
         return this.dataTag;
     }
 
     @Ignore
-    @Override
     public String getTagName() {
         return this.getTag() == null ? "" : this.getTag().getName();
     }

@@ -26,6 +26,6 @@ public class DataTagAdapter<T extends DataTag> extends ArrayAdapter<T> implement
 
     @Override
     public int getPosition(@Nullable T item) {
-        return item != null ? item.getTagId() : 0;
+        return item != null ? (int)item.getId() : 0;
     }
 }

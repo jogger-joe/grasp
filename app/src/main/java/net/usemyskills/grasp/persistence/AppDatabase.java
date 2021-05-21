@@ -13,21 +13,20 @@ import net.usemyskills.grasp.persistence.converter.DateConverter;
 import net.usemyskills.grasp.persistence.dao.DataContainerDao;
 import net.usemyskills.grasp.persistence.dao.DataDao;
 import net.usemyskills.grasp.persistence.dao.DataTagDao;
-import net.usemyskills.grasp.persistence.dao.DataTypeTagDao;
+import net.usemyskills.grasp.persistence.dao.DataTypeDao;
 import net.usemyskills.grasp.persistence.entity.Data;
 import net.usemyskills.grasp.persistence.entity.DataTag;
-import net.usemyskills.grasp.persistence.entity.DataTypeTag;
+import net.usemyskills.grasp.persistence.entity.DataType;
 
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Data.class, DataTag.class, DataTypeTag.class}, version = 1)
+@Database(entities = {Data.class, DataTag.class, DataType.class}, version = 1)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DataContainerDao getDataContainerDao();
     public abstract DataTagDao getDataTagDao();
-    public abstract DataTypeTagDao getDataTypeTagDao();
+    public abstract DataTypeDao getDataTypeDao();
     public abstract DataDao getDataDao();
 
     private static volatile AppDatabase INSTANCE;
@@ -56,39 +55,29 @@ public abstract class AppDatabase extends RoomDatabase {
 
             databaseWriteExecutor.execute(() -> {
                 DataTagDao dataTagDao = INSTANCE.getDataTagDao();
-                DataTypeTagDao dataTypeTagDao = INSTANCE.getDataTypeTagDao();
-                DataDao dataDao = INSTANCE.getDataDao();
+                DataTypeDao dataTypeDao = INSTANCE.getDataTypeDao();
 
-                // clear prev data
-                dataTagDao.deleteAll();
-                dataTypeTagDao.deleteAll();
-                dataDao.deleteAll();
+                DataType[] dataTypes = {
+                    new DataType(1, "Burpee Max", "Maximum Burpees in 5min", "x"),
+                    new DataType(2, "Aphrodite", "Multiple Exercises 1", "Min"),
+                    new DataType(3, "Hades", "Multiple Exercises 2", "Min"),
+                    new DataType(4, "12 Min Run", "Maximum Distance in 12 Minutes", "Km")
+                };
+                for (DataType dataType: dataTypes) {
+                    dataTypeDao.insert(dataType);
+                }
 
-                // insert typeTags
-                dataTypeTagDao.insertAll(
-                    new DataTypeTag(1, "Burpee Max", "Maximum Burpees in 5min", 1, "x"),
-                    new DataTypeTag(2, "Aphrodite", "Multiple Exercises 1", 60, "Min"),
-                    new DataTypeTag(3, "Hades", "Multiple Exercises 2", 60, "Min"),
-                    new DataTypeTag(4, "12 Min Run", "Maximum Distance in 12 Minutes", 1000, "Km")
-                );
-                // insert other tags
-                dataTagDao.insertAll(
-                    new DataTag(1, "Easy"),
-                    new DataTag(2, "Hard")
-                );
+                DataTag[] dataTags = {
+                    new DataTag(1, "Easy", ""),
+                    new DataTag(2, "Hard", "")
+                };
 
-                // create data
-                dataDao.insertAll(
-                    new Data(1, 1,1, new Date(2020-1900, 11-1, 22), 56),
-                    new Data(2, 2,1, new Date(2020-1900, 11-1, 25), 200),
-                    new Data(3, 1,1, new Date(2020-1900, 11-1, 27), 56),
-                    new Data(4, 3,2, new Date(2020-1900, 11-1, 29), 56),
-                    new Data(5, 4,1, new Date(2020-1900, 11-1, 23), 56),
-                    new Data(6, 1,2, new Date(2020-1900, 11-1, 24), 56),
-                    new Data(7, 3,1, new Date(2020-1900, 11-1, 11), 56),
-                    new Data(8, 2,1, new Date(2020-1900, 11-1, 20), 56),
-                    new Data(9, 1,2, new Date(2020-1900, 11-1, 8), 56),
-                    new Data(10, 1,1, new Date(2020-1900, 11-1, 9), 56));
+                for (DataTag dataTag: dataTags) {
+                    dataTagDao.insert(dataTag);
+                }
+
+
+
             });
         }
     };
