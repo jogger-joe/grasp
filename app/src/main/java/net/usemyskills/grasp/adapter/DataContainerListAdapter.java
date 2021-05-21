@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import net.usemyskills.grasp.persistence.entity.DataContainer;
-import net.usemyskills.grasp.view.DataContainerViewHolder;
 
 public class DataContainerListAdapter extends ListAdapter<DataContainer, DataContainerViewHolder> {
 

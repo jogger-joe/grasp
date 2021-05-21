@@ -12,21 +12,24 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import net.usemyskills.grasp.persistence.converter.DateConverter;
 import net.usemyskills.grasp.persistence.dao.DataContainerDao;
 import net.usemyskills.grasp.persistence.dao.DataDao;
-import net.usemyskills.grasp.persistence.dao.DataTagDao;
-import net.usemyskills.grasp.persistence.dao.DataTypeDao;
+import net.usemyskills.grasp.persistence.dao.TagDao;
+import net.usemyskills.grasp.persistence.dao.TypeDao;
 import net.usemyskills.grasp.persistence.entity.Data;
-import net.usemyskills.grasp.persistence.entity.DataTag;
-import net.usemyskills.grasp.persistence.entity.DataType;
+import net.usemyskills.grasp.persistence.entity.Tag;
+import net.usemyskills.grasp.persistence.entity.Type;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Data.class, DataTag.class, DataType.class}, version = 1)
+@Database(entities = {Data.class, Tag.class, Type.class}, version = 1)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DataContainerDao getDataContainerDao();
-    public abstract DataTagDao getDataTagDao();
-    public abstract DataTypeDao getDataTypeDao();
+    public abstract TagDao getTagDao();
+    public abstract TypeDao getTypeDao();
     public abstract DataDao getDataDao();
 
     private static volatile AppDatabase INSTANCE;
@@ -54,29 +57,40 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onCreate(db);
 
             databaseWriteExecutor.execute(() -> {
-                DataTagDao dataTagDao = INSTANCE.getDataTagDao();
-                DataTypeDao dataTypeDao = INSTANCE.getDataTypeDao();
+                TagDao tagDao = INSTANCE.getTagDao();
+                TypeDao typeDao = INSTANCE.getTypeDao();
+                DataDao dataDao = INSTANCE.getDataDao();
 
-                DataType[] dataTypes = {
-                    new DataType(1, "Burpee Max", "Maximum Burpees in 5min", "x"),
-                    new DataType(2, "Aphrodite", "Multiple Exercises 1", "Min"),
-                    new DataType(3, "Hades", "Multiple Exercises 2", "Min"),
-                    new DataType(4, "12 Min Run", "Maximum Distance in 12 Minutes", "Km")
+                Type[] types = {
+                    new Type(1, "Burpee Max", "Maximum Burpees in 5min", "x"),
+                    new Type(2, "Aphrodite", "Multiple Exercises 1", "Min"),
+                    new Type(3, "Hades", "Multiple Exercises 2", "Min"),
+                    new Type(4, "12 Min Run", "Maximum Distance in 12 Minutes", "Km")
                 };
-                for (DataType dataType: dataTypes) {
-                    dataTypeDao.insert(dataType);
+                for (Type type : types) {
+                    typeDao.insert(type);
                 }
 
-                DataTag[] dataTags = {
-                    new DataTag(1, "Easy", ""),
-                    new DataTag(2, "Hard", "")
+                Tag[] tags = {
+                    new Tag(1, "Easy", ""),
+                    new Tag(2, "Hard", "")
                 };
 
-                for (DataTag dataTag: dataTags) {
-                    dataTagDao.insert(dataTag);
+                for (Tag tag : tags) {
+                    tagDao.insert(tag);
                 }
 
-
+                int amountOfGeneratedData = 20;
+                int iteration = 0;
+                Random rnd = new Random();
+                while (iteration < amountOfGeneratedData) {
+                    iteration++;
+                    int rndTypeId = rnd.nextInt(types.length);
+                    int rndTagId = rnd.nextInt(tags.length);
+                    int rndValue = rnd.nextInt(200);
+                    Date rndDate = new GregorianCalendar(rnd.nextInt(20)+2000, rnd.nextInt(12), rnd.nextInt(29)).getTime();
+                    dataDao.insert(new Data(rndTypeId+1, rndTagId+1, rndDate, rndValue));
+                }
 
             });
         }

@@ -4,22 +4,22 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 
 @Entity
-public class DataType extends DataTag {
+public class Type extends Tag {
     private String unit;
 
-    public DataType(int id, String name, String description, String unit) {
+    public Type(int id, String name, String description, String unit) {
         super(id, name, description);
         this.unit = unit;
     }
 
     @Ignore
-    public DataType(String name, String description, String unit) {
+    public Type(String name, String description, String unit) {
         super(name, description);
         this.unit = unit;
     }
 
     @Ignore
-    public DataType(String name) {
+    public Type(String name) {
         super(name);
     }
 

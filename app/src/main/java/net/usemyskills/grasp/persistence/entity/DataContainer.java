@@ -15,21 +15,21 @@ public class DataContainer {
     private Data data;
 
     @Relation(
-            parentColumn = "dataTypeId",
+            parentColumn = "typeId",
             entityColumn = "id"
     )
-    private DataType dataType;
+    private Type type;
 
     @Relation(
-            parentColumn = "dataTagId",
+            parentColumn = "tagId",
             entityColumn = "id"
     )
-    private DataTag dataTag;
+    private Tag tag;
 
-    public DataContainer(Data data, DataType dataType, DataTag dataTag) {
+    public DataContainer(Data data, Type type, Tag tag) {
         this.data = data;
-        this.dataType = dataType;
-        this.dataTag = dataTag;
+        this.type = type;
+        this.tag = tag;
     }
 
     @Ignore
@@ -48,6 +48,11 @@ public class DataContainer {
     }
 
     @Ignore
+    public long getTimestamp() {
+        return this.getDate().getTime();
+    }
+
+    @Ignore
     public Data getData() {
         return data;
     }
@@ -58,23 +63,23 @@ public class DataContainer {
     }
 
     @Ignore
-    public DataType getDataType() {
-        return dataType;
+    public Type getType() {
+        return type;
     }
 
     @Ignore
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Ignore
-    public DataTag getDataTag() {
-        return dataTag;
+    public Tag getTag() {
+        return tag;
     }
 
     @Ignore
-    public void setDataTag(DataTag dataTag) {
-        this.dataTag = dataTag;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     @Ignore
@@ -93,8 +98,8 @@ public class DataContainer {
     }
 
     @Ignore
-    public DataType getTypeTag() {
-        return this.dataType;
+    public Type getTypeTag() {
+        return this.type;
     }
 
     @Ignore
@@ -109,11 +114,6 @@ public class DataContainer {
             stringBuilder.append("(").append(this.getTagName()).append(")");
         }
         return stringBuilder.toString();
-    }
-
-    @Ignore
-    public DataTag getTag() {
-        return this.dataTag;
     }
 
     @Ignore

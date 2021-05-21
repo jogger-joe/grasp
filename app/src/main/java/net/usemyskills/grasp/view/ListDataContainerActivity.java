@@ -13,13 +13,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.DataContainerListAdapter;
-import net.usemyskills.grasp.persistence.entity.Data;
+import net.usemyskills.grasp.model.DataDto;
 import net.usemyskills.grasp.viewmodel.DataContainerViewModel;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class ListDataContainerActivity extends AppCompatActivity {
 
@@ -52,9 +47,8 @@ public class ListDataContainerActivity extends AppCompatActivity {
 
         try {
             if (requestCode == NEW_DATA_CONTAINER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-                this.dataContainerViewModel.insert(this.buildData(data));
-            } else {
-                throw new Exception("R.string.empty_not_saved");
+                DataDto dataDto = data.getParcelableExtra(EditDataContainerActivity.DATA_REPLY);
+                this.dataContainerViewModel.insert(dataDto);
             }
         } catch (Exception exception) {
             Toast.makeText(
@@ -62,15 +56,6 @@ public class ListDataContainerActivity extends AppCompatActivity {
                     exception.getMessage(),
                     Toast.LENGTH_LONG).show();
         }
-    }
-
-    private Data buildData(Intent data) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        Date date = simpleDateFormat.parse(data.getStringExtra(EditDataContainerActivity.DATE_REPLY));
-        int value = data.getIntExtra(EditDataContainerActivity.VALUE_REPLY, 0);
-        int dataTypeTagId = data.getIntExtra(EditDataContainerActivity.DATA_TYPE_TAG_REPLY, 0);
-        int dataTagId = data.getIntExtra(EditDataContainerActivity.DATA_TAG_REPLY, 0);
-        return new Data(dataTypeTagId, dataTagId, date, value);
     }
 
 }

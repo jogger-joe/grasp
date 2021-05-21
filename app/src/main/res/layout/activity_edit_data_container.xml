@@ -7,37 +7,24 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="30sp"
         android:id="@+id/date" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/data_type_tag"
-        android:text="@string/type_tag" />
-
-    <AutoCompleteTextView
-        android:id="@+id/data_type_tag"
+    <Spinner
+        android:hint="@string/type"
+        android:id="@+id/type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/data_tag"
-        android:text="@string/tag" />
-
-    <MultiAutoCompleteTextView
-        android:id="@+id/data_tag"
+    <Spinner
+        android:hint="@string/tag"
+        android:id="@+id/tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:labelFor="@id/value"
-        android:text="@string/value" />
 
     <EditText
+        android:hint="@string/value"
         android:id="@+id/value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

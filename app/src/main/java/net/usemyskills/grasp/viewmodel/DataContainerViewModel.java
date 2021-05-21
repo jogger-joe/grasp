@@ -25,7 +25,6 @@ public class DataContainerViewModel extends AndroidViewModel {
 
     public LiveData<List<DataContainer>> getAll() { return dataContainers; }
 
-    public void insert(DataContainer dataContainer) { dataContainerRepository.insert(dataContainer); }
     public void insert(Data data) { dataContainerRepository.insert(data); }
 }
 

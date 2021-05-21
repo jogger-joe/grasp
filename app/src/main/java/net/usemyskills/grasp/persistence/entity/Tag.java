@@ -5,22 +5,22 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 
 @Entity
-public class DataTag extends BaseEntity {
+public class Tag extends BaseEntity {
     private String name;
     private String description;
 
-    public DataTag(int id, String name, String description) {
+    public Tag(int id, String name, String description) {
         this(name, description);
         this.id = id;
     }
 
     @Ignore
-    public DataTag(String name) {
+    public Tag(String name) {
         this(name, "");
     }
 
     @Ignore
-    public DataTag(String name, String description) {
+    public Tag(String name, String description) {
         this.name = name;
         this.description = description;
     }

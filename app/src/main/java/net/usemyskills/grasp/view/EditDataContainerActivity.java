@@ -10,37 +10,35 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.DataTagAdapter;
-import net.usemyskills.grasp.persistence.entity.DataTag;
-import net.usemyskills.grasp.persistence.entity.DataType;
-import net.usemyskills.grasp.viewmodel.DataTagViewModel;
+import net.usemyskills.grasp.model.DataDto;
+import net.usemyskills.grasp.persistence.entity.Tag;
+import net.usemyskills.grasp.persistence.entity.Type;
+import net.usemyskills.grasp.viewmodel.TagViewModel;
 
 import java.util.Date;
 import java.util.Locale;
 
 public class EditDataContainerActivity extends AppCompatActivity {
 
-    private DataTagViewModel dataTagViewModel;
+    private TagViewModel tagViewModel;
 
-    public static final String DATE_REPLY = "net.usemyskills.grasp.view.DATE_REPLY";
-    public static final String DATA_TYPE_TAG_REPLY = "net.usemyskills.grasp.view.DATA_TYPE_TAG_REPLY";
-    public static final String DATA_TAG_REPLY = "net.usemyskills.grasp.view.DATA_TAG_REPLY";
-    public static final String VALUE_REPLY = "net.usemyskills.grasp.view.VALUE_REPLY";
+    public static final String DATA_REPLY = "net.usemyskills.grasp.view.DATA";
 
     public static final int DATE_PICKER_DIALOG = 1337;
 
     private Calendar calendar;
     private TextView mDateView;
-    private AutoCompleteTextView mDataTypeTagView;
-    private MultiAutoCompleteTextView mDataTagsView;
+    private Spinner mTypeView;
+    private Spinner mTagView;
     private EditText mValueView;
 
     private Date selectedDate;
@@ -50,7 +48,7 @@ public class EditDataContainerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.bindViewElements();
         // init viewModel
-        this.dataTagViewModel = new ViewModelProvider(this.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(DataTagViewModel.class);
+        this.tagViewModel = new ViewModelProvider(this.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(TagViewModel.class);
         this.initCalendar();
         this.initAdapter();
         this.initButtons();
@@ -73,8 +71,8 @@ public class EditDataContainerActivity extends AppCompatActivity {
     private void bindViewElements() {
         this.setContentView(R.layout.activity_edit_data_container);
         this.mDateView = findViewById(R.id.date);
-        this.mDataTypeTagView = findViewById(R.id.data_type_tag);
-        this.mDataTagsView = findViewById(R.id.data_tag);
+        this.mTypeView = findViewById(R.id.type);
+        this.mTagView = findViewById(R.id.tag);
         this.mValueView = findViewById(R.id.value);
     }
 
@@ -95,35 +93,39 @@ public class EditDataContainerActivity extends AppCompatActivity {
 
     private void initAdapter() {
         // init dataTypeTag element
-        DataTagAdapter<DataType> dataTypeTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
-        this.mDataTypeTagView.setAdapter(dataTypeTagsAdapter);
-        this.dataTagViewModel.getAllDataTypeTags().observe(this, dataTypeTagsAdapter::setDataTags);
+        DataTagAdapter<Type> typesAdapter = new DataTagAdapter<>(this, R.layout.tag_item);
+        this.mTypeView.setAdapter(typesAdapter);
+        this.tagViewModel.getAllDataTypeTags().observe(this, typesAdapter::setDataTags);
         // init dataTag element
-        DataTagAdapter<DataTag> dataTagsAdapter = new DataTagAdapter<>(this, R.layout.data_tag_item);
-        this.mDataTagsView.setAdapter(dataTagsAdapter);
-        this.mDataTagsView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        this.dataTagViewModel.getAllDataTags().observe(this, dataTagsAdapter::setDataTags);
+        DataTagAdapter<Tag> tagsAdapter = new DataTagAdapter<>(this, R.layout.tag_item);
+        this.mTagView.setAdapter(tagsAdapter);
+        this.tagViewModel.getAllDataTags().observe(this, tagsAdapter::setDataTags);
     }
 
     private void initButtons() {
+
         // save button
         this.findViewById(R.id.button_save).setOnClickListener(view -> {
             Intent replyIntent = new Intent();
-            if (TextUtils.isEmpty(mDateView.getText()) ||
-                    TextUtils.isEmpty(mValueView.getText()) ||
-                    this.mDataTypeTagView.getListSelection() == 0) {
-                setResult(RESULT_CANCELED, replyIntent);
-            } else {
-                replyIntent.putExtra(DATE_REPLY, this.mDateView.getText().toString());
-                replyIntent.putExtra(DATA_TYPE_TAG_REPLY, this.mDataTypeTagView.getListSelection());
-                replyIntent.putExtra(DATA_TAG_REPLY, this.mDataTagsView.getListSelection());
-                replyIntent.putExtra(VALUE_REPLY, this.mValueView.getText().toString());
+            try {
+                Tag type = (Type)this.mTypeView.getSelectedItem();
+                Tag tag = (Tag)this.mTagView.getSelectedItem();
+                DataDto data = new DataDto(0, type != null ? type.getId() : 0, tag != null ? tag.getId() : 0, this.selectedDate, Integer.parseInt(this.mValueView.getText().toString()));
+                data.validate();
+                replyIntent.putExtra(DATA_REPLY, data);
                 setResult(RESULT_OK, replyIntent);
+                finish();
+            } catch (Exception exception) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        exception.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
-            finish();
         });
         // cancel button
         this.findViewById(R.id.button_cancel).setOnClickListener(view -> {
+            Intent replyIntent = new Intent();
+            setResult(RESULT_CANCELED, replyIntent);
             finish();
         });
     }
