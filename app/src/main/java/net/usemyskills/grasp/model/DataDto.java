@@ -3,6 +3,7 @@ package net.usemyskills.grasp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import net.usemyskills.grasp.exceptions.ModelValidationException;
 import net.usemyskills.grasp.persistence.entity.Data;
 
 import java.util.Date;
@@ -44,9 +45,9 @@ public class DataDto extends Data implements Parcelable {
         dest.writeLong(this.getDate().getTime());
     }
 
-    public void validate() throws Exception {
+    public void validate() throws ModelValidationException {
         if (this.getTypeId() == 0 || this.getDate() == null || this.getValue() == 0) {
-            throw new Exception("validation error");
+            throw new ModelValidationException("validation error");
         }
     }
 }

@@ -11,13 +11,13 @@
         android:textSize="30sp"
         android:id="@+id/date" />
 
-    <Spinner
+    <EditText
         android:hint="@string/type"
         android:id="@+id/type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Spinner
+    <EditText
         android:hint="@string/tag"
         android:id="@+id/tag"
         android:layout_width="match_parent"
@@ -30,17 +30,5 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:inputType="numberDecimal" />
-
-    <Button
-        android:id="@+id/button_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_save" />
-
-    <Button
-        android:id="@+id/button_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_cancel" />
 
 </LinearLayout>
