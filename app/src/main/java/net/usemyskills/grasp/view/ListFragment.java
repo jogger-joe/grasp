@@ -1,6 +1,7 @@
 package net.usemyskills.grasp.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.DataRecyclerViewAdapter;
+import net.usemyskills.grasp.model.DataDto;
 import net.usemyskills.grasp.viewmodel.DataViewModel;
 
 import java.util.ArrayList;
@@ -65,5 +67,10 @@ public class ListFragment extends Fragment {
             viewModel.getAll().observe(this, adapter::setValues);
         }
         return view;
+    }
+
+    public void handleActivityResult(Intent data) {
+        DataDto dataDto = data.getParcelableExtra(EditActivity.DATA_REPLY);
+        this.viewModel.insert(dataDto);
     }
 }

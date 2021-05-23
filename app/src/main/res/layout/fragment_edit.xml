@@ -11,13 +11,13 @@
         android:textSize="30sp"
         android:id="@+id/date" />
 
-    <EditText
+    <TextView
         android:hint="@string/type"
         android:id="@+id/type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
+    <TextView
         android:hint="@string/tag"
         android:id="@+id/tag"
         android:layout_width="match_parent"
