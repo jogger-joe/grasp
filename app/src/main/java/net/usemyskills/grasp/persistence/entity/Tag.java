@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
+import net.usemyskills.grasp.model.Selectable;
+
 @Entity
-public class Tag extends BaseEntity {
+public class Tag extends BaseEntity implements Selectable {
     private String name;
     private String description;
 
@@ -44,6 +46,11 @@ public class Tag extends BaseEntity {
     @NonNull
     @Override
     public String toString() {
+        return this.getName();
+    }
+
+    @Override
+    public String getLabel() {
         return this.getName();
     }
 }

@@ -1,12 +1,12 @@
 package net.usemyskills.grasp.view;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import net.usemyskills.grasp.R;
 
 public class EditActivity extends AppCompatActivity {
@@ -19,7 +19,9 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         if (savedInstanceState == null) {
-            this.editFragment = EditFragment.newInstance(this.getSupportFragmentManager());
+            this.editFragment = EditFragment.newInstance(
+                    this.getSupportFragmentManager(),
+                    new ViewModelProvider(this.getViewModelStore(),ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())));
             this.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.edit_container, this.editFragment)
                     .commitNow();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,12 +27,12 @@ public class ListFragment extends Fragment {
     private int mColumnCount = 1;
     private final DataViewModel viewModel;
 
-    public ListFragment(DataViewModel viewModel) {
-        this.viewModel = viewModel;
+    public ListFragment(ViewModelProvider viewModelProvider) {
+        this.viewModel = viewModelProvider.get(DataViewModel.class);
     }
 
-    public static ListFragment newInstance(DataViewModel viewModel, int columnCount) {
-        ListFragment fragment = new ListFragment(viewModel);
+    public static ListFragment newInstance(ViewModelProvider viewModelProvider, int columnCount) {
+        ListFragment fragment = new ListFragment(viewModelProvider);
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);

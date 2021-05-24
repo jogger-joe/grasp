@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.usemyskills.grasp.R;
-import net.usemyskills.grasp.viewmodel.DataViewModel;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -22,8 +21,9 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         if (savedInstanceState == null) {
-            DataViewModel viewModel = new ViewModelProvider(this.getViewModelStore(), ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(DataViewModel.class);
-            listFragment = ListFragment.newInstance(viewModel, 1);
+
+            listFragment = ListFragment.newInstance(
+                    new ViewModelProvider(this.getViewModelStore(),ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())), 1);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.list_container, listFragment)
                     .commitNow();

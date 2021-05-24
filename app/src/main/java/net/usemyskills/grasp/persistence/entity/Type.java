@@ -3,8 +3,10 @@ package net.usemyskills.grasp.persistence.entity;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
+import net.usemyskills.grasp.model.Selectable;
+
 @Entity
-public class Type extends Tag {
+public class Type extends Tag implements Selectable {
     private String unit;
 
     public Type(int id, String name, String description, String unit) {
@@ -29,6 +31,11 @@ public class Type extends Tag {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.getName();
     }
 }
 
