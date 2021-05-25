@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.DataRecyclerViewAdapter;
@@ -21,14 +22,16 @@ import net.usemyskills.grasp.viewmodel.DataViewModel;
 
 import java.util.ArrayList;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private final DataViewModel viewModel;
+    private final DataRecyclerViewAdapter adapter;
 
     public ListFragment(ViewModelProvider viewModelProvider) {
         this.viewModel = viewModelProvider.get(DataViewModel.class);
+        this.adapter = new DataRecyclerViewAdapter(new ArrayList<>());
     }
 
     public static ListFragment newInstance(ViewModelProvider viewModelProvider, int columnCount) {
@@ -62,10 +65,8 @@ public class ListFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            DataRecyclerViewAdapter adapter = new DataRecyclerViewAdapter(new ArrayList<>());
-            recyclerView.setAdapter(adapter);
-
-            viewModel.getAll().observe(this, adapter::setValues);
+            recyclerView.setAdapter(this.adapter);
+            viewModel.getAll().observe(this, this.adapter::setValues);
         }
         return view;
     }
@@ -73,5 +74,16 @@ public class ListFragment extends Fragment {
     public void handleActivityResult(Intent data) {
         DataDto dataDto = data.getParcelableExtra(EditActivity.DATA_REPLY);
         this.viewModel.insert(dataDto);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        this.adapter.getFilter().filter(newText);
+        return false;
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.usemyskills.grasp.databinding.FragmentSelectableListItemBinding;
@@ -15,15 +16,16 @@ import java.util.List;
 public class SelectableRecyclerViewAdapter<T extends Selectable> extends RecyclerView.Adapter<SelectableRecyclerViewAdapter<T>.ViewHolder> {
     private List<T> mValues;
     private final OnClickSelectableListener<T> onClickSelectableListener;
-    private T selectedTag;
+    private final MutableLiveData<T> selectedElement;
 
     public SelectableRecyclerViewAdapter(List<T> values) {
         this.mValues = values;
-        this.onClickSelectableListener = tag -> selectedTag = tag;
+        this.selectedElement = new MutableLiveData<>();
+        this.onClickSelectableListener = this.selectedElement::setValue;
     }
 
-    public T getSelectedTag() {
-        return selectedTag;
+    public MutableLiveData<T> getSelectedElement() {
+        return this.selectedElement;
     }
 
     public void setValues(List<T> values) {
