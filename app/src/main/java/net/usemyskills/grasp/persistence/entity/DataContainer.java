@@ -4,51 +4,52 @@ import androidx.room.Embedded;
 import androidx.room.Ignore;
 import androidx.room.Relation;
 
-import net.usemyskills.grasp.model.IDataContainer;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DataContainer implements IDataContainer {
+public class DataContainer {
     @Embedded
     private Data data;
 
     @Relation(
-            parentColumn = "dataTypeId",
-            entityColumn = "tagId"
+            parentColumn = "typeId",
+            entityColumn = "id"
     )
-    private DataTypeTag dataType;
+    private Type type;
 
     @Relation(
-            parentColumn = "dataTagId",
-            entityColumn = "tagId"
+            parentColumn = "tagId",
+            entityColumn = "id"
     )
-    private DataTag dataTag;
+    private Tag tag;
 
-    public DataContainer(Data data, DataTypeTag dataType, DataTag dataTag) {
+    public DataContainer(Data data, Type type, Tag tag) {
         this.data = data;
-        this.dataType = dataType;
-        this.dataTag = dataTag;
+        this.type = type;
+        this.tag = tag;
     }
 
-    @Override
     @Ignore
-    public int getId() {
-        return this.data.getDataId();
+    public long getId() {
+        return this.data.getId();
     }
 
-    @Override
     @Ignore
     public Date getDate() {
         return this.data.getDate();
     }
 
-    @Override
     @Ignore
     public String getDateString() {
         return new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(this.getDate());
+    }
+
+    @Ignore
+    public long getTimestamp() {
+        return this.getDate().getTime();
     }
 
     @Ignore
@@ -62,33 +63,31 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    public DataTypeTag getDataType() {
-        return dataType;
+    public Type getType() {
+        return type;
     }
 
     @Ignore
-    public void setDataType(DataTypeTag dataType) {
-        this.dataType = dataType;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Ignore
-    public DataTag getDataTag() {
-        return dataTag;
+    public Tag getTag() {
+        return tag;
     }
 
     @Ignore
-    public void setDataTag(DataTag dataTag) {
-        this.dataTag = dataTag;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     @Ignore
-    @Override
     public double getValue() {
         return this.data.getValue();
     }
 
     @Ignore
-    @Override
     public String getValueLabel() {
         DecimalFormat decimalFormat = new DecimalFormat("###.##");
         StringBuilder stringBuilder = new StringBuilder(decimalFormat.format(this.getValue()));
@@ -99,19 +98,16 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    @Override
-    public DataTypeTag getTypeTag() {
-        return this.dataType;
+    public Type getTypeTag() {
+        return this.type;
     }
 
     @Ignore
-    @Override
     public String getTypeName() {
         return this.getTypeTag() == null ? "" : this.getTypeTag().getName();
     }
 
     @Ignore
-    @Override
     public String getTagsLabel() {
         StringBuilder stringBuilder = new StringBuilder(this.getTypeName());
         if (this.getTagName() != null) {
@@ -121,13 +117,6 @@ public class DataContainer implements IDataContainer {
     }
 
     @Ignore
-    @Override
-    public DataTag getTag() {
-        return this.dataTag;
-    }
-
-    @Ignore
-    @Override
     public String getTagName() {
         return this.getTag() == null ? "" : this.getTag().getName();
     }
