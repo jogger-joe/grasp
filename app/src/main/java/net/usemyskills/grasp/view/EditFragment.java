@@ -36,6 +36,9 @@ public class EditFragment extends Fragment {
     private final TagViewModel tagViewModel;
     private final TypeViewModel typeViewModel;
 
+    private Type selectedType;
+    private Tag selectedTag;
+    private Date selectedDate;
 
     public EditFragment(FragmentManager fragmentManager, ViewModelProvider viewModelProvider) {
 
@@ -57,20 +60,20 @@ public class EditFragment extends Fragment {
         // init mdateview
         this.mDateView = view.findViewById(R.id.date);
         DateDialogFragment dateDialogFragment = new DateDialogFragment();
-        dateDialogFragment.getSelectedDate().observe(this, date -> this.mDateView.setText(new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(date)));
+        dateDialogFragment.getSelectedDate().observe(this, this::updateDate);
         this.mDateView.setOnClickListener(v -> dateDialogFragment.show(fragmentManager, "dialog"));
 
         SelectableRecyclerViewAdapter<Type> typeAdapter = new SelectableRecyclerViewAdapter<>(new ArrayList<>());
         typeViewModel.getTypes().observe(this, typeAdapter::setValues);
         SelectDialogFragment<Type> typeSelectDialog = new SelectDialogFragment<>(typeAdapter);
-        typeSelectDialog.getSelectedElement().observe(this, type -> this.mTypeView.setText(type.getName()));
+        typeSelectDialog.getSelectedElement().observe(this, this::updateType);
         this.mTypeView = view.findViewById(R.id.type);
         this.mTypeView.setOnClickListener(v -> typeSelectDialog.show(fragmentManager, "dialog"));
 
         SelectableRecyclerViewAdapter<Tag> tagAdapter = new SelectableRecyclerViewAdapter<>(new ArrayList<>());
         tagViewModel.getTags().observe(this, tagAdapter::setValues);
         SelectDialogFragment<Tag> tagSelectDialog = new SelectDialogFragment<>(tagAdapter);
-        tagSelectDialog.getSelectedElement().observe(this, tag -> this.mTagView.setText(tag.getName()));
+        tagSelectDialog.getSelectedElement().observe(this, this::updateTag);
         this.mTagView = view.findViewById(R.id.tag);
         this.mTagView.setOnClickListener(v -> tagSelectDialog.show(fragmentManager, "dialog"));
 
@@ -79,11 +82,27 @@ public class EditFragment extends Fragment {
         return view;
     }
 
+    private void updateType(Type type) {
+        this.selectedType = type;
+        this.mTypeView.setText(type.getName());
+    }
+
+    private void updateTag(Tag tag) {
+        this.selectedTag = tag;
+        this.mTagView.setText(tag.getName());
+    }
+
+    private void updateDate(Date date) {
+        this.selectedDate = date;
+        this.mDateView.setText(new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(date));
+    }
 
 
     public DataDto getDto() throws ModelValidationException {
-
-        DataDto dataDto = new DataDto(0, 0, 0, new Date(), Integer.parseInt(this.mValueView.getText().toString()));
+        int typeId = this.selectedType != null ? selectedType.getId() : 0;
+        int tagId = this.selectedTag != null ? selectedTag.getId() : 0;
+        Date date = this.selectedDate != null ? this.selectedDate : new Date();
+        DataDto dataDto = new DataDto(0, typeId, tagId, date, Integer.parseInt(this.mValueView.getText().toString()));
         dataDto.validate();
         return dataDto;
     }
