@@ -9,4 +9,7 @@
     <string name="value">Wert</string>
     <string name="button_cancel">abbrechen</string>
     <string name="search">Suche</string>
+    <string name="placeholder_text">placeholder text</string>
+    <string name="placeholder_date">22.11.1983</string>
+    <string name="placeholder_value">123.45</string>
 </resources>
