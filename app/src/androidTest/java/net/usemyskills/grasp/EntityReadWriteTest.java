@@ -2,7 +2,6 @@ package net.usemyskills.grasp;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -10,12 +9,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.DataContainerDao;
 import net.usemyskills.grasp.persistence.dao.DataDao;
-import net.usemyskills.grasp.persistence.dao.DataTagDao;
-import net.usemyskills.grasp.persistence.dao.DataTypeTagDao;
+import net.usemyskills.grasp.persistence.dao.TagDao;
+import net.usemyskills.grasp.persistence.dao.TypeDao;
 import net.usemyskills.grasp.persistence.entity.Data;
 import net.usemyskills.grasp.persistence.entity.DataContainer;
-import net.usemyskills.grasp.persistence.entity.DataTag;
-import net.usemyskills.grasp.persistence.entity.DataTypeTag;
+import net.usemyskills.grasp.persistence.entity.Tag;
+import net.usemyskills.grasp.persistence.entity.Type;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,17 +22,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.GregorianCalendar;
+import java.util.concurrent.CountDownLatch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(AndroidJUnit4.class)
 public class EntityReadWriteTest {
-    private DataTagDao dataTagDao;
-    private DataTypeTagDao dataTypeTagDao;
+    private TagDao tagDao;
+    private TypeDao typeDao;
     private DataDao dataDao;
     private DataContainerDao dataContainerDao;
     private AppDatabase db;
@@ -42,8 +40,8 @@ public class EntityReadWriteTest {
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
-        dataTagDao = db.getDataTagDao();
-        dataTypeTagDao = db.getDataTypeTagDao();
+        tagDao = db.getTagDao();
+        typeDao = db.getTypeDao();
         dataDao = db.getDataDao();
         dataContainerDao = db.getDataContainerDao();
     }
@@ -54,59 +52,61 @@ public class EntityReadWriteTest {
     }
 
     @Test
-    public void writeDataTagAndReadInList() throws Exception {
-        DataTag dataTag = new DataTag(3,"test", "testdescription");
-        dataTagDao.insertAll(dataTag);
-        dataTagDao.getAll().observeForever(dataTags -> {
+    public void writeDataTagAndReadAll() throws Exception {
+        final CountDownLatch signal = new CountDownLatch(1);
+        tagDao.getAll().observeForever(dataTags -> {
             assertThat(dataTags.size(), equalTo(1));
-            DataTag singleDataTag = dataTags.get(0);
-            assertThat(singleDataTag.getName(), equalTo("test"));
-            assertThat(singleDataTag.getTagId(), equalTo(3));
-            assertThat(singleDataTag.getDescription(), equalTo("testdescription"));
+            Tag singleTag = dataTags.get(0);
+            assertThat(singleTag.getName(), equalTo("test"));
+            assertThat(singleTag.getId(), equalTo(3));
+            assertThat(singleTag.getDescription(), equalTo("testdescription"));
+            signal.countDown();
         });
+        tagDao.insert(new Tag(3,"test", "testdescription"));
+        signal.await();
     }
 
     @Test
-    public void writeDataTagWithoutIdAndReadInList() throws Exception {
-        DataTag dataTag = new DataTag("test", "testdescription");
-        dataTagDao.insertAll(dataTag);
-        dataTagDao.getAll().observeForever(dataTags -> {
+    public void writeDataTagWithoutIdAndReadAll() throws Exception {
+        final CountDownLatch signal = new CountDownLatch(1);
+        tagDao.getAll().observeForever(dataTags -> {
             assertThat(dataTags.size(), equalTo(1));
-            DataTag singleDataTag = dataTags.get(0);
-            assertThat(singleDataTag.getName(), equalTo("test"));
-            assertThat(singleDataTag.getTagId(), equalTo(1));
-            assertThat(singleDataTag.getDescription(), equalTo("testdescription"));
+            Tag singleTag = dataTags.get(0);
+            assertThat(singleTag.getName(), equalTo("test"));
+            assertThat(singleTag.getId(), equalTo(1));
+            assertThat(singleTag.getDescription(), equalTo("testdescription"));
+            signal.countDown();
         });
+        tagDao.insert(new Tag("test", "testdescription"));
+        signal.await();
     }
 
     @Test
-    public void writeDataTypeTagAndReadInList() throws Exception {
-        DataTypeTag dataTypeTag = new DataTypeTag(7,"test", "testdescription", 60, "min");
-        dataTypeTagDao.insertAll(dataTypeTag);
-        dataTypeTagDao.getAll().observeForever(dataTypeTags -> {
+    public void writeDataTypeTagAndReadAll() throws Exception {
+        typeDao.getAll().observeForever(dataTypeTags -> {
             assertThat(dataTypeTags.size(), equalTo(1));
-            DataTypeTag singleDataTypeTag = dataTypeTags.get(0);
-            assertThat(singleDataTypeTag.getName(), equalTo("test"));
-            assertThat(singleDataTypeTag.getTagId(), equalTo(7));
-            assertThat(singleDataTypeTag.getDescription(), equalTo("testdescription"));
-            assertThat(singleDataTypeTag.getModifier(), equalTo(60));
-            assertThat(singleDataTypeTag.getUnit(), equalTo("min"));
+            Type singleType = dataTypeTags.get(0);
+            assertThat(singleType.getName(), equalTo("test"));
+            assertThat(singleType.getId(), equalTo(7));
+            assertThat(singleType.getDescription(), equalTo("testdescription"));
+            assertThat(singleType.getUnit(), equalTo("min"));
         });
+        typeDao.insert(new Type(7,"test", "testdescription", "min"));
     }
 
     @Test
-    public void writeDataContainerAndReadCheckSingle() throws Exception {
-        dataTypeTagDao.insertAll(new DataTypeTag(2,"Aphrodite", "", 60, "min"));
-        dataTagDao.insertAll(new DataTag(1,"High"));
-        dataDao.insertAll(new Data(1,2,1, new Date(2020-1900,11-1,22), 90));
+    public void writeDataAndReadAllDataContainer() throws Exception {
         dataContainerDao.getAll().observeForever(dataContainers -> {
             assertThat(dataContainers.size(), equalTo(1));
             DataContainer singleDataContainer = dataContainers.get(0);
             assertThat(singleDataContainer.getTypeName(), equalTo("Aphrodite"));
             assertThat(singleDataContainer.getTagName(), equalTo("High"));
             assertThat(singleDataContainer.getDateString(), equalTo("22.11.2020"));
-            assertThat(singleDataContainer.getValue(), equalTo(1.5));
+            assertThat(singleDataContainer.getValue(), equalTo(90));
         });
+        typeDao.insert(new Type(2,"Aphrodite", "", "min"));
+        tagDao.insert(new Tag(1,"High", ""));
+        dataDao.insert(new Data(1,2,1, new GregorianCalendar(2020-1900,11-1,22).getTime(), 90));
 
     }
 }
