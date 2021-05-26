@@ -4,27 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
-import net.usemyskills.grasp.model.Selectable;
-
 @Entity
-public class Tag extends BaseEntity implements Selectable {
+public class Tag extends BaseEntity {
     private String name;
     private String description;
+    private int groupId = 0;
 
-    public Tag(int id, String name, String description) {
-        this(name, description);
+    public Tag(int id, String name, String description, int groupId) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.groupId = groupId;
+    }
+
+    @Ignore
+    public Tag(String name, String description) {
+        this(0, name, description, 0);
     }
 
     @Ignore
     public Tag(String name) {
         this(name, "");
-    }
-
-    @Ignore
-    public Tag(String name, String description) {
-        this.name = name;
-        this.description = description;
     }
 
     public String getName() {
@@ -43,14 +43,17 @@ public class Tag extends BaseEntity implements Selectable {
         this.description = description;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return this.getName();
-    }
-
-    @Override
-    public String getLabel() {
         return this.getName();
     }
 }

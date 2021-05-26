@@ -8,7 +8,7 @@ import java.util.Date;
 @Entity
 public class BaseEntity  {
     @PrimaryKey(autoGenerate = true)
-    protected int id;
+    protected long id;
     private Date createdAt;
     private Date updatedAt;
 
@@ -17,7 +17,7 @@ public class BaseEntity  {
         this.updatedAt = new Date();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

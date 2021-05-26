@@ -13,6 +13,6 @@ public interface TypeDao extends BaseDao<Type> {
     @Query("SELECT * FROM Type")
     LiveData<List<Type>> getAll();
 
-    @Query("SELECT * FROM Type where name=:name")
-    Type findByName(String name);
+    @Query("SELECT * FROM Type where groupId=:id")
+    Type findByGroup(int id);
 }

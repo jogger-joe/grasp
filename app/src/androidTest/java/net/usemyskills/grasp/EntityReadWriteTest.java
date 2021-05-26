@@ -7,12 +7,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
-import net.usemyskills.grasp.persistence.dao.DataContainerDao;
-import net.usemyskills.grasp.persistence.dao.DataDao;
+import net.usemyskills.grasp.persistence.dao.RecordDao;
 import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
-import net.usemyskills.grasp.persistence.entity.Data;
-import net.usemyskills.grasp.persistence.entity.DataContainer;
 import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
@@ -32,7 +29,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class EntityReadWriteTest {
     private TagDao tagDao;
     private TypeDao typeDao;
-    private DataDao dataDao;
+    private RecordDao dataDao;
     private DataContainerDao dataContainerDao;
     private AppDatabase db;
 

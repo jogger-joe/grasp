@@ -10,11 +10,12 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import net.usemyskills.grasp.persistence.converter.DateConverter;
-import net.usemyskills.grasp.persistence.dao.DataContainerDao;
-import net.usemyskills.grasp.persistence.dao.DataDao;
+import net.usemyskills.grasp.persistence.dao.RecordDao;
+import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
 import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
-import net.usemyskills.grasp.persistence.entity.Data;
+import net.usemyskills.grasp.persistence.entity.RecordGroup;
+import net.usemyskills.grasp.persistence.entity.Record;
 import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
@@ -24,13 +25,13 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Data.class, Tag.class, Type.class}, version = 1)
+@Database(entities = {RecordGroup.class, Record.class, Tag.class, Type.class}, version = 1)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract DataContainerDao getDataContainerDao();
     public abstract TagDao getTagDao();
     public abstract TypeDao getTypeDao();
-    public abstract DataDao getDataDao();
+    public abstract RecordDao getRecordDao();
+    public abstract RecordGroupDao getRecordGroupDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -59,21 +60,26 @@ public abstract class AppDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(() -> {
                 TagDao tagDao = INSTANCE.getTagDao();
                 TypeDao typeDao = INSTANCE.getTypeDao();
-                DataDao dataDao = INSTANCE.getDataDao();
+                RecordDao recordDao = INSTANCE.getRecordDao();
+                RecordGroupDao recordGroupDaoDao = INSTANCE.getRecordGroupDao();
+
+                recordGroupDaoDao.insert(new RecordGroup(1,"Sports", "all sport activities", 0, ""));
+                recordGroupDaoDao.insert(new RecordGroup(2,"Weight", "tracking weight", 0, ""));
 
                 Type[] types = {
-                    new Type(1, "Burpee Max", "Maximum Burpees in 5min", "x"),
-                    new Type(2, "Aphrodite", "Multiple Exercises 1", "Min"),
-                    new Type(3, "Hades", "Multiple Exercises 2", "Min"),
-                    new Type(4, "12 Min Run", "Maximum Distance in 12 Minutes", "Km")
+                    new Type(1, "Burpee Max", "Maximum Burpees in 5min","", "x"),
+                    new Type(2, "Squat Max", "Maximum Squats in 5min","", "x"),
+                    new Type(3, "Aphrodite", "Multiple Exercises 1", "","Min"),
+                    new Type(4, "Hades", "Multiple Exercises 2", "","Min"),
+                    new Type(5, "12 Min Run", "Maximum Distance in 12 Minutes","", "Km")
                 };
                 for (Type type : types) {
                     typeDao.insert(type);
                 }
 
                 Tag[] tags = {
-                    new Tag(1, "Easy", ""),
-                    new Tag(2, "Hard", "")
+                    new Tag(1, "Easy", "", 1),
+                    new Tag(2, "Hard", "", 1)
                 };
 
                 for (Tag tag : tags) {
@@ -89,7 +95,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     int rndTagId = rnd.nextInt(tags.length);
                     int rndValue = rnd.nextInt(200);
                     Date rndDate = new GregorianCalendar(rnd.nextInt(20)+2000, rnd.nextInt(12), rnd.nextInt(29)).getTime();
-                    dataDao.insert(new Data(rndTypeId+1, rndTagId+1, rndDate, rndValue));
+                    recordDao.insert(new Record(rndTypeId+1, 1, rndDate, rndValue));
                 }
 
             });

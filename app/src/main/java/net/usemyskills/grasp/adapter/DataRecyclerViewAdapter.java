@@ -2,7 +2,6 @@ package net.usemyskills.grasp.adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -10,7 +9,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import net.usemyskills.grasp.databinding.FragmentListItemBinding;
-import net.usemyskills.grasp.persistence.entity.DataContainer;
 
 import java.util.ArrayList;
 import java.util.List;

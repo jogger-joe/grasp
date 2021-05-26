@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import net.usemyskills.grasp.exceptions.ModelValidationException;
-import net.usemyskills.grasp.persistence.entity.Data;
 
 import java.util.Date;
 

@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import net.usemyskills.grasp.persistence.entity.Data;
-import net.usemyskills.grasp.persistence.entity.DataContainer;
 import net.usemyskills.grasp.persistence.repository.DataContainerRepository;
 import net.usemyskills.grasp.persistence.repository.DataRepository;
 
