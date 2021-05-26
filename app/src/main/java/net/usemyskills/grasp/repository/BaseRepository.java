@@ -1,4 +1,4 @@
-package net.usemyskills.grasp.persistence.repository;
+package net.usemyskills.grasp.repository;
 
 import android.app.Application;
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FullRecord {
     @Embedded
-    private Record record;
+    public Record record;
 
     @Relation(
             parentColumn = "recordId",
@@ -19,45 +19,13 @@ public class FullRecord {
 
     @Relation(
             parentColumn = "typeId",
-            entityColumn = "id"
+            entityColumn = "tagId"
     )
     public Type type;
 
     @Relation(
             parentColumn = "groupId",
-            entityColumn = "id"
+            entityColumn = "tagId"
     )
     public RecordGroup recordGroup;
-
-    public Record getRecord() {
-        return record;
-    }
-
-    public void setRecord(Record record) {
-        this.record = record;
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public RecordGroup getGroup() {
-        return recordGroup;
-    }
-
-    public void setGroup(RecordGroup recordGroup) {
-        this.recordGroup = recordGroup;
-    }
 }

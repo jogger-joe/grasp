@@ -5,28 +5,20 @@ import androidx.room.Ignore;
 
 @Entity
 public class RecordGroup extends Tag {
-    private String icon;
+    public String icon;
 
-    public RecordGroup(int id, String name, String description, int groupId, String icon) {
-        super(id, name, description, groupId);
+    public RecordGroup(long tagId, String name, String description, long groupId, String icon) {
+        super(tagId, name, description, groupId);
         this.icon = icon;
     }
 
     @Ignore
-    public RecordGroup(String name, String description, int groupId, String icon) {
+    public RecordGroup(String name, String description, long groupId, String icon) {
         this(0, name, description, groupId, icon);
     }
 
     @Ignore
-    public RecordGroup(String name, int groupId, String icon) {
+    public RecordGroup(String name, long groupId, String icon) {
         this(name, "", groupId, icon);
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 }
