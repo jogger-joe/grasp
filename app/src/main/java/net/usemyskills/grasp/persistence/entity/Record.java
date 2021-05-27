@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 public class Record extends BaseEntity {
-
     @PrimaryKey(autoGenerate = true)
     public long recordId;
     public long typeId;

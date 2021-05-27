@@ -5,8 +5,8 @@ import androidx.room.Ignore;
 
 @Entity
 public class Type extends Tag {
-    private String format;
-    private String suffix;
+    public String format;
+    public String suffix;
 
     public Type(long tagId, String name, String description, long groupId, String format, String suffix) {
         super(tagId, name, description, groupId);
@@ -27,22 +27,6 @@ public class Type extends Tag {
     @Ignore
     public Type(String name) {
         this(name, "");
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
     }
 }
 

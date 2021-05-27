@@ -14,9 +14,8 @@ import java.util.List;
 public interface RecordDao extends BaseDao<Record> {
     @Transaction
     @Query("SELECT * FROM Record ORDER BY date DESC")
-    LiveData<List<FullRecord>> getAllFull();
+    LiveData<List<FullRecord>> getAll();
 
-    @Transaction
-    @Query("SELECT * FROM Record ORDER BY date DESC")
-    LiveData<List<Record>> getAll();
+    @Query("SELECT * FROM Record where groupId=:id")
+    LiveData<List<FullRecord>> findByGroup(int id);
 }

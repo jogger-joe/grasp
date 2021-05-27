@@ -11,17 +11,17 @@ import net.usemyskills.grasp.persistence.entity.FullRecord;
 
 import java.util.List;
 
-public class RecordRecyclerViewAdapter extends BaseRecyclerViewAdapter<FullRecord> {
+public class FullRecordRecyclerViewAdapter extends BaseRecyclerViewAdapter<FullRecord> {
 
-    public RecordRecyclerViewAdapter(List<FullRecord> values, OnItemClickListener<FullRecord> onClickSelectableListener) {
+    public FullRecordRecyclerViewAdapter(List<FullRecord> values, OnItemClickListener<FullRecord> onClickSelectableListener) {
         super(values, onClickSelectableListener);
     }
 
     @Override
-    public RecordRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FullRecordRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.record_list_item, parent, false);
-        return new RecordRecyclerViewAdapter.ViewHolder(view, this.onClickSelectableListener);
+        return new FullRecordRecyclerViewAdapter.ViewHolder(view, this.onClickSelectableListener);
     }
 
     public class ViewHolder extends BaseRecyclerViewAdapter<FullRecord>.ViewHolder {
@@ -37,10 +37,10 @@ public class RecordRecyclerViewAdapter extends BaseRecyclerViewAdapter<FullRecor
         @Override
         protected void attachView(View view) {
             super.attachView(view);
-            this.mDateView = (TextView)view.findViewById(R.id.dateView);
-            this.mTypeView = (TextView)view.findViewById(R.id.typeView);
-            this.mTagsView = (TextView)view.findViewById(R.id.tagsView);
-            this.mValueView = (TextView)view.findViewById(R.id.valueView);
+            this.mDateView = view.findViewById(R.id.dateView);
+            this.mTypeView = view.findViewById(R.id.typeView);
+            this.mTagsView = view.findViewById(R.id.tagsView);
+            this.mValueView = view.findViewById(R.id.valueView);
         }
 
         @Override

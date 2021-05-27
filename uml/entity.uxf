@@ -9,10 +9,10 @@
       <w>140</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>recordGroup
+    <panel_attributes>Group
 --
-- name: string
-- icon: string</panel_attributes>
+- groupId: int
+- icon: String</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -23,9 +23,9 @@
       <w>140</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>record
+    <panel_attributes>Record
 --
-- date: date
+- date: Date
 - value: double</panel_attributes>
     <additional_attributes/>
   </element>
@@ -37,12 +37,11 @@
       <w>140</w>
       <h>110</h>
     </coordinates>
-    <panel_attributes>type
+    <panel_attributes>Type
 --
-- name: string
-- format: string
-- suffix: string
-- description: text</panel_attributes>
+- typeId: String
+- format: String
+- suffix: String</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -53,10 +52,11 @@
       <w>140</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>tag
+    <panel_attributes>Tag
 --
-- name: string
-- description: text</panel_attributes>
+- tagId: int
+- name: String
+- description: String</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -128,5 +128,29 @@ m1=0..1
 m2=n
 groupTags</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;130.0;490.0;130.0;490.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>840</x>
+      <y>250</y>
+      <w>90</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>300</y>
+      <w>600</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>580.0;100.0;580.0;150.0;10.0;150.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

@@ -22,10 +22,4 @@ public class FullRecord {
             entityColumn = "tagId"
     )
     public Type type;
-
-    @Relation(
-            parentColumn = "groupId",
-            entityColumn = "tagId"
-    )
-    public RecordGroup recordGroup;
 }

@@ -2,17 +2,25 @@ package net.usemyskills.grasp.repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import net.usemyskills.grasp.persistence.AppDatabase;
-import net.usemyskills.grasp.persistence.dao.BaseDao;
+import net.usemyskills.grasp.persistence.dao.RecordDao;
+import net.usemyskills.grasp.persistence.entity.FullRecord;
 import net.usemyskills.grasp.persistence.entity.Record;
 
-public class RecordRepository extends BaseRepository<Record>{
+import java.util.List;
+
+public class RecordRepository {
+    protected final RecordDao dao;
+    protected final LiveData<List<FullRecord>> liveElements;
+
     public RecordRepository(Application application) {
-        super(application);
+        AppDatabase db = AppDatabase.getDatabase(application);
+        this.dao = db.getRecordDao();
+        this.liveElements = dao.getAll();
     }
 
-    @Override
-    protected BaseDao<Record> getDao(AppDatabase db) {
-        return db.getRecordDao();
-    }
+    public LiveData<List<FullRecord>> getAll() { return this.liveElements; }
+    public long insert(Record element) { return this.dao.insert(element); }
 }

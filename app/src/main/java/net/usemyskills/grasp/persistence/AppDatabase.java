@@ -9,6 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.persistence.converter.DateConverter;
 import net.usemyskills.grasp.persistence.dao.RecordDao;
 import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
@@ -16,6 +17,7 @@ import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.Record;
+import net.usemyskills.grasp.persistence.entity.RecordTags;
 import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
@@ -25,7 +27,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {RecordGroup.class, Record.class, Tag.class, Type.class}, version = 1)
+@Database(entities = {RecordGroup.class, Record.class, RecordTags.class, Tag.class, Type.class}, version = 1)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TagDao getTagDao();
@@ -63,15 +65,17 @@ public abstract class AppDatabase extends RoomDatabase {
                 RecordDao recordDao = INSTANCE.getRecordDao();
                 RecordGroupDao recordGroupDaoDao = INSTANCE.getRecordGroupDao();
 
-                recordGroupDaoDao.insert(new RecordGroup(1,"Sports", "all sport activities", 0, ""));
-                recordGroupDaoDao.insert(new RecordGroup(2,"Weight", "tracking weight", 0, ""));
+                recordGroupDaoDao.insert(new RecordGroup(1,"Sport", "", 0, R.drawable.ic_run));
+                recordGroupDaoDao.insert(new RecordGroup(2,"Weight", "", 0, R.drawable.ic_person));
+                recordGroupDaoDao.insert(new RecordGroup(3,"Health", "", 0, R.drawable.ic_heart));
+                recordGroupDaoDao.insert(new RecordGroup(4,"Misc", "", 0, R.drawable.ic_default));
 
                 Type[] types = {
-                    new Type(1, "Burpee Max", "Maximum Burpees in 5min","", "x"),
-                    new Type(2, "Squat Max", "Maximum Squats in 5min","", "x"),
-                    new Type(3, "Aphrodite", "Multiple Exercises 1", "","Min"),
-                    new Type(4, "Hades", "Multiple Exercises 2", "","Min"),
-                    new Type(5, "12 Min Run", "Maximum Distance in 12 Minutes","", "Km")
+                    new Type(1, "Burpee Max", "Maximum Burpees in 5min",1,"", "x"),
+                    new Type(2, "Squat Max", "Maximum Squats in 5min",1,"", "x"),
+                    new Type(3, "Aphrodite", "Multiple Exercises 1", 1,"","Min"),
+                    new Type(4, "Hades", "Multiple Exercises 2", 1,"","Min"),
+                    new Type(5, "12 Min Run", "Maximum Distance in 12 Minutes",1,"", "Km")
                 };
                 for (Type type : types) {
                     typeDao.insert(type);

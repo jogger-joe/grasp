@@ -2,17 +2,27 @@ package net.usemyskills.grasp.repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.BaseDao;
+import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
+import net.usemyskills.grasp.persistence.dao.TagDao;
+import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
-public class TagRepository extends BaseRepository<Tag> {
+import java.util.List;
+
+public class TagRepository {
+    protected final TagDao dao;
+    protected final LiveData<List<Tag>> liveElements;
+
     public TagRepository(Application application) {
-        super(application);
+        AppDatabase db = AppDatabase.getDatabase(application);
+        this.dao = db.getTagDao();
+        this.liveElements = dao.getAll();
     }
 
-    @Override
-    protected BaseDao<Tag> getDao(AppDatabase db) {
-        return db.getTagDao();
-    }
+    public LiveData<List<Tag>> getAll() { return this.liveElements; }
+    public long insert(Tag element) { return this.dao.insert(element); }
 }

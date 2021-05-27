@@ -28,9 +28,7 @@ public class ListFragment<T extends BaseEntity> extends Fragment {
     }
 
     public ListFragment(BaseViewModel<T> viewModel, BaseRecyclerViewAdapter<T> adapter) {
-        this.viewModel = viewModel;
-        this.adapter = adapter;
-        this.mColumnCount = 1;
+        this(viewModel, adapter, 1);
     }
 
     @Override

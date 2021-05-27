@@ -2,17 +2,24 @@ package net.usemyskills.grasp.repository;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import net.usemyskills.grasp.persistence.AppDatabase;
-import net.usemyskills.grasp.persistence.dao.BaseDao;
+import net.usemyskills.grasp.persistence.dao.TypeDao;
 import net.usemyskills.grasp.persistence.entity.Type;
 
-public class TypeRepository extends BaseRepository<Type>{
+import java.util.List;
+
+public class TypeRepository {
+     protected final TypeDao dao;
+    protected final LiveData<List<Type>> liveElements;
+
     public TypeRepository(Application application) {
-        super(application);
+        AppDatabase db = AppDatabase.getDatabase(application);
+        this.dao = db.getTypeDao();
+        this.liveElements = dao.getAll();
     }
 
-    @Override
-    protected BaseDao<Type> getDao(AppDatabase db) {
-        return db.getTypeDao();
-    }
+    public LiveData<List<Type>> getAll() { return this.liveElements; }
+    public long insert(Type element) { return this.dao.insert(element); }
 }

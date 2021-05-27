@@ -1,6 +1,5 @@
 package net.usemyskills.grasp.persistence.entity;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

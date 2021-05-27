@@ -44,11 +44,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
             this.onClickTagListener = onClickTagListener;
         }
 
-        protected void attachView(View view) {
-
-        }
-
-        ;
+        protected void attachView(View view) {}
 
         public void bind(T item) {
             this.item = item;
