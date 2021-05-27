@@ -30,7 +30,7 @@ public class RecordGroupRecyclerViewAdapter extends BaseRecyclerViewAdapter<Reco
     @Override
     public RecordGroupRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.record_group_list_item, parent, false);
+                .inflate(R.layout.fragment_record_group_list_item, parent, false);
         return new RecordGroupRecyclerViewAdapter.ViewHolder(view, this.onClickSelectableListener);
     }
 

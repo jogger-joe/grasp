@@ -13,23 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.BaseRecyclerViewAdapter;
-import net.usemyskills.grasp.persistence.entity.BaseEntity;
 import net.usemyskills.grasp.viewmodel.BaseViewModel;
 
-public class ListFragment<T extends BaseEntity> extends Fragment {
-    private final BaseViewModel<T> viewModel;
-    private final BaseRecyclerViewAdapter<T> adapter;
-    private final int mColumnCount;
-
-    public ListFragment(BaseViewModel<T> viewModel, BaseRecyclerViewAdapter<T> adapter, int mColumnCount) {
-        this.viewModel = viewModel;
-        this.adapter = adapter;
-        this.mColumnCount = mColumnCount;
-    }
-
-    public ListFragment(BaseViewModel<T> viewModel, BaseRecyclerViewAdapter<T> adapter) {
-        this(viewModel, adapter, 1);
-    }
+public abstract class BaseListFragment<T> extends Fragment {
+    protected BaseViewModel<T> viewModel;
+    protected BaseRecyclerViewAdapter<T> adapter;
+    protected int mColumnCount = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +28,7 @@ public class ListFragment<T extends BaseEntity> extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.base_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_container, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -50,7 +39,7 @@ public class ListFragment<T extends BaseEntity> extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(this.adapter);
-            this.viewModel.getEntities().observe(this, this.adapter::setValues);
+            this.viewModel.getEntities().observe(this.getViewLifecycleOwner(), this.adapter::setValues);
         }
         return view;
     }

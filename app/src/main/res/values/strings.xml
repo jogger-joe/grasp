@@ -13,4 +13,6 @@
     <string name="placeholder_date">22.11.1983</string>
     <string name="placeholder_value">123.45</string>
     <string name="icon">Icon</string>
+    <string name="record_groups">Gruppen</string>
+    <string name="records">Einträge</string>
 </resources>

@@ -6,14 +6,14 @@ import androidx.room.Relation;
 
 import java.util.List;
 
-public class FullRecord {
+public class RecordWithTypeAndTags {
     @Embedded
     public Record record;
 
     @Relation(
             parentColumn = "recordId",
             entityColumn = "tagId",
-            associateBy = @Junction(RecordTags.class)
+            associateBy = @Junction(RecordTagsReference.class)
     )
     public List<Tag> tags;
 

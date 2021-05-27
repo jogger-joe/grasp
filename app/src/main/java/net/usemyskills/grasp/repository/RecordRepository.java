@@ -6,21 +6,55 @@ import androidx.lifecycle.LiveData;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.RecordDao;
-import net.usemyskills.grasp.persistence.entity.FullRecord;
+import net.usemyskills.grasp.persistence.dao.RecordTagsReferenceDao;
+import net.usemyskills.grasp.persistence.entity.RecordTagsReference;
+import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.persistence.entity.Record;
+import net.usemyskills.grasp.persistence.entity.Tag;
 
 import java.util.List;
 
-public class RecordRepository {
-    protected final RecordDao dao;
-    protected final LiveData<List<FullRecord>> liveElements;
+public class RecordRepository implements CrudRepositoryInterface<RecordWithTypeAndTags> {
+    protected final RecordDao recordDao;
+    protected final RecordTagsReferenceDao recordTagsReferenceDao;
+    protected final LiveData<List<RecordWithTypeAndTags>> liveElements;
 
     public RecordRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
-        this.dao = db.getRecordDao();
-        this.liveElements = dao.getAll();
+        this.recordDao = db.getRecordDao();
+        this.recordTagsReferenceDao = db.getRecordTagsReferenceDao();
+        this.liveElements = recordDao.getAll();
     }
 
-    public LiveData<List<FullRecord>> getAll() { return this.liveElements; }
-    public long insert(Record element) { return this.dao.insert(element); }
+    public LiveData<List<RecordWithTypeAndTags>> getAll() {
+        return this.liveElements;
+    }
+
+    @Override
+    public long insert(RecordWithTypeAndTags element) {
+        for (Tag tag: element.tags) {
+            this.recordTagsReferenceDao.insert(new RecordTagsReference(element.record.recordId, tag.tagId));
+        }
+        return this.insert(element.record);
+    }
+
+    @Override
+    public void update(RecordWithTypeAndTags element) {
+        for (Tag tag: element.tags) {
+            this.recordTagsReferenceDao.insert(new RecordTagsReference(element.record.recordId, tag.tagId));
+        }
+        this.recordDao.update(element.record);
+    }
+
+    @Override
+    public void delete(RecordWithTypeAndTags element) {
+        for (Tag tag: element.tags) {
+            this.recordTagsReferenceDao.delete(new RecordTagsReference(element.record.recordId, tag.tagId));
+        }
+        this.recordDao.delete(element.record);
+    }
+
+    public long insert(Record element) {
+        return this.recordDao.insert(element);
+    }
 }

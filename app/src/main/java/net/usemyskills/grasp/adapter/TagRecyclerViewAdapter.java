@@ -21,7 +21,7 @@ public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapt
     @Override
     public TagRecyclerViewAdapter<T>.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.tag_list_item, parent, false);
+                .inflate(R.layout.fragment_tag_list_item, parent, false);
         return new TagRecyclerViewAdapter<T>.ViewHolder(view, this.onClickSelectableListener);
     }
 

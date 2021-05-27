@@ -13,11 +13,12 @@ import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.persistence.converter.DateConverter;
 import net.usemyskills.grasp.persistence.dao.RecordDao;
 import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
+import net.usemyskills.grasp.persistence.dao.RecordTagsReferenceDao;
 import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.Record;
-import net.usemyskills.grasp.persistence.entity.RecordTags;
+import net.usemyskills.grasp.persistence.entity.RecordTagsReference;
 import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
@@ -27,13 +28,14 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {RecordGroup.class, Record.class, RecordTags.class, Tag.class, Type.class}, version = 1)
+@Database(entities = {RecordGroup.class, Record.class, RecordTagsReference.class, Tag.class, Type.class}, version = 1)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TagDao getTagDao();
     public abstract TypeDao getTypeDao();
     public abstract RecordDao getRecordDao();
     public abstract RecordGroupDao getRecordGroupDao();
+    public abstract RecordTagsReferenceDao getRecordTagsReferenceDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

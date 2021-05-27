@@ -10,7 +10,7 @@ import net.usemyskills.grasp.persistence.entity.RecordGroup;
 
 import java.util.List;
 
-public class RecordGroupRepository {
+public class RecordGroupRepository implements CrudRepositoryInterface<RecordGroup> {
     protected final RecordGroupDao dao;
     protected final LiveData<List<RecordGroup>> liveElements;
 
@@ -20,6 +20,23 @@ public class RecordGroupRepository {
         this.liveElements = dao.getAll();
     }
 
-    public LiveData<List<RecordGroup>> getAll() { return this.liveElements; }
-    public long insert(RecordGroup element) { return this.dao.insert(element); }
+    @Override
+    public LiveData<List<RecordGroup>> getAll() {
+        return this.liveElements;
+    }
+
+    @Override
+    public long insert(RecordGroup element) {
+        return this.dao.insert(element);
+    }
+
+    @Override
+    public void update(RecordGroup element) {
+        this.dao.update(element);
+    }
+
+    @Override
+    public void delete(RecordGroup element) {
+        this.dao.delete(element);
+    }
 }

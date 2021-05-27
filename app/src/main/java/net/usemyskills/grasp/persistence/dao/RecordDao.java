@@ -5,7 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import net.usemyskills.grasp.persistence.entity.FullRecord;
+import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.persistence.entity.Record;
 
 import java.util.List;
@@ -14,8 +14,8 @@ import java.util.List;
 public interface RecordDao extends BaseDao<Record> {
     @Transaction
     @Query("SELECT * FROM Record ORDER BY date DESC")
-    LiveData<List<FullRecord>> getAll();
+    LiveData<List<RecordWithTypeAndTags>> getAll();
 
     @Query("SELECT * FROM Record where groupId=:id")
-    LiveData<List<FullRecord>> findByGroup(int id);
+    LiveData<List<RecordWithTypeAndTags>> findByGroup(int id);
 }

@@ -10,8 +10,8 @@ import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
 
-public class TypeRepository {
-     protected final TypeDao dao;
+public class TypeRepository implements CrudRepositoryInterface<Type> {
+    protected final TypeDao dao;
     protected final LiveData<List<Type>> liveElements;
 
     public TypeRepository(Application application) {
@@ -20,6 +20,23 @@ public class TypeRepository {
         this.liveElements = dao.getAll();
     }
 
-    public LiveData<List<Type>> getAll() { return this.liveElements; }
-    public long insert(Type element) { return this.dao.insert(element); }
+    @Override
+    public LiveData<List<Type>> getAll() {
+        return this.liveElements;
+    }
+
+    @Override
+    public long insert(Type element) {
+        return this.dao.insert(element);
+    }
+
+    @Override
+    public void update(Type element) {
+        this.dao.update(element);
+    }
+
+    @Override
+    public void delete(Type element) {
+        this.dao.delete(element);
+    }
 }
