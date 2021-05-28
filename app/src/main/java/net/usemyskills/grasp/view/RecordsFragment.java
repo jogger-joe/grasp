@@ -1,10 +1,15 @@
 package net.usemyskills.grasp.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
+import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.RecordWithTypeAndTagsRecordRecyclerViewAdapter;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
@@ -18,17 +23,27 @@ public class RecordsFragment extends BaseListFragment<RecordWithTypeAndTags> imp
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.viewModel = this.getDefaultViewModelProviderFactory().create(RecordViewModel.class);
         this.adapter = new RecordWithTypeAndTagsRecordRecyclerViewAdapter(new ArrayList<>(), this);
         this.mColumnCount = 1;
-        this.recordGroupViewModel = this.getDefaultViewModelProviderFactory().create(RecordGroupViewModel.class);
-//        this.recordGroupViewModel.getSelectedEntity().observe(this.getViewLifecycleOwner(), recordGroup -> this.viewModel);
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onClickItem(RecordWithTypeAndTags item) {
 
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d("GRASP_LOG","onActivityCreated at " + this.getClass().toString());
+        ViewModelProvider viewModelProvider = new ViewModelProvider(this.getActivity());
+        this.viewModel = viewModelProvider.get(RecordViewModel.class);
+        this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
+        this.recordGroupViewModel.getSelectedEntity().observe(this.getViewLifecycleOwner(), recordGroup -> {
+            Log.d("GRASP_LOG","getSelectedEntity observe triggered with " + recordGroup.getClass().toString());
+            ((RecordViewModel) this.viewModel).loadRecordsByGroup(recordGroup.tagId);
+            this.getActivity().setTitle(R.string.records + ": " + recordGroup.name);
+        });
+        super.onActivityCreated(savedInstanceState);
     }
 }

@@ -30,6 +30,10 @@ public class RecordRepository implements CrudRepositoryInterface<RecordWithTypeA
         return this.liveElements;
     }
 
+    public LiveData<List<RecordWithTypeAndTags>> getAllOfGroup(long groupId) {
+        return this.recordDao.findByGroup(groupId);
+    }
+
     @Override
     public long insert(RecordWithTypeAndTags element) {
         for (Tag tag: element.tags) {

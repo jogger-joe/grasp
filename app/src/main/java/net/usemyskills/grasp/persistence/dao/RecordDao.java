@@ -17,5 +17,5 @@ public interface RecordDao extends BaseDao<Record> {
     LiveData<List<RecordWithTypeAndTags>> getAll();
 
     @Query("SELECT * FROM Record where groupId=:id")
-    LiveData<List<RecordWithTypeAndTags>> findByGroup(int id);
+    LiveData<List<RecordWithTypeAndTags>> findByGroup(long id);
 }
