@@ -30,6 +30,7 @@ public abstract class BaseListFragment<T> extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
         View view = inflater.inflate(R.layout.fragment_list_container, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -47,11 +48,14 @@ public abstract class BaseListFragment<T> extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
         this.viewModel.getEntities().observe(this.getViewLifecycleOwner(), values -> {
             Log.d("GRASP_LOG","getEntities observe triggered with " + values.toString());
             this.adapter.setValues(values);
             this.adapter.notifyDataSetChanged();
         });
+        this.viewModel.setOwner(this.requireActivity());
+        this.viewModel.loadAll();
         super.onActivityCreated(savedInstanceState);
     }
 

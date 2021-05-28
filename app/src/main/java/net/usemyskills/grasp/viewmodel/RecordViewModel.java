@@ -11,11 +11,7 @@ public class RecordViewModel extends BaseViewModel<RecordWithTypeAndTags> {
     }
 
     public void loadRecordsByGroup(long groupId) {
-//        if (groupId == 0) {
-//            this.entities.postValue(((RecordRepository)this.repository).getAll());
-//        } else {
-//            this.entities.postValue(((RecordRepository)this.repository).getAllOfGroup(groupId));
-//        }
+        ((RecordRepository)this.repository).getAllOfGroup(groupId).observe(this.owner, recordWithTypeAndTags -> this.entities.postValue(recordWithTypeAndTags));
     }
 }
 

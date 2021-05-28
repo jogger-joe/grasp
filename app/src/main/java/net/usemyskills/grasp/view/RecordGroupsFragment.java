@@ -37,7 +37,7 @@ public class RecordGroupsFragment extends BaseListFragment<RecordGroup> implemen
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onActivityCreated at " + this.getClass().toString());
-        ViewModelProvider viewModelProvider = new ViewModelProvider(getActivity());
+        ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.viewModel = viewModelProvider.get(RecordGroupViewModel.class);
         super.onActivityCreated(savedInstanceState);
     }

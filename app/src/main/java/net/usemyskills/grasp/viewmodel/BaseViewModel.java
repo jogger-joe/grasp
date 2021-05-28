@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -16,6 +17,7 @@ public class BaseViewModel<T> extends AndroidViewModel {
     protected final CrudRepositoryInterface<T> repository;
     protected MutableLiveData<List<T>> entities;
     private final MutableLiveData<T> selectedEntity;
+    protected LifecycleOwner owner;
 
     public BaseViewModel(Application application, CrudRepositoryInterface<T> repository) {
         super(application);
@@ -23,6 +25,14 @@ public class BaseViewModel<T> extends AndroidViewModel {
         this.selectedEntity = new MutableLiveData<>();
         this.entities = new MutableLiveData<>();
         Log.d("GRASP_LOG",this.getClass().toString() + " created with repository " + repository.getClass().toString());
+    }
+
+    public void loadAll() {
+        this.repository.getAll().observe(this.owner, entities -> this.entities.postValue(entities));
+    }
+
+    public void setOwner(LifecycleOwner owner) {
+        this.owner = owner;
     }
 
     public void insert(T data) {

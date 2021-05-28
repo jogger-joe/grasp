@@ -35,7 +35,7 @@ public class RecordsFragment extends BaseListFragment<RecordWithTypeAndTags> imp
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onActivityCreated at " + this.getClass().toString());
-        ViewModelProvider viewModelProvider = new ViewModelProvider(this.getActivity());
+        ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.viewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
         this.recordGroupViewModel.getSelectedEntity().observe(this.getViewLifecycleOwner(), recordGroup -> {
