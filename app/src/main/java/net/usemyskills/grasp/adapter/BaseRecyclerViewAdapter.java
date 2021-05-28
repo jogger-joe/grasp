@@ -19,7 +19,6 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
 
     public void setValues(List<T> values) {
         this.mValues = values;
-        this.notifyDataSetChanged();
     }
 
     @Override

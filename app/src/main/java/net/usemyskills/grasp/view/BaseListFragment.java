@@ -2,13 +2,13 @@ package net.usemyskills.grasp.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.BaseRecyclerViewAdapter;
 import net.usemyskills.grasp.viewmodel.BaseViewModel;
-import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
-import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
 public abstract class BaseListFragment<T> extends Fragment {
     protected BaseViewModel<T> viewModel;
@@ -49,7 +47,11 @@ public abstract class BaseListFragment<T> extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        this.viewModel.getEntities().observe(this.getViewLifecycleOwner(), this.adapter::setValues);
+        this.viewModel.getEntities().observe(this.getViewLifecycleOwner(), values -> {
+            Log.d("GRASP_LOG","getEntities observe triggered with " + values.toString());
+            this.adapter.setValues(values);
+            this.adapter.notifyDataSetChanged();
+        });
         super.onActivityCreated(savedInstanceState);
     }
 

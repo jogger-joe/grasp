@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.RecordWithTypeAndTagsRecordRecyclerViewAdapter;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
@@ -42,7 +41,6 @@ public class RecordsFragment extends BaseListFragment<RecordWithTypeAndTags> imp
         this.recordGroupViewModel.getSelectedEntity().observe(this.getViewLifecycleOwner(), recordGroup -> {
             Log.d("GRASP_LOG","getSelectedEntity observe triggered with " + recordGroup.getClass().toString());
             ((RecordViewModel) this.viewModel).loadRecordsByGroup(recordGroup.tagId);
-            this.getActivity().setTitle(R.string.records + ": " + recordGroup.name);
         });
         super.onActivityCreated(savedInstanceState);
     }

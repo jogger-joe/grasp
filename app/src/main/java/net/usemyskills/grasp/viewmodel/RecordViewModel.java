@@ -11,11 +11,11 @@ public class RecordViewModel extends BaseViewModel<RecordWithTypeAndTags> {
     }
 
     public void loadRecordsByGroup(long groupId) {
-        if (groupId == 0) {
-            this.entities = ((RecordRepository)this.repository).getAll();
-        } else {
-            this.entities = ((RecordRepository)this.repository).getAllOfGroup(groupId);
-        }
+//        if (groupId == 0) {
+//            this.entities.postValue(((RecordRepository)this.repository).getAll());
+//        } else {
+//            this.entities.postValue(((RecordRepository)this.repository).getAllOfGroup(groupId));
+//        }
     }
 }
 

@@ -14,13 +14,14 @@ import java.util.List;
 public class BaseViewModel<T> extends AndroidViewModel {
 
     protected final CrudRepositoryInterface<T> repository;
-    protected LiveData<List<T>> entities;
+    protected MutableLiveData<List<T>> entities;
     private final MutableLiveData<T> selectedEntity;
 
     public BaseViewModel(Application application, CrudRepositoryInterface<T> repository) {
         super(application);
         this.repository = repository;
         this.selectedEntity = new MutableLiveData<>();
+        this.entities = new MutableLiveData<>();
         Log.d("GRASP_LOG",this.getClass().toString() + " created with repository " + repository.getClass().toString());
     }
 
@@ -29,10 +30,6 @@ public class BaseViewModel<T> extends AndroidViewModel {
     }
 
     public LiveData<List<T>> getEntities() {
-        if (this.entities == null) {
-            Log.d("GRASP_LOG","entities empty, initializing");
-            this.entities = this.repository.getAll();
-        }
         return this.entities;
     }
 
