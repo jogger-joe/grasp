@@ -21,4 +21,9 @@ public class RecordGroup extends Tag {
     public RecordGroup(String name, int iconId) {
         this(name, "", iconId);
     }
+
+    @Ignore
+    public RecordGroup() {
+        super();
+    }
 }

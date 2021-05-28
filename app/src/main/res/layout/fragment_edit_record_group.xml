@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/big_padding"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/record_group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:textSize="@dimen/big_font"
+        android:inputType="text"
+        android:autofillHints=""
+        android:hint="@string/record_group_name"/>
+
+    <EditText
+        android:id="@+id/record_group_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/big_padding"
+        android:textSize="@dimen/big_font"
+        android:autofillHints=""
+        android:inputType="number"
+        android:hint="@string/record_group_icon"/>
+
+    <Button
+        android:id="@+id/button_record_group_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_save" />
+</LinearLayout>

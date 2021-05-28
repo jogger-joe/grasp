@@ -7,14 +7,13 @@ import android.widget.TextView;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.listener.OnItemClickListener;
-import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
 import java.util.List;
 
-public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapter<RecordGroup> {
+public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapter<T> {
 
-    public TagRecyclerViewAdapter(List<RecordGroup> values, OnItemClickListener<RecordGroup> onClickSelectableListener) {
+    public TagRecyclerViewAdapter(List<T> values, OnItemClickListener<T> onClickSelectableListener) {
         super(values, onClickSelectableListener);
     }
 
@@ -25,10 +24,10 @@ public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapt
         return new TagRecyclerViewAdapter<T>.ViewHolder(view, this.onClickSelectableListener);
     }
 
-    public class ViewHolder extends BaseRecyclerViewAdapter<RecordGroup>.ViewHolder {
+    public class ViewHolder extends BaseRecyclerViewAdapter<T>.ViewHolder {
         public TextView mLabelView;
 
-        public ViewHolder(View view, OnItemClickListener<RecordGroup> onClickTagListener) {
+        public ViewHolder(View view, OnItemClickListener<T> onClickTagListener) {
             super(view, onClickTagListener);
         }
 
@@ -39,7 +38,7 @@ public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapt
         }
 
         @Override
-        public void bind(RecordGroup item) {
+        public void bind(T item) {
             super.bind(item);
             this.mLabelView.setText(item.name);
         }

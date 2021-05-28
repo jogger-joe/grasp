@@ -17,7 +17,7 @@ import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
 import java.util.ArrayList;
 
-public class RecordsFragment extends BaseListFragment<RecordWithTypeAndTags> implements OnItemClickListener<RecordWithTypeAndTags> {
+public class ListRecordsFragment extends BaseListFragment<RecordWithTypeAndTags> implements OnItemClickListener<RecordWithTypeAndTags> {
     protected RecordGroupViewModel recordGroupViewModel;
 
     @Override

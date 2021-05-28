@@ -28,4 +28,7 @@ public class Tag extends BaseEntity {
     public Tag(String name) {
         this(name, "");
     }
+
+    @Ignore
+    public Tag() {}
 }

@@ -9,8 +9,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import net.usemyskills.grasp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,12 +27,7 @@ public class MainActivity extends AppCompatActivity {
         this.navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         this.appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        FloatingActionButton addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(view -> this.onClickAdd());
     }
-
-    protected void onClickAdd(){}
 
     @Override
     public boolean onSupportNavigateUp() {

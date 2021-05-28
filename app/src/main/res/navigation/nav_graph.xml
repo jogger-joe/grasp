@@ -1,26 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/record_groups">
+    app:startDestination="@id/list_record_groups">
 
     <fragment
-        android:id="@+id/record_groups"
-        android:name="net.usemyskills.grasp.view.RecordGroupsFragment"
-        android:label="@string/record_groups">
+        android:id="@+id/list_record_groups"
+        android:name="net.usemyskills.grasp.view.ListRecordGroupsFragment"
+        android:label="@string/list_record_groups">
 
         <action
-            android:id="@+id/action_record_groups_to_records"
-            app:destination="@id/records" />
+            android:id="@+id/action_select_record_group"
+            app:destination="@id/list_records" />
+        <action
+            android:id="@+id/action_edit_record_group"
+            app:destination="@id/edit_record_group" />
     </fragment>
+
     <fragment
-        android:id="@+id/records"
-        android:name="net.usemyskills.grasp.view.RecordsFragment"
+        android:id="@+id/edit_record_group"
+        android:name="net.usemyskills.grasp.view.EditRecordGroupFragment"
+        android:label="@string/edit_record_group">
+
+        <action
+            android:id="@+id/action_finish_edit_record_group"
+            app:destination="@id/list_record_groups" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/list_records"
+        android:name="net.usemyskills.grasp.view.ListRecordsFragment"
         android:label="@string/records">
 
         <action
-            android:id="@+id/action_records_to_record_groups"
-            app:destination="@id/record_groups" />
+            android:id="@+id/action_edit_record"
+            app:destination="@id/edit_record" />
+    </fragment>
+    <fragment
+        android:id="@+id/edit_record"
+        android:name="net.usemyskills.grasp.view.EditRecordFragment"
+        android:label="@string/edit_record">
+
+        <action
+            android:id="@+id/action_finish_edit_record"
+            app:destination="@id/list_records" />
+
+        <action
+            android:id="@+id/action_select_tag"
+            app:destination="@id/list_tags" />
+        <action
+            android:id="@+id/action_select_type"
+            app:destination="@id/list_types" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/list_tags"
+        android:name="net.usemyskills.grasp.view.ListTagsFragment"
+        android:label="@string/tags">
+
+        <action
+            android:id="@+id/action_select_tag"
+            app:destination="@id/edit_record" />
+        <action
+            android:id="@+id/action_edit_tag"
+            app:destination="@id/edit_tag" />
+    </fragment>
+    <fragment
+        android:id="@+id/edit_tag"
+        android:name="net.usemyskills.grasp.view.EditTagFragment"
+        android:label="@string/edit_tag">
+
+        <action
+            android:id="@+id/action_finish_edit_tag"
+            app:destination="@id/list_tags" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/list_types"
+        android:name="net.usemyskills.grasp.view.ListTypesFragment"
+        android:label="@string/list_types">
+
+        <action
+            android:id="@+id/action_select_type"
+            app:destination="@id/edit_record" />
+        <action
+            android:id="@+id/action_edit_type"
+            app:destination="@id/edit_type" />
+    </fragment>
+    <fragment
+        android:id="@+id/edit_type"
+        android:name="net.usemyskills.grasp.view.EditTypeFragment"
+        android:label="@string/edit_type">
+
+        <action
+            android:id="@+id/action_finish_edit_type"
+            app:destination="@id/list_types" />
     </fragment>
 </navigation>

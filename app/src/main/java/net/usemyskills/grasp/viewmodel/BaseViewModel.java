@@ -47,6 +47,13 @@ public class BaseViewModel<T> extends AndroidViewModel {
         return selectedEntity;
     }
 
+    public T getSelectedEntityElement() throws Exception {
+        if (this.getSelectedEntity() == null || this.getSelectedEntity().getValue() == null) {
+            throw new Exception("no element selected");
+        }
+        return this.getSelectedEntity().getValue();
+    }
+
     public void setSelectedEntity(T selectedEntity) {
         Log.d("GRASP_LOG","setSelectedEntity of type " + selectedEntity.getClass().toString());
         this.selectedEntity.setValue(selectedEntity);

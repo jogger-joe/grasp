@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,6 +28,7 @@ public abstract class BaseListFragment<T> extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -59,8 +63,9 @@ public abstract class BaseListFragment<T> extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-//    public void handleActivityResult(Intent data) {
-//        DataDto dataDto = data.getParcelableExtra(EditActivity.DATA_REPLY);
-//        this.viewModel.insert(dataDto);
-//    }
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.list_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }
