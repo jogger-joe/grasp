@@ -6,10 +6,13 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import net.usemyskills.grasp.model.RecordDto;
+import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.viewmodel.BaseViewModel;
 
 public abstract class BaseEditFragment<T> extends Fragment {
     protected BaseViewModel<T> viewModel;
+    protected T element;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,4 +29,5 @@ public abstract class BaseEditFragment<T> extends Fragment {
     }
 
     protected abstract void bindElement(T element);
+
 }

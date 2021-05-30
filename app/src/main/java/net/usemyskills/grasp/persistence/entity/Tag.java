@@ -4,8 +4,13 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import net.usemyskills.grasp.model.FilterableEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-public class Tag extends BaseEntity {
+public class Tag extends BaseEntity implements FilterableEntity {
     @PrimaryKey(autoGenerate = true)
     public long tagId;
     public String name;
@@ -31,4 +36,16 @@ public class Tag extends BaseEntity {
 
     @Ignore
     public Tag() {}
+
+    @Override
+    public List<String> getFilterValues() {
+        ArrayList<String> result = new ArrayList<>();
+        result.add(this.name);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
