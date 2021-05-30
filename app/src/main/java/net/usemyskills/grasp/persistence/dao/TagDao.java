@@ -15,4 +15,7 @@ public interface TagDao extends BaseDao<Tag> {
 
     @Query("SELECT * FROM Tag where groupId=:id")
     Tag findByGroup(int id);
+
+    @Query("SELECT * FROM Tag where tagId=:id")
+    Tag findById(long id);
 }

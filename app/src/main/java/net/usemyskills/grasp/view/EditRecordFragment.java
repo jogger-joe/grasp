@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,33 +15,36 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import net.usemyskills.grasp.R;
-import net.usemyskills.grasp.persistence.entity.RecordGroup;
-import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
+import net.usemyskills.grasp.model.RecordDto;
+import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
+import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
-public class EditRecordGroupFragment extends BaseEditFragment<RecordGroup> implements View.OnClickListener {
-    private EditText recordGroupName;
-    private EditText recordGroupIcon;
+public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> implements View.OnClickListener {
+    private TextView recordDate;
+    private TextView recordType;
+    private TextView recordTag;
+    private EditText recordValue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
         View view = inflater.inflate(R.layout.fragment_edit_record_group, container, false);
-        recordGroupName = view.findViewById(R.id.record_group_name);
-        recordGroupIcon = view.findViewById(R.id.record_group_icon);
-        Button recordGroupSave = view.findViewById(R.id.button_record_group_save);
-        recordGroupSave.setOnClickListener(this);
+        recordDate = view.findViewById(R.id.record_date);
+        recordType = view.findViewById(R.id.record_type);
+        recordTag = view.findViewById(R.id.record_tag);
+        recordValue = view.findViewById(R.id.record_value);
+        Button recordSave = view.findViewById(R.id.button_record_save);
+        recordSave.setOnClickListener(this);
         return view;
     }
 
     @Override
     public void onClick(View view) {
         try {
-            RecordGroup recordGroup = viewModel.getSelectedEntityElement();
-            recordGroup.name = recordGroupName.getText().toString();
-            recordGroup.iconId = Integer.parseInt(recordGroupIcon.getText().toString());
-            viewModel.insert(recordGroup);
-            NavHostFragment.findNavController(EditRecordGroupFragment.this)
+            RecordWithTypeAndTags record = viewModel.getSelectedEntityElement();
+            viewModel.insert(record);
+            NavHostFragment.findNavController(EditRecordFragment.this)
                     .navigate(R.id.action_finish_edit_record_group);
         } catch (Exception exception) {
             Toast.makeText(this.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
@@ -52,13 +56,16 @@ public class EditRecordGroupFragment extends BaseEditFragment<RecordGroup> imple
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "onActivityCreated at " + this.getClass().toString());
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
-        this.viewModel = viewModelProvider.get(RecordGroupViewModel.class);
+        this.viewModel = viewModelProvider.get(RecordViewModel.class);
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
-    protected void bindElement(RecordGroup element) {
-        this.recordGroupName.setText(element.name);
-        this.recordGroupIcon.setText(String.valueOf(element.iconId));
+    protected void bindElement(RecordWithTypeAndTags element) {
+        RecordDto recordDto = new RecordDto(element);
+        this.recordDate.setText(recordDto.date);
+        this.recordType.setText(recordDto.type);
+        this.recordTag.setText(recordDto.tags);
+        this.recordValue.setText(recordDto.value);
     }
 }

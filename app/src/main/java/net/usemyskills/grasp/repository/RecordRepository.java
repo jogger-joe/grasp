@@ -3,10 +3,12 @@ package net.usemyskills.grasp.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.RecordDao;
 import net.usemyskills.grasp.persistence.dao.RecordTagsReferenceDao;
+import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.RecordTagsReference;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.persistence.entity.Record;
@@ -35,11 +37,16 @@ public class RecordRepository implements CrudRepositoryInterface<RecordWithTypeA
     }
 
     @Override
-    public long insert(RecordWithTypeAndTags element) {
-        for (Tag tag: element.tags) {
-            this.recordTagsReferenceDao.insert(new RecordTagsReference(element.record.recordId, tag.tagId));
-        }
-        return this.insert(element.record);
+    public LiveData<RecordWithTypeAndTags> insert(RecordWithTypeAndTags element) {
+        MutableLiveData<RecordWithTypeAndTags> insertedElement = new MutableLiveData<>();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            for (Tag tag: element.tags) {
+                this.recordTagsReferenceDao.insert(new RecordTagsReference(element.record.recordId, tag.tagId));
+            }
+            long elementId = this.insert(element.record);
+            insertedElement.postValue(this.recordDao.findById(elementId));
+        });
+        return insertedElement;
     }
 
     @Override

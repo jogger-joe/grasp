@@ -3,6 +3,7 @@ package net.usemyskills.grasp.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
@@ -26,8 +27,13 @@ public class RecordGroupRepository implements CrudRepositoryInterface<RecordGrou
     }
 
     @Override
-    public long insert(RecordGroup element) {
-        return this.dao.insert(element);
+    public LiveData<RecordGroup> insert(RecordGroup element) {
+        MutableLiveData<RecordGroup> insertedElement = new MutableLiveData<>();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            long elementId = this.dao.insert(element);
+            insertedElement.postValue(this.dao.findById(elementId));
+        });
+        return insertedElement;
     }
 
     @Override

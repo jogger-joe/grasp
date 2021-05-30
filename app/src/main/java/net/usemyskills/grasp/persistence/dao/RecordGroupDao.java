@@ -13,6 +13,6 @@ public interface RecordGroupDao extends BaseDao<RecordGroup> {
     @Query("SELECT * FROM RecordGroup")
     LiveData<List<RecordGroup>> getAll();
 
-    @Query("SELECT * FROM RecordGroup where groupId=:id")
-    RecordGroup findByGroup(int id);
+    @Query("SELECT * FROM RecordGroup where tagId=:id")
+    RecordGroup findById(long id);
 }

@@ -3,9 +3,11 @@ package net.usemyskills.grasp.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
+import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
@@ -26,8 +28,13 @@ public class TypeRepository implements CrudRepositoryInterface<Type> {
     }
 
     @Override
-    public long insert(Type element) {
-        return this.dao.insert(element);
+    public LiveData<Type> insert(Type element) {
+        MutableLiveData<Type> insertedElement = new MutableLiveData<>();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            long elementId = this.dao.insert(element);
+            insertedElement.postValue(this.dao.findById(elementId));
+        });
+        return insertedElement;
     }
 
     @Override

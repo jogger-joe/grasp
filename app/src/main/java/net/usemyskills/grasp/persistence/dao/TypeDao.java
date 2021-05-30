@@ -15,4 +15,7 @@ public interface TypeDao extends BaseDao<Type> {
 
     @Query("SELECT * FROM Type where groupId=:id")
     Type findByGroup(int id);
+
+    @Query("SELECT * FROM Type where tagId=:id")
+    Type findById(long id);
 }
