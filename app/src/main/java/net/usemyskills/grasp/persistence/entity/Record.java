@@ -27,4 +27,9 @@ public class Record extends BaseEntity {
     public Record(long typeId, long groupId, Date date, double value) {
         this(0, typeId, groupId, date, value);
     }
+
+    @Ignore
+    public Record() {
+        this(0, 0, 0, new Date(), 0.0);
+    }
 }

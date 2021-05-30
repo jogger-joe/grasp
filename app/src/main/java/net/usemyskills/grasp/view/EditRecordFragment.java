@@ -5,8 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,19 +23,21 @@ import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
 public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> implements View.OnClickListener {
     private TextView recordDate;
-    private TextView recordType;
-    private TextView recordTag;
+    private AutoCompleteTextView recordType;
+    private MultiAutoCompleteTextView recordTag;
     private EditText recordValue;
+    private TextView recordSuffix;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
-        View view = inflater.inflate(R.layout.fragment_edit_record_group, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_record, container, false);
         recordDate = view.findViewById(R.id.record_date);
         recordType = view.findViewById(R.id.record_type);
         recordTag = view.findViewById(R.id.record_tag);
         recordValue = view.findViewById(R.id.record_value);
+        recordSuffix = view.findViewById(R.id.record_suffix);
         Button recordSave = view.findViewById(R.id.button_record_save);
         recordSave.setOnClickListener(this);
         return view;
@@ -53,7 +57,7 @@ public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> 
     }
 
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "onActivityCreated at " + this.getClass().toString());
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.viewModel = viewModelProvider.get(RecordViewModel.class);
@@ -67,5 +71,6 @@ public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> 
         this.recordType.setText(recordDto.type);
         this.recordTag.setText(recordDto.tags);
         this.recordValue.setText(recordDto.value);
+        this.recordSuffix.setText(recordDto.valueSuffix);
     }
 }

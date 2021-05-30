@@ -51,7 +51,7 @@ public class RecordWithTypeAndTagsRecordRecyclerViewAdapter extends BaseRecycler
             this.mDateView.setText(recordDto.date);
             this.mTypeView.setText(recordDto.type);
             this.mTagsView.setText(recordDto.tags);
-            this.mValueView.setText(recordDto.value);
+            this.mValueView.setText(recordDto.getValueLabel());
         }
     }
 

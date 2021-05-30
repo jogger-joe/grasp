@@ -12,23 +12,30 @@ public class RecordDto {
     public String type;
     public String tags;
     public String value;
+    public String valueSuffix;
 
     public RecordDto(RecordWithTypeAndTags recordWithTypeAndTags) {
         Record record = recordWithTypeAndTags.record;
-        this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(record.date);
+        if (record != null) {
+            this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(record.date);
+            this.value = String.valueOf(record.value);
+        }
         this.type = recordWithTypeAndTags.type != null ? recordWithTypeAndTags.type.name : "missing tag";
-        StringBuilder tagsStringBuilder = new StringBuilder();
-        for (Tag tag: recordWithTypeAndTags.tags) {
-            if (tag != null) {
-                tagsStringBuilder.append(tag.name).append(" ");
+        if (recordWithTypeAndTags.tags != null) {
+            StringBuilder tagsStringBuilder = new StringBuilder();
+            for (Tag tag : recordWithTypeAndTags.tags) {
+                if (tag != null) {
+                    tagsStringBuilder.append(tag.name).append(" ");
+                }
             }
+            this.tags = tagsStringBuilder.toString();
         }
-        this.tags = tagsStringBuilder.toString();
-        StringBuilder valueStringBuilder = new StringBuilder();
-        valueStringBuilder.append(record.value).append(" ");
         if (recordWithTypeAndTags.type != null){
-            valueStringBuilder.append(recordWithTypeAndTags.type.suffix);
+            this.valueSuffix = recordWithTypeAndTags.type.suffix;
         }
-        this.value = valueStringBuilder.toString();
+    }
+
+    public String getValueLabel() {
+        return this.value + " " + this.valueSuffix;
     }
 }

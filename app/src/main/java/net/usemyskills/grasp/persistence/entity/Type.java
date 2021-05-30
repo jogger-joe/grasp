@@ -28,5 +28,10 @@ public class Type extends Tag {
     public Type(String name) {
         this(name, "");
     }
+
+    @Ignore
+    public Type() {
+        this("", "");
+    }
 }
 
