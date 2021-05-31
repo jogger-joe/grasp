@@ -5,9 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 
-import net.usemyskills.grasp.model.RecordDto;
-import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.viewmodel.BaseViewModel;
 
 public abstract class BaseEditFragment<T> extends Fragment {
@@ -23,9 +22,11 @@ public abstract class BaseEditFragment<T> extends Fragment {
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
-        this.viewModel.setOwner(this.requireActivity());
-        this.viewModel.getSelectedEntity().observe(this.getViewLifecycleOwner(), this::bindElement);
+        this.init(this.getViewLifecycleOwner());
         super.onActivityCreated(savedInstanceState);
+    }
+
+    protected void init(LifecycleOwner owner) {
     }
 
     protected abstract void bindElement(T element);

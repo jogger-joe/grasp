@@ -16,14 +16,12 @@ public class BaseViewModel<T> extends AndroidViewModel {
 
     protected final CrudRepositoryInterface<T> repository;
     protected MutableLiveData<List<T>> entities;
-    private final MutableLiveData<T> selectedEntity;
+    protected MutableLiveData<T> selectedEntity;
     protected LifecycleOwner owner;
 
     public BaseViewModel(Application application, CrudRepositoryInterface<T> repository) {
         super(application);
         this.repository = repository;
-        this.selectedEntity = new MutableLiveData<>();
-        this.entities = new MutableLiveData<>();
         Log.d("GRASP_LOG",this.getClass().toString() + " created with repository " + repository.getClass().toString());
     }
 
@@ -40,11 +38,17 @@ public class BaseViewModel<T> extends AndroidViewModel {
     }
 
     public LiveData<List<T>> getEntities() {
+        if (this.entities == null) {
+            this.entities = new MutableLiveData<>();
+        }
         return this.entities;
     }
 
     public MutableLiveData<T> getSelectedEntity() {
-        return selectedEntity;
+        if (this.selectedEntity == null) {
+            this.selectedEntity = new MutableLiveData<>();
+        }
+        return this.selectedEntity;
     }
 
     public T getSelectedEntityElement() throws Exception {
@@ -56,7 +60,7 @@ public class BaseViewModel<T> extends AndroidViewModel {
 
     public void setSelectedEntity(T selectedEntity) {
         Log.d("GRASP_LOG","setSelectedEntity of type " + selectedEntity.getClass().toString());
-        this.selectedEntity.setValue(selectedEntity);
+        this.getSelectedEntity().setValue(selectedEntity);
     }
 }
 

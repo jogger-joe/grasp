@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -35,17 +36,15 @@ public class ListRecordsFragment extends BaseListFragment<RecordWithTypeAndTags>
         
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.d("GRASP_LOG","onActivityCreated at " + this.getClass().toString());
+    protected void init(LifecycleOwner owner) {
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.viewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
-        this.recordGroupViewModel.getSelectedEntity().observe(this.getViewLifecycleOwner(), recordGroup -> {
+        this.recordGroupViewModel.getSelectedEntity().observe(owner, recordGroup -> {
             Log.d("GRASP_LOG","getSelectedEntity observe triggered with " + recordGroup.getClass().toString());
             ((RecordViewModel) this.viewModel).loadRecordsByGroup(recordGroup.tagId);
         });
-        super.onActivityCreated(savedInstanceState);
+        super.init(owner);
     }
 
     @Override

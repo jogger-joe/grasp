@@ -44,56 +44,5 @@
         <action
             android:id="@+id/action_finish_edit_record"
             app:destination="@id/list_records" />
-
-        <action
-            android:id="@+id/action_select_tag"
-            app:destination="@id/list_tags" />
-        <action
-            android:id="@+id/action_select_type"
-            app:destination="@id/list_types" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/list_tags"
-        android:name="net.usemyskills.grasp.view.ListTagsFragment"
-        android:label="@string/tags">
-
-        <action
-            android:id="@+id/action_select_tag"
-            app:destination="@id/edit_record" />
-        <action
-            android:id="@+id/action_edit_tag"
-            app:destination="@id/edit_tag" />
-    </fragment>
-    <fragment
-        android:id="@+id/edit_tag"
-        android:name="net.usemyskills.grasp.view.EditTagFragment"
-        android:label="@string/edit_tag">
-
-        <action
-            android:id="@+id/action_finish_edit_tag"
-            app:destination="@id/list_tags" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/list_types"
-        android:name="net.usemyskills.grasp.view.ListTypesFragment"
-        android:label="@string/list_types">
-
-        <action
-            android:id="@+id/action_select_type"
-            app:destination="@id/edit_record" />
-        <action
-            android:id="@+id/action_edit_type"
-            app:destination="@id/edit_type" />
-    </fragment>
-    <fragment
-        android:id="@+id/edit_type"
-        android:name="net.usemyskills.grasp.view.EditTypeFragment"
-        android:label="@string/edit_type">
-
-        <action
-            android:id="@+id/action_finish_edit_type"
-            app:destination="@id/list_types" />
     </fragment>
 </navigation>

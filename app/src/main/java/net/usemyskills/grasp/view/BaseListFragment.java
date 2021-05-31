@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,14 +54,17 @@ public abstract class BaseListFragment<T> extends Fragment {
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
-        this.viewModel.getEntities().observe(this.getViewLifecycleOwner(), values -> {
+        this.init(this.getViewLifecycleOwner());
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    protected void init(LifecycleOwner owner) {
+        this.viewModel.getEntities().observe(owner, values -> {
             Log.d("GRASP_LOG","getEntities observe triggered with " + values.toString());
             this.adapter.setValues(values);
-            this.adapter.notifyDataSetChanged();
         });
         this.viewModel.setOwner(this.requireActivity());
         this.viewModel.loadAll();
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

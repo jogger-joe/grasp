@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -35,12 +36,10 @@ public class ListRecordGroupsFragment extends BaseListFragment<RecordGroup> impl
                 .navigate(R.id.action_select_record_group);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "onActivityCreated at " + this.getClass().toString());
+    protected void init(LifecycleOwner owner) {
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.viewModel = viewModelProvider.get(RecordGroupViewModel.class);
-        super.onActivityCreated(savedInstanceState);
+        super.init(owner);
     }
 
     @Override

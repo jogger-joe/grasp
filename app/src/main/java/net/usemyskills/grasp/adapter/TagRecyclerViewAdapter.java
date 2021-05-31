@@ -9,12 +9,17 @@ import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapter<T> {
 
     public TagRecyclerViewAdapter(List<T> values, OnItemClickListener<T> onClickSelectableListener) {
         super(values, onClickSelectableListener);
+    }
+
+    public TagRecyclerViewAdapter(OnItemClickListener<T> onClickSelectableListener) {
+        this(new ArrayList<>(), onClickSelectableListener);
     }
 
     @Override
@@ -34,7 +39,7 @@ public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapt
         @Override
         protected void attachView(View view) {
             super.attachView(view);
-            this.mLabelView = (TextView)view.findViewById(R.id.labelView);
+            this.mLabelView = view.findViewById(R.id.labelView);
         }
 
         @Override
