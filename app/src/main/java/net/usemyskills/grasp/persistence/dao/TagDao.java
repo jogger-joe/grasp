@@ -14,7 +14,7 @@ public interface TagDao extends BaseDao<Tag> {
     LiveData<List<Tag>> getAll();
 
     @Query("SELECT * FROM Tag where groupId=:id")
-    Tag findByGroup(int id);
+    LiveData<List<Tag>> findByGroup(long id);
 
     @Query("SELECT * FROM Tag where tagId=:id")
     Tag findById(long id);

@@ -9,5 +9,11 @@ public class TypeViewModel extends BaseViewModel<Type> {
     public TypeViewModel(Application application) {
         super(application, new TypeRepository(application));
     }
+
+    public void loadRecordsByGroup(long groupId) {
+        if (this.repository!= null) {
+            ((TypeRepository)this.repository).getAllOfGroup(groupId).observe(this.owner, types -> this.entities.postValue(types));
+        }
+    }
 }
 

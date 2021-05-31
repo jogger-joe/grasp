@@ -18,6 +18,8 @@ import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
+import net.usemyskills.grasp.viewmodel.TagViewModel;
+import net.usemyskills.grasp.viewmodel.TypeViewModel;
 
 import java.util.ArrayList;
 
@@ -39,10 +41,16 @@ public class ListRecordsFragment extends BaseListFragment<RecordWithTypeAndTags>
     protected void init(LifecycleOwner owner) {
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.viewModel = viewModelProvider.get(RecordViewModel.class);
+        TypeViewModel typeViewModel = viewModelProvider.get(TypeViewModel.class);
+        TagViewModel tagViewModel = viewModelProvider.get(TagViewModel.class);
+        this.viewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
         this.recordGroupViewModel.getSelectedEntity().observe(owner, recordGroup -> {
             Log.d("GRASP_LOG","getSelectedEntity observe triggered with " + recordGroup.getClass().toString());
             ((RecordViewModel) this.viewModel).loadRecordsByGroup(recordGroup.tagId);
+            ((RecordViewModel) this.viewModel).setCurrentRecordGroupId(recordGroup.tagId);
+            typeViewModel.loadRecordsByGroup(recordGroup.tagId);
+            tagViewModel.loadRecordsByGroup(recordGroup.tagId);
         });
         super.init(owner);
     }

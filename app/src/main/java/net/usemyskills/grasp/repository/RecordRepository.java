@@ -19,17 +19,15 @@ import java.util.List;
 public class RecordRepository implements CrudRepositoryInterface<RecordWithTypeAndTags> {
     protected final RecordDao recordDao;
     protected final RecordTagsReferenceDao recordTagsReferenceDao;
-    protected final LiveData<List<RecordWithTypeAndTags>> liveElements;
 
     public RecordRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.recordDao = db.getRecordDao();
         this.recordTagsReferenceDao = db.getRecordTagsReferenceDao();
-        this.liveElements = recordDao.getAll();
     }
 
     public LiveData<List<RecordWithTypeAndTags>> getAll() {
-        return this.liveElements;
+        return this.recordDao.getAll();
     }
 
     public LiveData<List<RecordWithTypeAndTags>> getAllOfGroup(long groupId) {

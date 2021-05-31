@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
+import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface TypeDao extends BaseDao<Type> {
     LiveData<List<Type>> getAll();
 
     @Query("SELECT * FROM Type where groupId=:id")
-    Type findByGroup(int id);
+    LiveData<List<Type>> findByGroup(long id);
 
     @Query("SELECT * FROM Type where tagId=:id")
     Type findById(long id);

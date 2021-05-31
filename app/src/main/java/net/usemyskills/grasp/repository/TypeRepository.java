@@ -7,24 +7,24 @@ import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
-import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
 
 public class TypeRepository implements CrudRepositoryInterface<Type> {
     protected final TypeDao dao;
-    protected final LiveData<List<Type>> liveElements;
 
     public TypeRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.dao = db.getTypeDao();
-        this.liveElements = dao.getAll();
     }
 
-    @Override
     public LiveData<List<Type>> getAll() {
-        return this.liveElements;
+        return this.dao.getAll();
+    }
+
+    public LiveData<List<Type>> getAllOfGroup(long groupId) {
+        return this.dao.findByGroup(groupId);
     }
 
     @Override
