@@ -3,47 +3,67 @@ package net.usemyskills.grasp.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.TagDao;
+import net.usemyskills.grasp.persistence.dao.TypeDao;
 import net.usemyskills.grasp.persistence.entity.Tag;
+import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
 
-public class TagRepository implements CrudRepositoryInterface<Tag> {
-    protected final TagDao dao;
+
+public class TagRepository {
+    protected final TagDao tagDao;
+    protected final TypeDao typeDao;
 
     public TagRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
-        this.dao = db.getTagDao();
+        this.tagDao = db.getTagDao();
+        this.typeDao = db.getTypeDao();
     }
 
-    public LiveData<List<Tag>> getAll() {
-        return this.dao.getAll();
+    public LiveData<List<Tag>> getAllTags() {
+        return this.tagDao.getAll();
     }
 
-    public LiveData<List<Tag>> getAllOfGroup(long groupId) {
-        return this.dao.findByGroup(groupId);
+    public LiveData<List<Type>> getAllTypes() {
+        return this.typeDao.getAll();
     }
 
-    @Override
-    public LiveData<Tag> insert(Tag element) {
-        MutableLiveData<Tag> insertedElement = new MutableLiveData<>();
+    public LiveData<List<Tag>> getTagsByGroupId(long groupId) {
+        return this.tagDao.findByGroup(groupId);
+    }
+
+    public LiveData<List<Type>> getTypesByGroupId(long groupId) {
+        return this.typeDao.findByGroup(groupId);
+    }
+
+    public void insert(Tag element) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            long elementId = this.dao.insert(element);
-            insertedElement.postValue(this.dao.findById(elementId));
+            this.tagDao.insert(element);
         });
-        return insertedElement;
     }
 
-    @Override
+    public void insert(Type element) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.typeDao.insert(element);
+        });
+    }
+
     public void update(Tag element) {
-        this.dao.update(element);
+        this.tagDao.update(element);
     }
 
-    @Override
+    public void update(Type element) {
+        this.typeDao.update(element);
+    }
+
     public void delete(Tag element) {
-        this.dao.delete(element);
+        this.tagDao.delete(element);
+    }
+
+    public void delete(Type element) {
+        this.typeDao.delete(element);
     }
 }

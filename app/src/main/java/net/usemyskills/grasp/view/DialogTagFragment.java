@@ -12,10 +12,10 @@ import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
 
-public class DialogSelectFragment<T extends Tag> extends DialogFragment {
+public class DialogTagFragment<T extends Tag> extends DialogFragment {
     private final TagRecyclerViewAdapter<T> tagRecyclerViewAdapter;
 
-    public DialogSelectFragment(TagRecyclerViewAdapter<T> selectableRecyclerViewAdapter) {
+    public DialogTagFragment(TagRecyclerViewAdapter<T> selectableRecyclerViewAdapter) {
         this.tagRecyclerViewAdapter = selectableRecyclerViewAdapter;
     }
 

@@ -2,27 +2,52 @@ package net.usemyskills.grasp.viewmodel;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
+import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.repository.RecordRepository;
 
-public class RecordViewModel extends BaseViewModel<RecordWithTypeAndTags> {
-    protected long currentRecordGroupId = 0;
+import java.util.List;
+
+public class RecordViewModel extends AndroidViewModel {
+    private final RecordRepository recordRepository;
+
+    private final MutableLiveData<RecordGroup> recordGroup;
+    private final MutableLiveData<List<RecordWithTypeAndTags>> records;
 
     public RecordViewModel(Application application) {
-        super(application, new RecordRepository(application));
+        super(application);
+        this.recordRepository = new RecordRepository(application);
+        this.recordGroup = new MutableLiveData<>();
+        this.records = new MutableLiveData<>();
+        // add trigger for setting recordGroup
+        this.recordGroup.observeForever(recordGroup -> {
+            this.recordRepository.getAllByGroupId(recordGroup.groupId).observeForever(this.records::postValue);
+        });
     }
 
-    public void loadRecordsByGroup(long groupId) {
-        ((RecordRepository)this.repository).getAllOfGroup(groupId).observe(this.owner, recordWithTypeAndTags -> this.entities.postValue(recordWithTypeAndTags));
+    public void setRecordGroup(RecordGroup recordGroup) {
+        this.recordGroup.postValue(recordGroup);
     }
 
-    public void setCurrentRecordGroupId(long currentRecordGroupId) {
-        this.currentRecordGroupId = currentRecordGroupId;
+    public MutableLiveData<List<RecordWithTypeAndTags>> getTags() {
+        return records;
     }
 
-    public void insert(RecordWithTypeAndTags data) {
-        data.record.groupId = this.currentRecordGroupId;
-        this.repository.insert(data);
+    public void save(RecordWithTypeAndTags recordWithTypeAndTags) {
+        if (recordWithTypeAndTags.record.recordId == 0) {
+            this.recordRepository.insert(recordWithTypeAndTags);
+        } else {
+            this.recordRepository.update(recordWithTypeAndTags);
+        }
+    }
+
+    @Override
+    protected void onCleared() {
+        // @todo: remove observers
+        super.onCleared();
     }
 }
 

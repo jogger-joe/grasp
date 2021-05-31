@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/list_record_groups">
 
     <fragment
         android:id="@+id/list_record_groups"
         android:name="net.usemyskills.grasp.view.ListRecordGroupsFragment"
-        android:label="@string/list_record_groups">
+        android:label="@string/list_record_groups"
+        tools:layout="@layout/fragment_record_group_list">
 
         <action
             android:id="@+id/action_select_record_group"
@@ -20,7 +22,8 @@
     <fragment
         android:id="@+id/edit_record_group"
         android:name="net.usemyskills.grasp.view.EditRecordGroupFragment"
-        android:label="@string/edit_record_group">
+        android:label="@string/edit_record_group"
+        tools:layout="@layout/fragment_edit_record_group">
 
         <action
             android:id="@+id/action_finish_edit_record_group"
@@ -30,7 +33,8 @@
     <fragment
         android:id="@+id/list_records"
         android:name="net.usemyskills.grasp.view.ListRecordsFragment"
-        android:label="@string/records">
+        android:label="@string/records"
+        tools:layout="@layout/fragment_record_group_list">
 
         <action
             android:id="@+id/action_edit_record"
@@ -39,7 +43,8 @@
     <fragment
         android:id="@+id/edit_record"
         android:name="net.usemyskills.grasp.view.EditRecordFragment"
-        android:label="@string/edit_record">
+        android:label="@string/edit_record"
+        tools:layout="@layout/fragment_edit_record">
 
         <action
             android:id="@+id/action_finish_edit_record"

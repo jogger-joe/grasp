@@ -1,6 +1,5 @@
 package net.usemyskills.grasp.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.usemyskills.grasp.R;
@@ -24,7 +21,6 @@ import net.usemyskills.grasp.viewmodel.BaseViewModel;
 public abstract class BaseListFragment<T> extends Fragment {
     protected BaseViewModel<T> viewModel;
     protected BaseRecyclerViewAdapter<T> adapter;
-    protected int mColumnCount = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,16 +32,10 @@ public abstract class BaseListFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
-        View view = inflater.inflate(R.layout.fragment_list_container, container, false);
+        View view = inflater.inflate(R.layout.fragment_record_group_list, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
             recyclerView.setAdapter(this.adapter);
         }
         return view;

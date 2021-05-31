@@ -1,32 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/big_padding"
-    android:orientation="vertical">
+    tools:context=".view.EditRecordGroupFragment">
 
-    <EditText
-        android:id="@+id/record_group_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/big_padding"
-        android:textSize="@dimen/big_font"
-        android:inputType="text"
-        android:autofillHints=""
-        android:hint="@string/record_group_name"/>
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/big_padding"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/record_group_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/big_padding"
-        android:textSize="@dimen/big_font"
-        android:autofillHints=""
-        android:inputType="number"
-        android:hint="@string/record_group_icon"/>
+        <EditText
+            android:id="@+id/record_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/big_padding"
+            android:autofillHints=""
+            android:hint="@string/record_group_name"
+            android:inputType="text"
+            android:textSize="@dimen/big_font" />
 
-    <Button
-        android:id="@+id/button_record_group_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/button_save" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/record_group_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/big_padding"
+            android:autofillHints=""
+            android:hint="@string/record_group_icon"
+            android:inputType="number"
+            android:textSize="@dimen/big_font" />
+
+        <Button
+            android:id="@+id/button_record_group_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_save" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

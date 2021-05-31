@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -25,7 +24,6 @@ import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
-import net.usemyskills.grasp.viewmodel.TypeViewModel;
 
 import java.util.Date;
 
@@ -58,11 +56,11 @@ public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> 
         this.recordDate.setOnClickListener(v -> dateDialogFragment.show(this.getParentFragmentManager(), "dialog"));
 
         recordType = view.findViewById(R.id.record_type);
-        DialogSelectFragment<Type> dateSelectTypeFragment = new DialogSelectFragment<>(this.typeAdapter);
+        DialogTagFragment<Type> dateSelectTypeFragment = new DialogTagFragment<>(this.typeAdapter);
         this.recordType.setOnClickListener(v -> dateSelectTypeFragment.show(this.getParentFragmentManager(), "dialog"));
 
         recordTag = view.findViewById(R.id.record_tag);
-        DialogSelectFragment<Tag> dateSelectTagFragment = new DialogSelectFragment<>(this.tagAdapter);
+        DialogTagFragment<Tag> dateSelectTagFragment = new DialogTagFragment<>(this.tagAdapter);
         this.recordTag.setOnClickListener(v -> dateSelectTagFragment.show(this.getParentFragmentManager(), "dialog"));
 
         recordValue = view.findViewById(R.id.record_value);

@@ -2,19 +2,68 @@ package net.usemyskills.grasp.viewmodel;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+
+import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.persistence.entity.Tag;
-import net.usemyskills.grasp.repository.RecordRepository;
+import net.usemyskills.grasp.persistence.entity.Type;
 import net.usemyskills.grasp.repository.TagRepository;
 
-public class TagViewModel extends BaseViewModel<Tag> {
+import java.util.List;
+
+public class TagViewModel extends AndroidViewModel {
+    private final TagRepository tagRepository;
+    private final MutableLiveData<RecordGroup> recordGroup;
+
+    private final MutableLiveData<List<Tag>> tags;
+    private final MutableLiveData<List<Type>> types;
+
     public TagViewModel(Application application) {
-        super(application, new TagRepository(application));
+        super(application);
+        this.tagRepository = new TagRepository(application);
+        this.recordGroup = new MutableLiveData<>();
+        this.tags = new MutableLiveData<>();
+        this.types = new MutableLiveData<>();
+        // add trigger for setting recordGroup
+        this.recordGroup.observeForever(recordGroup -> {
+            this.tagRepository.getTagsByGroupId(recordGroup.groupId).observeForever(this.tags::postValue);
+            this.tagRepository.getTypesByGroupId(recordGroup.groupId).observeForever(this.types::postValue);
+        });
     }
 
-    public void loadRecordsByGroup(long groupId) {
-        if (this.repository!= null) {
-            ((TagRepository) this.repository).getAllOfGroup(groupId).observe(this.owner, tags -> this.entities.postValue(tags));
+    public void setRecordGroup(RecordGroup recordGroup) {
+        this.recordGroup.postValue(recordGroup);
+    }
+
+    public MutableLiveData<List<Tag>> getTags() {
+        return tags;
+    }
+
+    public MutableLiveData<List<Type>> getTypes() {
+        return types;
+    }
+
+    public void save(Tag tag) {
+        if (tag.tagId == 0) {
+            this.tagRepository.insert(tag);
+        } else {
+            this.tagRepository.update(tag);
         }
+    }
+
+    public void save(Type type) {
+        if (type.tagId == 0) {
+            this.tagRepository.insert(type);
+        } else {
+            this.tagRepository.update(type);
+        }
+    }
+
+    @Override
+    protected void onCleared() {
+        // @todo: remove observers
+        super.onCleared();
     }
 }
 
