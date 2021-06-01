@@ -1,6 +1,7 @@
 package net.usemyskills.grasp.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
@@ -16,23 +17,28 @@ public class RecordGroupViewModel extends AndroidViewModel {
 
     private final RecordGroupRepository recordGroupRepository;
     private final MutableLiveData<List<RecordGroup>> recordGroups;
-    private RecordGroup editElement;
+    private final MutableLiveData<RecordGroup> editElement;
 
     public RecordGroupViewModel(Application application) {
         super(application);
+        Log.d("GRASP_LOG", "RecordGroupViewModel");
         this.recordGroupRepository = new RecordGroupRepository(application);
         this.recordGroups = new MutableLiveData<>();
+        this.editElement = new MutableLiveData<>();
     }
 
     public void initObserver(LifecycleOwner owner) {
-        this.recordGroupRepository.getAll().observe(owner, recordGroups -> {
-            recordGroups.add(new RecordGroup("create new", R.drawable.ic_add));
-            this.recordGroups.postValue(recordGroups);
+        Log.d("GRASP_LOG", "RecordGroupViewModel.initObserver");
+        this.recordGroupRepository.getAll().observe(owner, loadedRecordGroups -> {
+            Log.d("GRASP_LOG", "RecordGroupViewModel.initObserver.recordGroupRepository.getAll().observe triggered: " + loadedRecordGroups.toString());
+            loadedRecordGroups.add(new RecordGroup("create new", R.drawable.ic_add));
+            this.recordGroups.postValue(loadedRecordGroups);
         });
     }
 
     public MutableLiveData<List<RecordGroup>> getRecordGroups() {
-        return recordGroups;
+        Log.d("GRASP_LOG", "RecordGroupViewModel.getRecordGroups");
+        return this.recordGroups;
     }
 
     public void save(RecordGroup recordGroup) {
@@ -43,18 +49,12 @@ public class RecordGroupViewModel extends AndroidViewModel {
         }
     }
 
-    public RecordGroup getEditElement() {
+    public MutableLiveData<RecordGroup> getEditElement() {
         return editElement;
     }
 
     public void setEditElement(RecordGroup editElement) {
-        this.editElement = editElement;
-    }
-
-    @Override
-    protected void onCleared() {
-        // @todo: remove observers
-        super.onCleared();
+        this.editElement.postValue(editElement);
     }
 }
 

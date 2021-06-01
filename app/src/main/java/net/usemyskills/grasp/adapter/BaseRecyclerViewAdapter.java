@@ -1,5 +1,6 @@
 package net.usemyskills.grasp.adapter;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,18 +19,14 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     }
 
     public void setValues(List<T> values) {
+        Log.d("GRASP_LOG", "BaseRecyclerViewAdapter.setValues: " + values.toString() );
         this.mValues = values;
-        this.notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         T item = mValues.get(position);
         holder.bind(item);
-    }
-
-    public OnItemClickListener<T> getOnClickSelectableListener() {
-        return onClickSelectableListener;
     }
 
     @Override

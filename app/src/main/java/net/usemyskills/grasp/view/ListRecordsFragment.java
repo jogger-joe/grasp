@@ -27,8 +27,10 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "ListRecordsFragment.onCreateView");
+        FragmentRecordListBinding binding = FragmentRecordListBinding.inflate(inflater, container, false);
         this.recordRecyclerViewAdapter = new RecordRecyclerViewAdapter(new ArrayList<>(), this);
-        return FragmentRecordListBinding.inflate(inflater, container, false).getRoot();
+        binding.recordList.setAdapter(this.recordRecyclerViewAdapter);
+        return binding.getRoot();
     }
 
     @Override

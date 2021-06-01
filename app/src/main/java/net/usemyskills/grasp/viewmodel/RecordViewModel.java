@@ -17,13 +17,14 @@ public class RecordViewModel extends AndroidViewModel {
 
     private final MutableLiveData<RecordGroup> recordGroup;
     private final MutableLiveData<List<RecordWithTypeAndTags>> records;
-    private RecordWithTypeAndTags editElement;
+    private final MutableLiveData<RecordWithTypeAndTags> editElement;
 
     public RecordViewModel(Application application) {
         super(application);
         this.recordRepository = new RecordRepository(application);
         this.recordGroup = new MutableLiveData<>();
         this.records = new MutableLiveData<>();
+        this.editElement = new MutableLiveData<>();
     }
 
     public void initObserver(LifecycleOwner owner) {
@@ -49,18 +50,12 @@ public class RecordViewModel extends AndroidViewModel {
         }
     }
 
-    public RecordWithTypeAndTags getEditElement() {
+    public MutableLiveData<RecordWithTypeAndTags> getEditElement() {
         return editElement;
     }
 
     public void setEditElement(RecordWithTypeAndTags editElement) {
-        this.editElement = editElement;
-    }
-
-    @Override
-    protected void onCleared() {
-        // @todo: remove observers
-        super.onCleared();
+        this.editElement.postValue(editElement);
     }
 }
 

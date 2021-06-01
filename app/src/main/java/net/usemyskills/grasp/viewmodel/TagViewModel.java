@@ -62,11 +62,5 @@ public class TagViewModel extends AndroidViewModel {
             this.tagRepository.update(type);
         }
     }
-
-    @Override
-    protected void onCleared() {
-        // @todo: remove observers
-        super.onCleared();
-    }
 }
 

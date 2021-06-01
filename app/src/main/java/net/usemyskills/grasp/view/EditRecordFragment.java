@@ -41,7 +41,6 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         // init bindings
         this.binding = FragmentEditRecordBinding.inflate(inflater, container, false);
         this.binding.buttonRecordSave.setOnClickListener(this);
-        this.record = this.recordViewModel.getEditElement();
         this.bindElement(this.record);
 
         // init dialogs
@@ -109,6 +108,7 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordViewModel.initObserver(this.requireActivity());
+        this.recordViewModel.getEditElement().observe(this.requireActivity(), this::bindElement);
         TagViewModel tagViewModel = viewModelProvider.get(TagViewModel.class);
         tagViewModel.initObserver(this.requireActivity());
         tagViewModel.getTags().observe(this.requireActivity(), tags -> {

@@ -27,24 +27,29 @@ import java.util.ArrayList;
 public class ListRecordGroupsFragment extends Fragment implements OnItemClickListener<RecordGroup> {
     private RecordViewModel recordViewModel;
     private TagViewModel tagViewModel;
+    private RecordGroupViewModel recordGroupViewModel;
     private RecordGroupRecyclerViewAdapter recordGroupRecyclerViewAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "ListRecordGroupsFragment.onCreateView");
+        FragmentRecordGroupListBinding binding = FragmentRecordGroupListBinding.inflate(inflater, container, false);
         this.recordGroupRecyclerViewAdapter = new RecordGroupRecyclerViewAdapter(new ArrayList<>(), this);
-        return FragmentRecordGroupListBinding.inflate(inflater, container, false).getRoot();
+        binding.recordGroupList.setAdapter(this.recordGroupRecyclerViewAdapter);
+        return binding.getRoot();
     }
 
     @Override
-    public void onClickItem(RecordGroup item) {
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem");
-        this.recordViewModel.setRecordGroup(item);
-        this.tagViewModel.setRecordGroup(item);
+    public void onClickItem(RecordGroup recordGroup) {
+        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem: " + recordGroup.toString());
+        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem tagId: " + recordGroup.tagId);
         NavController navController = NavHostFragment.findNavController(ListRecordGroupsFragment.this);
-        if (item.tagId == 0) {
+        if (recordGroup.tagId > 0) {
+            this.recordViewModel.setRecordGroup(recordGroup);
+            this.tagViewModel.setRecordGroup(recordGroup);
             navController.navigate(R.id.action_select_record_group);
         } else {
+            this.recordGroupViewModel.setEditElement(recordGroup);
             navController.navigate(R.id.action_edit_record_group);
         }
     }
@@ -57,11 +62,10 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
         this.tagViewModel.initObserver(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordViewModel.initObserver(this.requireActivity());
-        RecordGroupViewModel recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
-        recordGroupViewModel.initObserver(this.requireActivity());
-        recordGroupViewModel.getRecordGroups().observe(this.requireActivity(), recordGroups -> {
+        this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
+        this.recordGroupViewModel.initObserver(this.requireActivity());
+        this.recordGroupViewModel.getRecordGroups().observe(this.requireActivity(), recordGroups -> {
             this.recordGroupRecyclerViewAdapter.setValues(recordGroups);
-            this.recordGroupRecyclerViewAdapter.notifyDataSetChanged();
         });
         super.onActivityCreated(savedInstanceState);
     }

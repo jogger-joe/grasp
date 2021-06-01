@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class DialogDateFragment extends DialogFragment {
     private final Calendar calendar;
-    private DatePickerDialog.OnDateSetListener onDateSetListener;
+    private final DatePickerDialog.OnDateSetListener onDateSetListener;
 
     public DialogDateFragment(Date initialDate, DatePickerDialog.OnDateSetListener onDateSetListener) {
         this.calendar = Calendar.getInstance();

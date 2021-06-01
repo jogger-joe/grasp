@@ -1,64 +1,65 @@
 package net.usemyskills.grasp.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import net.usemyskills.grasp.R;
+import androidx.recyclerview.widget.RecyclerView;
+
+import net.usemyskills.grasp.databinding.FragmentRecordGroupListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 
 import java.util.List;
 
-public class RecordGroupRecyclerViewAdapter extends BaseRecyclerViewAdapter<RecordGroup> implements Filterable {
+public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordGroupRecyclerViewAdapter.ViewHolder> {
+    private final OnItemClickListener<RecordGroup> onClickRecordListener;
+    private List<RecordGroup> recordGroups;
 
-    private Filter dataFilter;
-
-    public RecordGroupRecyclerViewAdapter(List<RecordGroup> values, OnItemClickListener<RecordGroup> onClickSelectableListener, Filter dataFilter) {
-        super(values, onClickSelectableListener);
-        this.dataFilter = dataFilter;
+    public RecordGroupRecyclerViewAdapter(List<RecordGroup> recordGroups, OnItemClickListener<RecordGroup> onClickRecordListener) {
+        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter construct");
+        this.recordGroups = recordGroups;
+        this.onClickRecordListener = onClickRecordListener;
     }
 
-    public RecordGroupRecyclerViewAdapter(List<RecordGroup> values, OnItemClickListener<RecordGroup> onClickSelectableListener) {
-        super(values, onClickSelectableListener);
+    public void setValues(List<RecordGroup> recordGroups) {
+        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.setValues: " + recordGroups.toString() );
+        this.recordGroups = recordGroups;
+        this.notifyDataSetChanged();
     }
 
     @Override
     public RecordGroupRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_record_group_list_item, parent, false);
-        return new RecordGroupRecyclerViewAdapter.ViewHolder(view, this.onClickSelectableListener);
+        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.onCreateViewHolder");
+        return new ViewHolder(FragmentRecordGroupListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public Filter getFilter() {
-        return this.dataFilter;
+    public void onBindViewHolder(final RecordGroupRecyclerViewAdapter.ViewHolder holder, int position) {
+        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.onBindViewHolder");
+        RecordGroup recordGroup = recordGroups.get(position);
+        holder.bind(recordGroup);
     }
 
-    public class ViewHolder extends BaseRecyclerViewAdapter<RecordGroup>.ViewHolder {
-        public TextView mLabelView;
-        public ImageView mIconView;
+    @Override
+    public int getItemCount() {
+        return this.recordGroups.size();
+    }
 
-        public ViewHolder(View view, OnItemClickListener<RecordGroup> onClickTagListener) {
-            super(view, onClickTagListener);
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public FragmentRecordGroupListItemBinding binding;
+
+        public ViewHolder(FragmentRecordGroupListItemBinding binding) {
+            super(binding.getRoot());
+            Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.create");
+            this.binding = binding;
         }
 
-        @Override
-        protected void attachView(View view) {
-            super.attachView(view);
-            this.mLabelView = view.findViewById(R.id.labelView);
-            this.mIconView = view.findViewById(R.id.iconView);
-        }
-
-        @Override
-        public void bind(RecordGroup item) {
-            super.bind(item);
-            this.mLabelView.setText(item.name);
-            this.mIconView.setImageResource(item.iconId);
+        public void bind(RecordGroup recordGroup){
+            Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.bind: " + recordGroup.toString());
+            this.binding.labelView.setText(recordGroup.name);
+            this.binding.iconView.setImageResource(recordGroup.iconId);
+            this.itemView.setOnClickListener(v -> onClickRecordListener.onClickItem(recordGroup));
         }
     }
 

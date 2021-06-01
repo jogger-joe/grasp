@@ -19,7 +19,6 @@ import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 
 public class EditRecordGroupFragment extends Fragment implements View.OnClickListener {
     private FragmentEditRecordGroupBinding binding;
-
     private RecordGroupViewModel recordGroupViewModel;
     private RecordGroup recordGroup;
 
@@ -28,7 +27,6 @@ public class EditRecordGroupFragment extends Fragment implements View.OnClickLis
         Log.d("GRASP_LOG", "EditRecordGroupFragment.onCreateView");
         this.binding = FragmentEditRecordGroupBinding.inflate(inflater, container, false);
         this.binding.buttonRecordGroupSave.setOnClickListener(this);
-        this.bindElement(this.recordGroupViewModel.getEditElement());
         return binding.getRoot();
     }
 
@@ -38,7 +36,7 @@ public class EditRecordGroupFragment extends Fragment implements View.OnClickLis
         try {
             this.recordGroup.name = this.binding.recordGroupName.getText().toString();
             this.recordGroup.iconId = Integer.parseInt(this.binding.recordGroupIcon.getText().toString());
-            recordGroupViewModel.save(recordGroup);
+            this.recordGroupViewModel.save(recordGroup);
             NavHostFragment.findNavController(EditRecordGroupFragment.this)
                     .navigate(R.id.action_finish_edit_record_group);
         } catch (Exception exception) {
@@ -52,6 +50,7 @@ public class EditRecordGroupFragment extends Fragment implements View.OnClickLis
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
         this.recordGroupViewModel.initObserver(this.requireActivity());
+        this.recordGroupViewModel.getEditElement().observe(this.requireActivity(), this::bindElement);
         super.onActivityCreated(savedInstanceState);
     }
 
