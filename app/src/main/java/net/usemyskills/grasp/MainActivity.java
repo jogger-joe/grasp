@@ -1,6 +1,5 @@
 package net.usemyskills.grasp;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,19 +31,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(this.navController, this.appBarConfiguration) || super.onSupportNavigateUp();
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        try {
-//            if (requestCode == NEW_DATA_RESULT_REQUEST_CODE && resultCode == RESULT_OK) {
-//                this.onNewDataResult(data);
-//            }
-//        } catch (Exception exception) {
-//            Toast.makeText(
-//                    getApplicationContext(),
-//                    exception.getMessage(),
-//                    Toast.LENGTH_LONG).show();
-//        }
     }
 }

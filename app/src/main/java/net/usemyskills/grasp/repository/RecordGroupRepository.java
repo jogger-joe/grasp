@@ -13,16 +13,18 @@ import java.util.List;
 
 public class RecordGroupRepository implements CrudRepositoryInterface<RecordGroup> {
     protected final RecordGroupDao dao;
-    protected final LiveData<List<RecordGroup>> liveElements;
+    protected LiveData<List<RecordGroup>> liveElements;
 
     public RecordGroupRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.dao = db.getRecordGroupDao();
-        this.liveElements = dao.getAll();
     }
 
     @Override
     public LiveData<List<RecordGroup>> getAll() {
+        if (this.liveElements == null) {
+            this.liveElements = dao.getAll();
+        }
         return this.liveElements;
     }
 

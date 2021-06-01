@@ -3,6 +3,7 @@ package net.usemyskills.grasp.viewmodel;
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
@@ -25,10 +26,12 @@ public class TagViewModel extends AndroidViewModel {
         this.recordGroup = new MutableLiveData<>();
         this.tags = new MutableLiveData<>();
         this.types = new MutableLiveData<>();
-        // add trigger for setting recordGroup
-        this.recordGroup.observeForever(recordGroup -> {
-            this.tagRepository.getTagsByGroupId(recordGroup.groupId).observeForever(this.tags::postValue);
-            this.tagRepository.getTypesByGroupId(recordGroup.groupId).observeForever(this.types::postValue);
+    }
+
+    public void initObserver(LifecycleOwner owner) {
+        this.recordGroup.observe(owner, recordGroup -> {
+            this.tagRepository.getTagsByGroupId(recordGroup.groupId).observe(owner, this.tags::postValue);
+            this.tagRepository.getTypesByGroupId(recordGroup.groupId).observe(owner, this.types::postValue);
         });
     }
 

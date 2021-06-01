@@ -6,18 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.lifecycle.LifecycleOwner;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
+import net.usemyskills.grasp.databinding.FragmentEditRecordBinding;
 import net.usemyskills.grasp.model.RecordDto;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.persistence.entity.Tag;
@@ -27,79 +26,75 @@ import net.usemyskills.grasp.viewmodel.TagViewModel;
 
 import java.util.Date;
 
-public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> implements View.OnClickListener {
-    private TextView recordDate;
-    private TextView recordType;
-    private TextView recordTag;
-    private EditText recordValue;
-    private TextView recordSuffix;
+public class EditRecordFragment extends Fragment implements View.OnClickListener {
+    private FragmentEditRecordBinding binding;
 
-    private TypeViewModel typeViewModel;
-    private TagViewModel tagViewModel;
+    private RecordViewModel recordViewModel;
+    private RecordWithTypeAndTags record;
 
     private TagRecyclerViewAdapter<Type> typeAdapter;
     private TagRecyclerViewAdapter<Tag> tagAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
-        View view = inflater.inflate(R.layout.fragment_edit_record, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("GRASP_LOG", "EditRecordFragment.onCreateView");
+        // init bindings
+        this.binding = FragmentEditRecordBinding.inflate(inflater, container, false);
+        this.binding.buttonRecordSave.setOnClickListener(this);
+        this.record = this.recordViewModel.getEditElement();
+        this.bindElement(this.record);
+
+        // init dialogs
+        DialogDateFragment dateDialogFragment = new DialogDateFragment(this::updateDate);
+        DialogTagFragment<Type> dateSelectTypeFragment = new DialogTagFragment<>(this.typeAdapter);
+        DialogTagFragment<Tag> dateSelectTagFragment = new DialogTagFragment<>(this.tagAdapter);
+
+        // init listener
+        this.binding.recordDate.setOnClickListener(v -> dateDialogFragment.show(this.getParentFragmentManager(), "dialog"));
+        this.binding.recordType.setOnClickListener(v -> dateSelectTypeFragment.show(this.getParentFragmentManager(), "dialog"));
+        this.binding.recordTag.setOnClickListener(v -> dateSelectTagFragment.show(this.getParentFragmentManager(), "dialog"));
 
         // init adapter
         this.typeAdapter = new TagRecyclerViewAdapter<>(this::updateType);
         this.tagAdapter = new TagRecyclerViewAdapter<>(this::addTag);
 
-        // bind ui-elements
-        recordDate = view.findViewById(R.id.record_date);
-        DialogDateFragment dateDialogFragment = new DialogDateFragment(this::updateDate);
-        this.recordDate.setOnClickListener(v -> dateDialogFragment.show(this.getParentFragmentManager(), "dialog"));
-
-        recordType = view.findViewById(R.id.record_type);
-        DialogTagFragment<Type> dateSelectTypeFragment = new DialogTagFragment<>(this.typeAdapter);
-        this.recordType.setOnClickListener(v -> dateSelectTypeFragment.show(this.getParentFragmentManager(), "dialog"));
-
-        recordTag = view.findViewById(R.id.record_tag);
-        DialogTagFragment<Tag> dateSelectTagFragment = new DialogTagFragment<>(this.tagAdapter);
-        this.recordTag.setOnClickListener(v -> dateSelectTagFragment.show(this.getParentFragmentManager(), "dialog"));
-
-        recordValue = view.findViewById(R.id.record_value);
-        recordSuffix = view.findViewById(R.id.record_suffix);
-
-        Button recordSave = view.findViewById(R.id.button_record_save);
-        recordSave.setOnClickListener(this);
-        return view;
+        return binding.getRoot();
     }
 
     private void updateDate(DatePicker view, int year, int month, int dayOfMonth) {
+        Log.d("GRASP_LOG", "EditRecordFragment.updateDate");
         this.updateDate(new GregorianCalendar(year, month, dayOfMonth).getTime());
     }
 
     private void updateDate(Date date) {
-        if (this.element != null) {
-            this.element.setDate(date);
-            this.viewModel.getSelectedEntity().postValue(this.element);
+        Log.d("GRASP_LOG", "EditRecordFragment.updateDate");
+        if (this.record != null) {
+            this.record.setDate(date);
+            this.bindElement(this.record);
         }
     }
 
     private void updateType(Type type) {
-        if (this.element != null) {
-            this.element.setType(type);
-            this.viewModel.getSelectedEntity().postValue(this.element);
+        Log.d("GRASP_LOG", "EditRecordFragment.updateType");
+        if (this.record != null) {
+            this.record.setType(type);
+            this.bindElement(this.record);
         }
     }
 
     private void addTag(Tag tag) {
-        if (this.element != null) {
-            this.element.addTag(tag);
-            this.viewModel.getSelectedEntity().postValue(this.element);
+        Log.d("GRASP_LOG", "EditRecordFragment.addTag");
+        if (this.record != null) {
+            this.record.addTag(tag);
+            this.bindElement(this.record);
         }
     }
 
     @Override
     public void onClick(View view) {
+        Log.d("GRASP_LOG", "EditRecordFragment.onClick");
         try {
-            this.viewModel.insert(this.element);
+            this.recordViewModel.save(this.record);
             NavHostFragment.findNavController(EditRecordFragment.this)
                     .navigate(R.id.action_finish_edit_record);
         } catch (Exception exception) {
@@ -108,40 +103,30 @@ public class EditRecordFragment extends BaseEditFragment<RecordWithTypeAndTags> 
         }
     }
 
-    protected void init(LifecycleOwner owner) {
-        Log.d("GRASP_LOG", "onActivityCreated at " + this.getClass().toString());
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        Log.d("GRASP_LOG", "EditRecordFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
-        this.viewModel = viewModelProvider.get(RecordViewModel.class);
-        this.viewModel.setOwner(owner);
-        this.viewModel.getSelectedEntity().observe(owner, this::bindElement);
-
-        this.typeViewModel = viewModelProvider.get(TypeViewModel.class);
-        this.typeViewModel.setOwner(owner);
-        this.typeViewModel.getEntities().observe(owner, types -> {
-            Log.d("GRASP_LOG", "TypeViewModel observe triggered at " + this.getClass().toString());
-            this.typeAdapter.setValues(types);
-        });
-        this.typeViewModel.loadAll();
-
-        this.tagViewModel = viewModelProvider.get(TagViewModel.class);
-        this.tagViewModel.setOwner(owner);
-        this.tagViewModel.getEntities().observe(owner, tags -> {
-            Log.d("GRASP_LOG", "TagViewModel observe triggered at " + this.getClass().toString());
+        this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
+        this.recordViewModel.initObserver(this.requireActivity());
+        TagViewModel tagViewModel = viewModelProvider.get(TagViewModel.class);
+        tagViewModel.initObserver(this.requireActivity());
+        tagViewModel.getTags().observe(this.requireActivity(), tags -> {
             this.tagAdapter.setValues(tags);
         });
-        this.tagViewModel.loadAll();
-
-        super.init(owner);
+        tagViewModel.getTypes().observe(this.requireActivity(), types -> {
+            this.typeAdapter.setValues(types);
+        });
+        super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
     protected void bindElement(RecordWithTypeAndTags element) {
-        this.element = element;
+        Log.d("GRASP_LOG", "EditRecordFragment.bindElement");
         RecordDto recordDto = new RecordDto(element);
-        this.recordDate.setText(recordDto.date);
-        this.recordType.setText(recordDto.type);
-        this.recordTag.setText(recordDto.tags);
-        this.recordValue.setText(recordDto.value);
-        this.recordSuffix.setText(recordDto.valueSuffix);
+        this.binding.recordDate.setText(recordDto.date);
+        this.binding.recordType.setText(recordDto.type);
+        this.binding.recordTag.setText(recordDto.tags);
+        this.binding.recordValue.setText(recordDto.value);
+        this.binding.recordSuffix.setText(recordDto.valueSuffix);
     }
 }

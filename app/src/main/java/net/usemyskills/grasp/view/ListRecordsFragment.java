@@ -9,53 +9,45 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
-import net.usemyskills.grasp.adapter.RecordViewAdapter;
+import net.usemyskills.grasp.R;
+import net.usemyskills.grasp.adapter.RecordRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentRecordListBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
-import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
-import net.usemyskills.grasp.viewmodel.TagViewModel;
 
 import java.util.ArrayList;
 
 public class ListRecordsFragment extends Fragment implements OnItemClickListener<RecordWithTypeAndTags> {
-    private FragmentRecordListBinding binding;
     private RecordViewModel recordViewModel;
-    private RecordViewAdapter recordViewAdapter;
+    private RecordRecyclerViewAdapter recordRecyclerViewAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.recordViewAdapter = new RecordViewAdapter(new ArrayList<>(), this);
-        this.binding = FragmentRecordListBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        Log.d("GRASP_LOG", "ListRecordsFragment.onCreateView");
+        this.recordRecyclerViewAdapter = new RecordRecyclerViewAdapter(new ArrayList<>(), this);
+        return FragmentRecordListBinding.inflate(inflater, container, false).getRoot();
     }
 
     @Override
     public void onClickItem(RecordWithTypeAndTags item) {
-        
+        Log.d("GRASP_LOG", "ListRecordsFragment.onClickItem");
+        this.recordViewModel.setEditElement(item);
+        NavHostFragment.findNavController(ListRecordsFragment.this)
+                .navigate(R.id.action_edit_record);
     }
-
 
     @Override
     public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        Log.d("GRASP_LOG","onCreateView at " + this.getClass().toString());
+        Log.d("GRASP_LOG", "ListRecordsFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
-        TagViewModel tagViewModel = viewModelProvider.get(TagViewModel.class);
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
-        this.recordViewModel.getEntities().observe(this.requireActivity(), values -> {
-            Log.d("GRASP_LOG","getEntities observe triggered with " + values.toString());
-            this.recordViewAdapter.setValues(values);
-        });
-        this.recordViewModel.setOwner(this.requireActivity());
-
-
-        viewModelProvider.get(RecordGroupViewModel.class).getSelectedEntity().observe(this.getViewLifecycleOwner(), recordGroup -> {
-            Log.d("GRASP_LOG","getSelectedEntity observe triggered with " + recordGroup.getClass().toString());
-            this.recordViewModel.loadRecordsByGroup(recordGroup.tagId);
-            this.recordViewModel.setCurrentRecordGroupId(recordGroup.tagId);
-            viewModelProvider.get(TagViewModel.class).setRecordGroup(recordGroup);
+        this.recordViewModel.initObserver(this.requireActivity());
+        this.recordViewModel.getRecords().observe(this.requireActivity(), records -> {
+            this.recordRecyclerViewAdapter.setValues(records);
+            this.recordRecyclerViewAdapter.notifyDataSetChanged();
         });
         super.onActivityCreated(savedInstanceState);
     }

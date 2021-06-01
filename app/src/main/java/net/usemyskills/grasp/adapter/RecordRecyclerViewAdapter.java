@@ -12,17 +12,17 @@ import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 
 import java.util.List;
 
-public class RecordViewAdapter extends BaseRecyclerViewAdapter<RecordWithTypeAndTags> {
+public class RecordRecyclerViewAdapter extends BaseRecyclerViewAdapter<RecordWithTypeAndTags> {
 
-    public RecordViewAdapter(List<RecordWithTypeAndTags> values, OnItemClickListener<RecordWithTypeAndTags> onClickSelectableListener) {
+    public RecordRecyclerViewAdapter(List<RecordWithTypeAndTags> values, OnItemClickListener<RecordWithTypeAndTags> onClickSelectableListener) {
         super(values, onClickSelectableListener);
     }
 
     @Override
-    public RecordViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecordRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_record_list_item, parent, false);
-        return new RecordViewAdapter.ViewHolder(view, this.onClickSelectableListener);
+        return new RecordRecyclerViewAdapter.ViewHolder(view, this.onClickSelectableListener);
     }
 
     public class ViewHolder extends BaseRecyclerViewAdapter<RecordWithTypeAndTags>.ViewHolder {
