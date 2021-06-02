@@ -1,53 +1,70 @@
 package net.usemyskills.grasp.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import net.usemyskills.grasp.R;
+import androidx.recyclerview.widget.RecyclerView;
+
+import net.usemyskills.grasp.databinding.FragmentTagListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagRecyclerViewAdapter<T extends Tag> extends BaseRecyclerViewAdapter<T> {
+public class TagRecyclerViewAdapter<T extends Tag> extends RecyclerView.Adapter<TagRecyclerViewAdapter<T>.ViewHolder> {
+    private final OnItemClickListener<T> onClickTagListener;
+    private List<T> tags;
 
-    public TagRecyclerViewAdapter(List<T> values, OnItemClickListener<T> onClickSelectableListener) {
-        super(values, onClickSelectableListener);
+    public TagRecyclerViewAdapter(List<T> tags, OnItemClickListener<T> onClickRecordListener) {
+        Log.d("GRASP_LOG", "TagRecyclerViewAdapter construct");
+        this.tags = tags;
+        this.onClickTagListener = onClickRecordListener;
     }
 
-    public TagRecyclerViewAdapter(OnItemClickListener<T> onClickSelectableListener) {
-        this(new ArrayList<>(), onClickSelectableListener);
+    public TagRecyclerViewAdapter(OnItemClickListener<T> onClickRecordListener) {
+        this(new ArrayList<>(), onClickRecordListener);
+    }
+
+    public void setValues(List<T> tags) {
+        Log.d("GRASP_LOG", "TagRecyclerViewAdapter.setValues: " + tags.toString() );
+        this.tags = tags;
+        this.notifyDataSetChanged();
     }
 
     @Override
     public TagRecyclerViewAdapter<T>.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_tag_list_item, parent, false);
-        return new TagRecyclerViewAdapter<T>.ViewHolder(view, this.onClickSelectableListener);
+        Log.d("GRASP_LOG", "TagRecyclerViewAdapter.onCreateViewHolder");
+        return new TagRecyclerViewAdapter<T>.ViewHolder(FragmentTagListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
-    public class ViewHolder extends BaseRecyclerViewAdapter<T>.ViewHolder {
-        public TextView mLabelView;
-
-        public ViewHolder(View view, OnItemClickListener<T> onClickTagListener) {
-            super(view, onClickTagListener);
-        }
-
-        @Override
-        protected void attachView(View view) {
-            super.attachView(view);
-            this.mLabelView = view.findViewById(R.id.labelView);
-        }
-
-        @Override
-        public void bind(T item) {
-            super.bind(item);
-            this.mLabelView.setText(item.name);
-        }
+    @Override
+    public void onBindViewHolder(final TagRecyclerViewAdapter<T>.ViewHolder holder, int position) {
+        Log.d("GRASP_LOG", "TagRecyclerViewAdapter.onBindViewHolder");
+        T tag = tags.get(position);
+        holder.bind(tag);
     }
 
+    @Override
+    public int getItemCount() {
+        return this.tags.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public FragmentTagListItemBinding binding;
+
+        public ViewHolder(FragmentTagListItemBinding binding) {
+            super(binding.getRoot());
+            Log.d("GRASP_LOG", "TagRecyclerViewAdapter.ViewHolder.create");
+            this.binding = binding;
+        }
+
+        public void bind(T tag){
+            Log.d("GRASP_LOG", "TagRecyclerViewAdapter.ViewHolder.bind: " + tag.toString());
+            this.binding.labelView.setText(tag.name);
+            this.itemView.setOnClickListener(v -> onClickTagListener.onClickItem(tag));
+        }
+    }
 
 }

@@ -24,6 +24,7 @@ import net.usemyskills.grasp.persistence.entity.Type;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EditRecordFragment extends Fragment implements View.OnClickListener {
@@ -107,10 +108,8 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         Log.d("GRASP_LOG", "EditRecordFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
-        this.recordViewModel.initObserver(this.requireActivity());
         this.recordViewModel.getEditElement().observe(this.requireActivity(), this::bindElement);
         TagViewModel tagViewModel = viewModelProvider.get(TagViewModel.class);
-        tagViewModel.initObserver(this.requireActivity());
         tagViewModel.getTags().observe(this.requireActivity(), tags -> {
             this.tagAdapter.setValues(tags);
         });

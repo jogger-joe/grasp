@@ -10,6 +10,7 @@ import net.usemyskills.grasp.databinding.FragmentRecordGroupListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordGroupRecyclerViewAdapter.ViewHolder> {
@@ -20,6 +21,10 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter construct");
         this.recordGroups = recordGroups;
         this.onClickRecordListener = onClickRecordListener;
+    }
+
+    public RecordGroupRecyclerViewAdapter(OnItemClickListener<RecordGroup> onClickRecordListener) {
+        this(new ArrayList<>(), onClickRecordListener);
     }
 
     public void setValues(List<RecordGroup> recordGroups) {

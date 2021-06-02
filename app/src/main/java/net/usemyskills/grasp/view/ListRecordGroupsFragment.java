@@ -22,8 +22,6 @@ import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
-import java.util.ArrayList;
-
 public class ListRecordGroupsFragment extends Fragment implements OnItemClickListener<RecordGroup> {
     private RecordViewModel recordViewModel;
     private TagViewModel tagViewModel;
@@ -34,7 +32,7 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "ListRecordGroupsFragment.onCreateView");
         FragmentRecordGroupListBinding binding = FragmentRecordGroupListBinding.inflate(inflater, container, false);
-        this.recordGroupRecyclerViewAdapter = new RecordGroupRecyclerViewAdapter(new ArrayList<>(), this);
+        this.recordGroupRecyclerViewAdapter = new RecordGroupRecyclerViewAdapter(this);
         binding.recordGroupList.setAdapter(this.recordGroupRecyclerViewAdapter);
         return binding.getRoot();
     }
@@ -45,8 +43,8 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
         Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem tagId: " + recordGroup.tagId);
         NavController navController = NavHostFragment.findNavController(ListRecordGroupsFragment.this);
         if (recordGroup.tagId > 0) {
-            this.recordViewModel.setRecordGroup(recordGroup);
-            this.tagViewModel.setRecordGroup(recordGroup);
+            this.recordViewModel.setRecordGroup(recordGroup, this.requireActivity());
+            this.tagViewModel.setRecordGroup(recordGroup, this.requireActivity());
             navController.navigate(R.id.action_select_record_group);
         } else {
             this.recordGroupViewModel.setEditElement(recordGroup);
@@ -59,11 +57,8 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
         Log.d("GRASP_LOG", "ListRecordGroupsFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.tagViewModel = viewModelProvider.get(TagViewModel.class);
-        this.tagViewModel.initObserver(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
-        this.recordViewModel.initObserver(this.requireActivity());
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
-        this.recordGroupViewModel.initObserver(this.requireActivity());
         this.recordGroupViewModel.getRecordGroups().observe(this.requireActivity(), recordGroups -> {
             this.recordGroupRecyclerViewAdapter.setValues(recordGroups);
         });

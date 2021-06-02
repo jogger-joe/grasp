@@ -15,7 +15,6 @@ import java.util.List;
 
 public class TagViewModel extends AndroidViewModel {
     private final TagRepository tagRepository;
-    private final MutableLiveData<RecordGroup> recordGroup;
 
     private final MutableLiveData<List<Tag>> tags;
     private final MutableLiveData<List<Type>> types;
@@ -23,20 +22,13 @@ public class TagViewModel extends AndroidViewModel {
     public TagViewModel(Application application) {
         super(application);
         this.tagRepository = new TagRepository(application);
-        this.recordGroup = new MutableLiveData<>();
         this.tags = new MutableLiveData<>();
         this.types = new MutableLiveData<>();
     }
 
-    public void initObserver(LifecycleOwner owner) {
-        this.recordGroup.observe(owner, recordGroup -> {
-            this.tagRepository.getTagsByGroupId(recordGroup.groupId).observe(owner, this.tags::postValue);
-            this.tagRepository.getTypesByGroupId(recordGroup.groupId).observe(owner, this.types::postValue);
-        });
-    }
-
-    public void setRecordGroup(RecordGroup recordGroup) {
-        this.recordGroup.postValue(recordGroup);
+    public void setRecordGroup(RecordGroup recordGroup, LifecycleOwner owner) {
+        this.tagRepository.getTagsByGroupId(recordGroup.groupId).observe(owner, this.tags::postValue);
+        this.tagRepository.getTypesByGroupId(recordGroup.groupId).observe(owner, this.types::postValue);
     }
 
     public MutableLiveData<List<Tag>> getTags() {

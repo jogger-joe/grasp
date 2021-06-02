@@ -18,8 +18,6 @@ import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
-import java.util.ArrayList;
-
 public class ListRecordsFragment extends Fragment implements OnItemClickListener<RecordWithTypeAndTags> {
     private RecordViewModel recordViewModel;
     private RecordRecyclerViewAdapter recordRecyclerViewAdapter;
@@ -28,7 +26,7 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "ListRecordsFragment.onCreateView");
         FragmentRecordListBinding binding = FragmentRecordListBinding.inflate(inflater, container, false);
-        this.recordRecyclerViewAdapter = new RecordRecyclerViewAdapter(new ArrayList<>(), this);
+        this.recordRecyclerViewAdapter = new RecordRecyclerViewAdapter(this);
         binding.recordList.setAdapter(this.recordRecyclerViewAdapter);
         return binding.getRoot();
     }
@@ -46,10 +44,8 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
         Log.d("GRASP_LOG", "ListRecordsFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
-        this.recordViewModel.initObserver(this.requireActivity());
         this.recordViewModel.getRecords().observe(this.requireActivity(), records -> {
             this.recordRecyclerViewAdapter.setValues(records);
-            this.recordRecyclerViewAdapter.notifyDataSetChanged();
         });
         super.onActivityCreated(savedInstanceState);
     }
