@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
-import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 import net.usemyskills.grasp.repository.RecordGroupRepository;
 
@@ -27,14 +26,11 @@ public class RecordGroupViewModel extends AndroidViewModel {
         this.editElement = new MutableLiveData<>();
     }
 
-    public void initObserver(LifecycleOwner owner) {
-        Log.d("GRASP_LOG", "RecordGroupViewModel.initObserver");
-        this.recordGroupRepository.getAll().observe(owner, loadedRecordGroups -> {
-            Log.d("GRASP_LOG", "RecordGroupViewModel.initObserver.recordGroupRepository.getAll().observe triggered: " + loadedRecordGroups.toString());
-            loadedRecordGroups.add(new RecordGroup("create new", R.drawable.ic_add));
-            this.recordGroups.postValue(loadedRecordGroups);
-        });
+    public void loadAll(LifecycleOwner owner) {
+        this.recordGroupRepository.getAll().observe(owner, this.recordGroups::postValue);
     }
+
+    //new RecordGroup("create new", R.drawable.ic_add)
 
     public MutableLiveData<List<RecordGroup>> getRecordGroups() {
         Log.d("GRASP_LOG", "RecordGroupViewModel.getRecordGroups");

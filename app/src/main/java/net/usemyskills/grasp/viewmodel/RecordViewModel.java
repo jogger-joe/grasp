@@ -27,8 +27,11 @@ public class RecordViewModel extends AndroidViewModel {
     }
 
     public void setRecordGroup(RecordGroup recordGroup, LifecycleOwner owner) {
-        Log.d("GRASP_LOG", "RecordViewModel.setRecordGroup: " + recordGroup.toString());
-        this.recordRepository.getAllByGroupId(recordGroup.groupId).observe(owner, this.records::postValue);
+        Log.d("GRASP_LOG", "RecordViewModel.setRecordGroup: " + recordGroup.toString() + recordGroup.tagId);
+        this.recordRepository.getAllByGroupId(recordGroup.tagId).observe(owner, recordsByGroup -> {
+            Log.d("GRASP_LOG", "RecordViewModel.recordRepository.getAllByGroupId(recordGroup.groupId).observe: " + recordsByGroup.toString());
+            this.records.postValue(recordsByGroup);
+        });
     }
 
     public MutableLiveData<List<RecordWithTypeAndTags>> getRecords() {

@@ -60,8 +60,10 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
         this.recordGroupViewModel.getRecordGroups().observe(this.requireActivity(), recordGroups -> {
+            Log.d("GRASP_LOG", "ListRecordGroupsFragment.recordGroupViewModel.getRecordGroups().observe: " + recordGroups.toString());
             this.recordGroupRecyclerViewAdapter.setValues(recordGroups);
         });
+        this.recordGroupViewModel.loadAll(this.requireActivity());
         super.onActivityCreated(savedInstanceState);
     }
 }

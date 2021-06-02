@@ -27,8 +27,8 @@ public class TagViewModel extends AndroidViewModel {
     }
 
     public void setRecordGroup(RecordGroup recordGroup, LifecycleOwner owner) {
-        this.tagRepository.getTagsByGroupId(recordGroup.groupId).observe(owner, this.tags::postValue);
-        this.tagRepository.getTypesByGroupId(recordGroup.groupId).observe(owner, this.types::postValue);
+        this.tagRepository.getTagsByGroupId(recordGroup.tagId).observe(owner, this.tags::postValue);
+        this.tagRepository.getTypesByGroupId(recordGroup.tagId).observe(owner, this.types::postValue);
     }
 
     public MutableLiveData<List<Tag>> getTags() {

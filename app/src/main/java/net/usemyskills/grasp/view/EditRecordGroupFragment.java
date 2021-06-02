@@ -49,7 +49,6 @@ public class EditRecordGroupFragment extends Fragment implements View.OnClickLis
         Log.d("GRASP_LOG", "EditRecordGroupFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
-        this.recordGroupViewModel.initObserver(this.requireActivity());
         this.recordGroupViewModel.getEditElement().observe(this.requireActivity(), this::bindElement);
         super.onActivityCreated(savedInstanceState);
     }
