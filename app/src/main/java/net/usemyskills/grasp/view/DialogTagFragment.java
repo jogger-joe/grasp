@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentTagListBinding;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
-public class DialogTagFragment<T extends Tag> extends DialogFragment {
+public class DialogTagFragment<T extends Tag> extends BottomSheetDialogFragment {
     private final TagRecyclerViewAdapter<T> tagRecyclerViewAdapter;
-    private FragmentTagListBinding binding;
 
-    public DialogTagFragment(TagRecyclerViewAdapter<T> selectableRecyclerViewAdapter) {
-        this.tagRecyclerViewAdapter = selectableRecyclerViewAdapter;
+    public DialogTagFragment(TagRecyclerViewAdapter<T> tagRecyclerViewAdapter) {
+        this.tagRecyclerViewAdapter = tagRecyclerViewAdapter;
     }
 
     @Override
@@ -32,17 +32,8 @@ public class DialogTagFragment<T extends Tag> extends DialogFragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        this.binding = FragmentTagListBinding.inflate(inflater, container, false);
+        net.usemyskills.grasp.databinding.FragmentTagListBinding binding = FragmentTagListBinding.inflate(inflater, container, false);
         binding.tagList.setAdapter(this.tagRecyclerViewAdapter);
-        return binding.getRoot();
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
-                .setView(this.binding.getRoot())
-                .setPositiveButton(android.R.string.cancel,
-                        (dialog, whichButton) -> dialog.dismiss()
-                ).create();
+        return binding.tagList;
     }
 }
