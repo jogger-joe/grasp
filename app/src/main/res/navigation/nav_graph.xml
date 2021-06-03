@@ -24,10 +24,6 @@
         android:name="net.usemyskills.grasp.view.EditRecordGroupFragment"
         android:label="@string/edit_record_group"
         tools:layout="@layout/fragment_edit_record_group">
-
-        <action
-            android:id="@+id/action_finish_edit_record_group"
-            app:destination="@id/list_record_groups" />
     </fragment>
 
     <fragment
@@ -35,7 +31,6 @@
         android:name="net.usemyskills.grasp.view.ListRecordsFragment"
         android:label="@string/records"
         tools:layout="@layout/fragment_record_group_list">
-
         <action
             android:id="@+id/action_edit_record"
             app:destination="@id/edit_record" />
@@ -45,9 +40,24 @@
         android:name="net.usemyskills.grasp.view.EditRecordFragment"
         android:label="@string/edit_record"
         tools:layout="@layout/fragment_edit_record">
+        <action
+            android:id="@+id/action_edit_type"
+            app:destination="@id/edit_type" />
 
         <action
-            android:id="@+id/action_finish_edit_record"
-            app:destination="@id/list_records" />
+            android:id="@+id/action_edit_tag"
+            app:destination="@id/edit_tag" />
+    </fragment>
+    <fragment
+        android:id="@+id/edit_tag"
+        android:name="net.usemyskills.grasp.view.EditTagFragment"
+        android:label="@string/edit_tag"
+        tools:layout="@layout/fragment_edit_tag">
+    </fragment>
+    <fragment
+        android:id="@+id/edit_type"
+        android:name="net.usemyskills.grasp.view.EditTypeFragment"
+        android:label="@string/edit_type"
+        tools:layout="@layout/fragment_edit_type">
     </fragment>
 </navigation>

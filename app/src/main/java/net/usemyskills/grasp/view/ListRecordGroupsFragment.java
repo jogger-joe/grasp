@@ -39,20 +39,20 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
 
     @Override
     public void onClickItem(RecordGroupDto recordGroup) {
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem: " + recordGroup.toString() + "(" + recordGroup.id + ")");
+        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem: " + recordGroup.name + "(" + recordGroup.id + ")");
         NavController navController = NavHostFragment.findNavController(ListRecordGroupsFragment.this);
-        if (recordGroup.id > 0) {
+        if (recordGroup.isPlaceholder()) {
+            this.recordGroupViewModel.setEditElement(recordGroup);
+            navController.navigate(R.id.action_edit_record_group);
+        } else {
             this.recordViewModel.setRecordGroup(recordGroup);
             this.tagViewModel.setRecordGroup(recordGroup);
             navController.navigate(R.id.action_select_record_group);
-        } else {
-            this.recordGroupViewModel.setEditElement(recordGroup);
-            navController.navigate(R.id.action_edit_record_group);
         }
     }
 
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d("GRASP_LOG", "ListRecordGroupsFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.tagViewModel = viewModelProvider.get(TagViewModel.class);

@@ -4,13 +4,13 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import net.usemyskills.grasp.model.FilterableEntity;
+import net.usemyskills.grasp.model.HasFilterableValues;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Tag extends BaseEntity implements FilterableEntity {
+public class Tag extends BaseEntity implements HasFilterableValues {
     @PrimaryKey(autoGenerate = true)
     public long tagId;
     public String name;

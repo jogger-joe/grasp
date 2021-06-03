@@ -4,12 +4,12 @@ import android.widget.Filter;
 
 import androidx.lifecycle.MutableLiveData;
 
-import net.usemyskills.grasp.model.FilterableEntity;
+import net.usemyskills.grasp.model.HasFilterableValues;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleFilter<T extends FilterableEntity> extends Filter {
+public class SimpleFilter<T extends HasFilterableValues> extends Filter {
     private final List<T> allItems;
     private final MutableLiveData<List<T>> filteredItems;
 

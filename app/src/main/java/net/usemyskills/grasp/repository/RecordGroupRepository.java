@@ -35,14 +35,17 @@ public class RecordGroupRepository {
     public void insert(RecordGroupDto element) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             this.dao.insert(RecordGroupMapper.toEntity(element));
+            this.getAll();
         });
     }
 
     public void update(RecordGroupDto element) {
         this.dao.update(RecordGroupMapper.toEntity(element));
+        this.getAll();
     }
 
     public void delete(RecordGroupDto element) {
         this.dao.delete(RecordGroupMapper.toEntity(element));
+        this.getAll();
     }
 }

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.databinding.FragmentRecordListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.model.RecordDto;
@@ -16,6 +17,7 @@ import java.util.List;
 public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecyclerViewAdapter.ViewHolder> {
     private final OnItemClickListener<RecordDto> onClickRecordListener;
     private List<RecordDto> records;
+    private int newColor;
 
     public RecordRecyclerViewAdapter(List<RecordDto> recordGroups, OnItemClickListener<RecordDto> onClickRecordListener) {
         Log.d("GRASP_LOG", "RecordRecyclerViewAdapter construct");
@@ -37,6 +39,7 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
     @Override
     public RecordRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("GRASP_LOG", "RecordRecyclerViewAdapter.onCreateViewHolder");
+        this.newColor = parent.getContext().getResources().getColor(R.color.design_default_color_secondary);
         return new RecordRecyclerViewAdapter.ViewHolder(FragmentRecordListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
@@ -63,10 +66,18 @@ public class RecordRecyclerViewAdapter extends RecyclerView.Adapter<RecordRecycl
 
         public void bind(RecordDto record){
             Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.bind: " + record.toString());
-            this.binding.dateView.setText(record.getDateLabel());
-            this.binding.typeView.setText(record.getTypeLabel());
-            this.binding.tagsView.setText(record.getTagsLabel());
-            this.binding.valueView.setText(record.getValueLabel());
+            if (record.isPlaceholder()) {
+                this.binding.dateView.setText("");
+                this.binding.typeView.setText(R.string.create_entry);
+                this.binding.tagsView.setText("");
+                this.binding.valueView.setText("");
+                this.itemView.setBackgroundColor(newColor);
+            } else {
+                this.binding.dateView.setText(record.getDateLabel());
+                this.binding.typeView.setText(record.getTypeLabel());
+                this.binding.tagsView.setText(record.getTagsLabel());
+                this.binding.valueView.setText(record.getValueLabel());
+            }
             this.itemView.setOnClickListener(v -> onClickRecordListener.onClickItem(record));
         }
     }

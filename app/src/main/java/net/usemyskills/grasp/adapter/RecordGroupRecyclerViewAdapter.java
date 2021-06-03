@@ -17,6 +17,7 @@ import java.util.List;
 public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordGroupRecyclerViewAdapter.ViewHolder> {
     private final OnItemClickListener<RecordGroupDto> onClickRecordListener;
     private List<RecordGroupDto> recordGroups;
+    private int newColor;
 
     public RecordGroupRecyclerViewAdapter(List<RecordGroupDto> recordGroups, OnItemClickListener<RecordGroupDto> onClickRecordListener) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter construct");
@@ -38,6 +39,7 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
     @Override
     public RecordGroupRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.onCreateViewHolder");
+        this.newColor = parent.getContext().getResources().getColor(R.color.design_default_color_secondary);
         return new ViewHolder(FragmentRecordGroupListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
@@ -64,8 +66,14 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
 
         public void bind(RecordGroupDto recordGroup){
             Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.bind: " + recordGroup.toString());
-            this.binding.labelView.setText(recordGroup.name);
-            this.binding.iconView.setImageResource(recordGroup.iconId);
+            if (recordGroup.isPlaceholder()) {
+                this.binding.labelView.setText(R.string.create_entry);
+                this.binding.iconView.setImageResource(R.drawable.ic_add);
+                this.itemView.setBackgroundColor(newColor);
+            } else {
+                this.binding.labelView.setText(recordGroup.name);
+                this.binding.iconView.setImageResource(recordGroup.iconId);
+            }
             this.itemView.setOnClickListener(v -> onClickRecordListener.onClickItem(recordGroup));
         }
     }

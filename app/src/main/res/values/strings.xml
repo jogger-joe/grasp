@@ -10,6 +10,7 @@
     <string name="button_cancel">abbrechen</string>
     <string name="search">Suche</string>
     <string name="placeholder_text">placeholder text</string>
+    <string name="create_entry">neuer Eintrag</string>
     <string name="placeholder_date">22.11.1983</string>
     <string name="placeholder_value">123.45</string>
     <string name="icon">Icon</string>
@@ -23,4 +24,8 @@
     <string name="edit_type">Type bearbeiten</string>
     <string name="record_group_name">Name</string>
     <string name="record_group_icon">Icon</string>
+    <string name="tag_name">Name</string>
+    <string name="tag_description">Beschreibung</string>
+    <string name="type_suffix">Einheit</string>
+    <string name="save_successful">Erfolgreich gespeichert</string>
 </resources>

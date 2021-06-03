@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.EditRecordGroupFragment">
+    tools:context=".view.EditTagFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,25 +13,27 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/record_group_name"
+            android:id="@+id/tag_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/big_padding"
             android:autofillHints=""
-            android:hint="@string/record_group_name"
+            android:hint="@string/tag_name"
             android:inputType="text"
             android:textSize="@dimen/big_font" />
 
-        <ImageView
-            android:id="@+id/record_group_icon"
+        <EditText
+            android:id="@+id/tag_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/icon"
-            android:scaleType="center"
-            app:srcCompat="@drawable/ic_default" />
+            android:layout_marginBottom="@dimen/big_padding"
+            android:autofillHints=""
+            android:hint="@string/tag_description"
+            android:inputType="text"
+            android:textSize="@dimen/big_font" />
 
         <Button
-            android:id="@+id/button_record_group_save"
+            android:id="@+id/button_tag_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_save" />
