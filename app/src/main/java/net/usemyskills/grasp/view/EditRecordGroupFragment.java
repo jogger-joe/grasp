@@ -14,13 +14,13 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.databinding.FragmentEditRecordGroupBinding;
-import net.usemyskills.grasp.persistence.entity.RecordGroup;
+import net.usemyskills.grasp.model.RecordGroupDto;
 import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 
 public class EditRecordGroupFragment extends Fragment implements View.OnClickListener {
     private FragmentEditRecordGroupBinding binding;
     private RecordGroupViewModel recordGroupViewModel;
-    private RecordGroup recordGroup;
+    private RecordGroupDto recordGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class EditRecordGroupFragment extends Fragment implements View.OnClickLis
         super.onActivityCreated(savedInstanceState);
     }
 
-    protected void bindElement(RecordGroup element) {
+    protected void bindElement(RecordGroupDto element) {
         Log.d("GRASP_LOG", "EditRecordGroupFragment.bindElement");
         this.recordGroup = element;
         this.binding.recordGroupName.setText(element.name);

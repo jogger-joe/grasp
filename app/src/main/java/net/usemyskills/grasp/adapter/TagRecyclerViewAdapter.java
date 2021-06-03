@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.usemyskills.grasp.databinding.FragmentTagListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
+import net.usemyskills.grasp.model.TagDto;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagRecyclerViewAdapter<T extends Tag> extends RecyclerView.Adapter<TagRecyclerViewAdapter<T>.ViewHolder> {
+public class TagRecyclerViewAdapter<T extends TagDto> extends RecyclerView.Adapter<TagRecyclerViewAdapter<T>.ViewHolder> {
     private final OnItemClickListener<T> onClickTagListener;
     private List<T> tags;
 
@@ -29,7 +30,7 @@ public class TagRecyclerViewAdapter<T extends Tag> extends RecyclerView.Adapter<
 
     public void setValues(List<T> tags) {
         Log.d("GRASP_LOG", "TagRecyclerViewAdapter.setValues: " + tags.toString() );
-        this.tags = tags;
+        this.tags = new ArrayList<>(tags);
         this.notifyDataSetChanged();
     }
 

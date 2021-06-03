@@ -1,41 +1,52 @@
 package net.usemyskills.grasp.model;
 
-import net.usemyskills.grasp.persistence.entity.Record;
-import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
-import net.usemyskills.grasp.persistence.entity.Tag;
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class RecordDto {
-    public String date;
-    public String type;
-    public String tags;
-    public String value;
-    public String valueSuffix;
+    public long id;
+    public Date date;
+    public TypeDto type;
+    public List<TagDto> tags;
+    public double value;
 
-    public RecordDto(RecordWithTypeAndTags recordWithTypeAndTags) {
-        Record record = recordWithTypeAndTags.record;
-        if (record != null) {
-            this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(record.date);
-            this.value = String.valueOf(record.value);
-        }
-        this.type = recordWithTypeAndTags.type != null ? recordWithTypeAndTags.type.name : "missing tag";
-        if (recordWithTypeAndTags.tags != null) {
-            StringBuilder tagsStringBuilder = new StringBuilder();
-            for (Tag tag : recordWithTypeAndTags.tags) {
-                if (tag != null) {
-                    tagsStringBuilder.append(tag.name).append(" ");
-                }
-            }
-            this.tags = tagsStringBuilder.toString();
-        }
-        if (recordWithTypeAndTags.type != null){
-            this.valueSuffix = recordWithTypeAndTags.type.suffix;
-        }
+    public RecordDto(RecordDto recordDto) {
+        this.id = recordDto.id;
+        this.date = recordDto.date;
+        this.type = recordDto.type;
+        this.tags = recordDto.tags;
+        this.value = recordDto.value;
+    }
+
+    public RecordDto() {
+        this.id = 0;
+        this.date = new Date();
+        this.type = new TypeDto();
+        this.tags = new ArrayList<>();
+        this.value = 0.0;
     }
 
     public String getValueLabel() {
-        return this.value + " " + this.valueSuffix;
+        return this.value + " " + this.type.suffix;
+    }
+    public String getTypeLabel() { return this.type.name; }
+
+    public String getTagsLabel() {
+        if (this.tags != null) {
+            StringBuilder tagsStringBuilder = new StringBuilder();
+            for (TagDto tag : this.tags) {
+                if (tag != null) {
+                    tagsStringBuilder.append(tag.name).append(", ");
+                }
+            }
+            return tagsStringBuilder.toString();
+        }
+        return "";
+    }
+    public String getDateLabel() {
+        return this.date == null ? "invalid" : new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(this.date);
     }
 }

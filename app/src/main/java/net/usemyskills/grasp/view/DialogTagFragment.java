@@ -1,7 +1,5 @@
 package net.usemyskills.grasp.view;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +12,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentTagListBinding;
-import net.usemyskills.grasp.persistence.entity.Tag;
+import net.usemyskills.grasp.model.TagDto;
 
-public class DialogTagFragment<T extends Tag> extends BottomSheetDialogFragment {
+public class DialogTagFragment<T extends TagDto> extends BottomSheetDialogFragment {
     private final TagRecyclerViewAdapter<T> tagRecyclerViewAdapter;
 
     public DialogTagFragment(TagRecyclerViewAdapter<T> tagRecyclerViewAdapter) {

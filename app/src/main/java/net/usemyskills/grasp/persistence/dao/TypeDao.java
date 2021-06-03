@@ -1,10 +1,8 @@
 package net.usemyskills.grasp.persistence.dao;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
@@ -12,10 +10,10 @@ import java.util.List;
 @Dao
 public interface TypeDao extends BaseDao<Type> {
     @Query("SELECT * FROM Type")
-    LiveData<List<Type>> getAll();
+    List<Type> getAll();
 
     @Query("SELECT * FROM Type where groupId=:id")
-    LiveData<List<Type>> findByGroup(long id);
+    List<Type> findByGroup(long id);
 
     @Query("SELECT * FROM Type where tagId=:id")
     Type findById(long id);

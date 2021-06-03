@@ -2,49 +2,47 @@ package net.usemyskills.grasp.repository;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import net.usemyskills.grasp.model.RecordGroupDto;
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 
 import java.util.List;
 
-public class RecordGroupRepository implements CrudRepositoryInterface<RecordGroup> {
+public class RecordGroupRepository {
     protected final RecordGroupDao dao;
-    protected LiveData<List<RecordGroup>> liveElements;
+    protected final MutableLiveData<List<RecordGroupDto>> elements;
 
     public RecordGroupRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.dao = db.getRecordGroupDao();
+        this.elements = new MutableLiveData<>();
     }
 
-    @Override
-    public LiveData<List<RecordGroup>> getAll() {
-        if (this.liveElements == null) {
-            this.liveElements = dao.getAll();
-        }
-        return this.liveElements;
+    public MutableLiveData<List<RecordGroupDto>> getElements() {
+        return elements;
     }
 
-    @Override
-    public LiveData<RecordGroup> insert(RecordGroup element) {
-        MutableLiveData<RecordGroup> insertedElement = new MutableLiveData<>();
+    public void getAll() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            long elementId = this.dao.insert(element);
-            insertedElement.postValue(this.dao.findById(elementId));
+            List<RecordGroup> recordGroups = this.dao.getAll();
+            this.elements.postValue(RecordGroupMapper.toDto(recordGroups));
         });
-        return insertedElement;
     }
 
-    @Override
-    public void update(RecordGroup element) {
-        this.dao.update(element);
+    public void insert(RecordGroupDto element) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.dao.insert(RecordGroupMapper.toEntity(element));
+        });
     }
 
-    @Override
-    public void delete(RecordGroup element) {
-        this.dao.delete(element);
+    public void update(RecordGroupDto element) {
+        this.dao.update(RecordGroupMapper.toEntity(element));
+    }
+
+    public void delete(RecordGroupDto element) {
+        this.dao.delete(RecordGroupMapper.toEntity(element));
     }
 }

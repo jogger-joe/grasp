@@ -15,10 +15,10 @@ import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.RecordRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentRecordListBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
-import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
+import net.usemyskills.grasp.model.RecordDto;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
-public class ListRecordsFragment extends Fragment implements OnItemClickListener<RecordWithTypeAndTags> {
+public class ListRecordsFragment extends Fragment implements OnItemClickListener<RecordDto> {
     private RecordViewModel recordViewModel;
     private RecordRecyclerViewAdapter recordRecyclerViewAdapter;
 
@@ -32,7 +32,7 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public void onClickItem(RecordWithTypeAndTags item) {
+    public void onClickItem(RecordDto item) {
         Log.d("GRASP_LOG", "ListRecordsFragment.onClickItem");
         this.recordViewModel.setEditElement(item);
         NavHostFragment.findNavController(ListRecordsFragment.this)

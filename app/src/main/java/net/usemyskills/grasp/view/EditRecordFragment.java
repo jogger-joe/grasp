@@ -12,29 +12,25 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
-import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentEditRecordBinding;
 import net.usemyskills.grasp.model.RecordDto;
-import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
-import net.usemyskills.grasp.persistence.entity.Tag;
-import net.usemyskills.grasp.persistence.entity.Type;
+import net.usemyskills.grasp.model.TagDto;
+import net.usemyskills.grasp.model.TypeDto;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class EditRecordFragment extends Fragment implements View.OnClickListener {
     private FragmentEditRecordBinding binding;
 
     private RecordViewModel recordViewModel;
-    private RecordWithTypeAndTags record;
+    private RecordDto record;
 
-    private TagRecyclerViewAdapter<Type> typeAdapter;
-    private TagRecyclerViewAdapter<Tag> tagAdapter;
+    private TagRecyclerViewAdapter<TypeDto> typeAdapter;
+    private TagRecyclerViewAdapter<TagDto> tagAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,8 +46,8 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
 
         // init dialogs
         DialogDateFragment dateDialogFragment = new DialogDateFragment(this::updateDate);
-        DialogTagFragment<Type> dateSelectTypeFragment = new DialogTagFragment<>(this.typeAdapter);
-        DialogTagFragment<Tag> dateSelectTagFragment = new DialogTagFragment<>(this.tagAdapter);
+        DialogTagFragment<TypeDto> dateSelectTypeFragment = new DialogTagFragment<>(this.typeAdapter);
+        DialogTagFragment<TagDto> dateSelectTagFragment = new DialogTagFragment<>(this.tagAdapter);
 
         // init listener
         this.binding.recordDate.setOnClickListener(v -> dateDialogFragment.show(this.getParentFragmentManager(), "dialog"));
@@ -69,23 +65,23 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
     private void updateDate(Date date) {
         Log.d("GRASP_LOG", "EditRecordFragment.updateDate");
         if (this.record != null) {
-            this.record.setDate(date);
+            this.record.date = date;
             this.bindElement(this.record);
         }
     }
 
-    private void updateType(Type type) {
+    private void updateType(TypeDto type) {
         Log.d("GRASP_LOG", "EditRecordFragment.updateType " + type.toString() );
         if (this.record != null) {
-            this.record.setType(type);
+            this.record.type = type;
             this.bindElement(this.record);
         }
     }
 
-    private void addTag(Tag tag) {
+    private void addTag(TagDto tag) {
         Log.d("GRASP_LOG", "EditRecordFragment.addTag");
         if (this.record != null) {
-            this.record.addTag(tag);
+            this.record.tags.add(tag);
             this.bindElement(this.record);
         }
     }
@@ -95,8 +91,7 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         Log.d("GRASP_LOG", "EditRecordFragment.onClick");
         try {
             this.recordViewModel.save(this.record);
-            NavHostFragment.findNavController(EditRecordFragment.this)
-                    .navigate(R.id.action_finish_edit_record);
+            Toast.makeText(this.getContext(), "successfully saved", Toast.LENGTH_SHORT).show();
         } catch (Exception exception) {
             Toast.makeText(this.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e("GRASP_LOG", exception.getMessage());
@@ -122,16 +117,13 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         super.onActivityCreated(savedInstanceState);
     }
 
-    protected void bindElement(RecordWithTypeAndTags element) {
+    protected void bindElement(RecordDto element) {
+        if (element == null) return;
         Log.d("GRASP_LOG", "EditRecordFragment.bindElement " + element);
-        if (element == null) {
-            return;
-        }
-        RecordDto recordDto = new RecordDto(element);
-        this.binding.recordDate.setText(recordDto.date);
-        this.binding.recordType.setText(recordDto.type);
-        this.binding.recordTag.setText(recordDto.tags);
-        this.binding.recordValue.setText(recordDto.value);
-        this.binding.recordSuffix.setText(recordDto.valueSuffix);
+        this.binding.recordDate.setText(element.getDateLabel());
+        this.binding.recordType.setText(element.getTypeLabel());
+        this.binding.recordTag.setText(element.getTagsLabel());
+        this.binding.recordValue.setText(String.valueOf(element.value));
+        this.binding.recordSuffix.setText(element.type.suffix);
     }
 }

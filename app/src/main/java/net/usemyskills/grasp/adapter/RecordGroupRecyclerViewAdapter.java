@@ -6,30 +6,32 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.databinding.FragmentRecordGroupListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
-import net.usemyskills.grasp.persistence.entity.RecordGroup;
+import net.usemyskills.grasp.model.RecordGroupDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordGroupRecyclerViewAdapter.ViewHolder> {
-    private final OnItemClickListener<RecordGroup> onClickRecordListener;
-    private List<RecordGroup> recordGroups;
+    private final OnItemClickListener<RecordGroupDto> onClickRecordListener;
+    private List<RecordGroupDto> recordGroups;
 
-    public RecordGroupRecyclerViewAdapter(List<RecordGroup> recordGroups, OnItemClickListener<RecordGroup> onClickRecordListener) {
+    public RecordGroupRecyclerViewAdapter(List<RecordGroupDto> recordGroups, OnItemClickListener<RecordGroupDto> onClickRecordListener) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter construct");
         this.recordGroups = recordGroups;
         this.onClickRecordListener = onClickRecordListener;
     }
 
-    public RecordGroupRecyclerViewAdapter(OnItemClickListener<RecordGroup> onClickRecordListener) {
+    public RecordGroupRecyclerViewAdapter(OnItemClickListener<RecordGroupDto> onClickRecordListener) {
         this(new ArrayList<>(), onClickRecordListener);
     }
 
-    public void setValues(List<RecordGroup> recordGroups) {
+    public void setValues(List<RecordGroupDto> recordGroups) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.setValues: " + recordGroups.toString() );
-        this.recordGroups = recordGroups;
+        this.recordGroups = new ArrayList<>(recordGroups);
+        this.recordGroups.add(new RecordGroupDto("create new", R.drawable.ic_add));
         this.notifyDataSetChanged();
     }
 
@@ -42,7 +44,7 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
     @Override
     public void onBindViewHolder(final RecordGroupRecyclerViewAdapter.ViewHolder holder, int position) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.onBindViewHolder");
-        RecordGroup recordGroup = recordGroups.get(position);
+        RecordGroupDto recordGroup = recordGroups.get(position);
         holder.bind(recordGroup);
     }
 
@@ -60,7 +62,7 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
             this.binding = binding;
         }
 
-        public void bind(RecordGroup recordGroup){
+        public void bind(RecordGroupDto recordGroup){
             Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.bind: " + recordGroup.toString());
             this.binding.labelView.setText(recordGroup.name);
             this.binding.iconView.setImageResource(recordGroup.iconId);

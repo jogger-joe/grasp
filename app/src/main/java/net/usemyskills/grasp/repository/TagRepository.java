@@ -2,8 +2,10 @@ package net.usemyskills.grasp.repository;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import net.usemyskills.grasp.model.TagDto;
+import net.usemyskills.grasp.model.TypeDto;
 import net.usemyskills.grasp.persistence.AppDatabase;
 import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
@@ -12,58 +14,82 @@ import net.usemyskills.grasp.persistence.entity.Type;
 
 import java.util.List;
 
-
 public class TagRepository {
     protected final TagDao tagDao;
     protected final TypeDao typeDao;
+
+    protected final MutableLiveData<List<TypeDto>> typeElements;
+    protected final MutableLiveData<List<TagDto>> tagElements;
 
     public TagRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.tagDao = db.getTagDao();
         this.typeDao = db.getTypeDao();
+        this.typeElements = new MutableLiveData<>();
+        this.tagElements = new MutableLiveData<>();
     }
 
-    public LiveData<List<Tag>> getAllTags() {
-        return this.tagDao.getAll();
+    public MutableLiveData<List<TypeDto>> getTypeElements() {
+        return typeElements;
     }
 
-    public LiveData<List<Type>> getAllTypes() {
-        return this.typeDao.getAll();
+    public MutableLiveData<List<TagDto>> getTagElements() {
+        return tagElements;
     }
 
-    public LiveData<List<Tag>> getTagsByGroupId(long groupId) {
-        return this.tagDao.findByGroup(groupId);
-    }
-
-    public LiveData<List<Type>> getTypesByGroupId(long groupId) {
-        return this.typeDao.findByGroup(groupId);
-    }
-
-    public void insert(Tag element) {
+    public void getAllTags() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            this.tagDao.insert(element);
+            List<Tag> tags = this.tagDao.getAll();
+            this.tagElements.postValue(TagMapper.toDto(tags));
         });
     }
 
-    public void insert(Type element) {
+    public void getAllTypes() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            this.typeDao.insert(element);
+            List<Type> types = this.typeDao.getAll();
+            this.typeElements.postValue(TypeMapper.toDto(types));
         });
     }
 
-    public void update(Tag element) {
-        this.tagDao.update(element);
+    public void getTagsByGroupId(long groupId) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            List<Tag> tags = this.tagDao.findByGroup(groupId);
+            this.tagElements.postValue(TagMapper.toDto(tags));
+        });
     }
 
-    public void update(Type element) {
-        this.typeDao.update(element);
+    public void getTypesByGroupId(long groupId) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            List<Type> types = this.typeDao.findByGroup(groupId);
+            this.typeElements.postValue(TypeMapper.toDto(types));
+        });
     }
 
-    public void delete(Tag element) {
-        this.tagDao.delete(element);
+    public void insert(TagDto element) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.tagDao.insert(TagMapper.toEntity(element));
+        });
     }
 
-    public void delete(Type element) {
-        this.typeDao.delete(element);
+    public void insert(TypeDto element) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.typeDao.insert(TypeMapper.toEntity(element));
+        });
+    }
+
+    public void update(TagDto element) {
+        this.tagDao.update(TagMapper.toEntity(element));
+    }
+
+    public void update(TypeDto element) {
+        this.typeDao.update(TypeMapper.toEntity(element));
+    }
+
+    public void delete(TagDto element) {
+        this.tagDao.delete(TagMapper.toEntity(element));
+    }
+
+    public void delete(TypeDto element) {
+        this.typeDao.delete(TypeMapper.toEntity(element));
     }
 }

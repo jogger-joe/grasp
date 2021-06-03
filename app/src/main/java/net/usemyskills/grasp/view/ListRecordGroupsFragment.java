@@ -17,12 +17,12 @@ import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.RecordGroupRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentRecordGroupListBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
-import net.usemyskills.grasp.persistence.entity.RecordGroup;
+import net.usemyskills.grasp.model.RecordGroupDto;
 import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
-public class ListRecordGroupsFragment extends Fragment implements OnItemClickListener<RecordGroup> {
+public class ListRecordGroupsFragment extends Fragment implements OnItemClickListener<RecordGroupDto> {
     private RecordViewModel recordViewModel;
     private TagViewModel tagViewModel;
     private RecordGroupViewModel recordGroupViewModel;
@@ -38,13 +38,12 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
     }
 
     @Override
-    public void onClickItem(RecordGroup recordGroup) {
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem: " + recordGroup.toString());
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem tagId: " + recordGroup.tagId);
+    public void onClickItem(RecordGroupDto recordGroup) {
+        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem: " + recordGroup.toString() + "(" + recordGroup.id + ")");
         NavController navController = NavHostFragment.findNavController(ListRecordGroupsFragment.this);
-        if (recordGroup.tagId > 0) {
-            this.recordViewModel.setRecordGroup(recordGroup, this.requireActivity());
-            this.tagViewModel.setRecordGroup(recordGroup, this.requireActivity());
+        if (recordGroup.id > 0) {
+            this.recordViewModel.setRecordGroup(recordGroup);
+            this.tagViewModel.setRecordGroup(recordGroup);
             navController.navigate(R.id.action_select_record_group);
         } else {
             this.recordGroupViewModel.setEditElement(recordGroup);
@@ -63,7 +62,6 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
             Log.d("GRASP_LOG", "ListRecordGroupsFragment.recordGroupViewModel.getRecordGroups().observe: " + recordGroups.toString());
             this.recordGroupRecyclerViewAdapter.setValues(recordGroups);
         });
-        this.recordGroupViewModel.loadAll(this.requireActivity());
         super.onActivityCreated(savedInstanceState);
     }
 }

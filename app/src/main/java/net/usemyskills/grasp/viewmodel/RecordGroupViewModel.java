@@ -4,10 +4,10 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import net.usemyskills.grasp.persistence.entity.RecordGroup;
+import net.usemyskills.grasp.model.RecordGroupDto;
 import net.usemyskills.grasp.repository.RecordGroupRepository;
 
 import java.util.List;
@@ -15,41 +15,38 @@ import java.util.List;
 public class RecordGroupViewModel extends AndroidViewModel {
 
     private final RecordGroupRepository recordGroupRepository;
-    private final MutableLiveData<List<RecordGroup>> recordGroups;
-    private final MutableLiveData<RecordGroup> editElement;
+    private final LiveData<List<RecordGroupDto>> recordGroups;
+    private final MutableLiveData<RecordGroupDto> editElement;
 
     public RecordGroupViewModel(Application application) {
         super(application);
         Log.d("GRASP_LOG", "RecordGroupViewModel");
         this.recordGroupRepository = new RecordGroupRepository(application);
-        this.recordGroups = new MutableLiveData<>();
+        this.recordGroups = this.recordGroupRepository.getElements();
+        this.recordGroupRepository.getAll();
         this.editElement = new MutableLiveData<>();
-    }
-
-    public void loadAll(LifecycleOwner owner) {
-        this.recordGroupRepository.getAll().observe(owner, this.recordGroups::postValue);
     }
 
     //new RecordGroup("create new", R.drawable.ic_add)
 
-    public MutableLiveData<List<RecordGroup>> getRecordGroups() {
+    public LiveData<List<RecordGroupDto>> getRecordGroups() {
         Log.d("GRASP_LOG", "RecordGroupViewModel.getRecordGroups");
         return this.recordGroups;
     }
 
-    public void save(RecordGroup recordGroup) {
-        if (recordGroup.tagId == 0) {
+    public void save(RecordGroupDto recordGroup) {
+        if (recordGroup.id == 0) {
             this.recordGroupRepository.insert(recordGroup);
         } else {
             this.recordGroupRepository.update(recordGroup);
         }
     }
 
-    public MutableLiveData<RecordGroup> getEditElement() {
+    public MutableLiveData<RecordGroupDto> getEditElement() {
         return editElement;
     }
 
-    public void setEditElement(RecordGroup editElement) {
+    public void setEditElement(RecordGroupDto editElement) {
         this.editElement.postValue(editElement);
     }
 }
