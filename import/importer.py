@@ -45,9 +45,9 @@ class Importer:
     def import_data(self, excel_file: str) -> None:
         f = pd.ExcelFile(excel_file)
         for n, sheet in enumerate(f.sheet_names):
-            # groupName = sheet
-            # self.add_record_group((groupName))
-            # groupId = self.get_last_id()
+            groupName = sheet
+            self.add_record_group((groupName))
+            groupId = self.get_last_id()
             
             print('Sheet Index:[{}], Title:{}'.format(n, sheet))
             dataframe = pd.read_excel(io=excel_file, sheet_name=sheet)
