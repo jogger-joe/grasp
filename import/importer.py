@@ -1,5 +1,7 @@
 from sqlite3 import connect, Error
 from connector import Connector
+import time
+import datetime
 import pandas as pd
 
 class Importer:
@@ -9,19 +11,22 @@ class Importer:
         self.data_connector = Connector(db_file)
 
     def clear_tables(self):
-        sql = """ DELETE * FROM Record; """
+        sql = """ DELETE FROM Record; """
         self.data_connector.execute(sql)
 
-        sql = """ DELETE * FROM RecordGroup; """
+        sql = """ DELETE FROM RecordGroup; """
         self.data_connector.execute(sql)
 
-        sql = """ DELETE * FROM RecordTagsReference; """
+        sql = """ DELETE FROM RecordTagsReference; """
         self.data_connector.execute(sql)
 
-        sql = """ DELETE * FROM Tag; """
+        sql = """ DELETE FROM Tag; """
         self.data_connector.execute(sql)
         
-        sql = """ DELETE * FROM Type; """
+        sql = """ DELETE FROM Type; """
+        self.data_connector.execute(sql)
+
+        sql = """ UPDATE sqlite_sequence SET seq=0; """
         self.data_connector.execute(sql)
 
     def add_tag(self, tag):
@@ -31,7 +36,7 @@ class Importer:
         self.data_connector.create_entry('Type', type, ['name', 'groupId'])
 
     def add_record_group(self, record_group):
-        self.data_connector.create_entry('RecordGroup', record_group, ['name'])
+        self.data_connector.create_entry('RecordGroup', record_group, ['name', 'groupId', 'iconId'])
 
     def add_record_tag_reference(self, record_tag_reference):
         self.data_connector.create_entry('RecordTagsReference', record_tag_reference, ['recordId', 'tagId'])
@@ -46,7 +51,7 @@ class Importer:
         f = pd.ExcelFile(excel_file)
         for n, sheet in enumerate(f.sheet_names):
             groupName = sheet
-            self.add_record_group((groupName))
+            self.add_record_group([groupName, 0, 0])
             groupId = self.get_last_id()
             
             print('Sheet Index:[{}], Title:{}'.format(n, sheet))
@@ -56,7 +61,7 @@ class Importer:
             types = enumerate(dataframe[typesColumn])
             uniqueTypes = {}
             for index, type in types:
-                if type not in uniqueTypes:
+                if pd.notnull(type) and type not in uniqueTypes:
                     self.add_type((type, groupId))
                     typeId = self.get_last_id()
                     uniqueTypes[type] = typeId
@@ -66,12 +71,20 @@ class Importer:
             tags = enumerate(dataframe[tagsColumn])
             uniqueTags = {}
             for index, tag in tags:
-                if tag not in uniqueTags:
+                if pd.notnull(tag) and tag not in uniqueTags:
                     self.add_tag((tag, groupId))
                     tagId = self.get_last_id()
-                    uniqueTypes[tag] = tagId
+                    uniqueTags[tag] = tagId
             print(uniqueTags)
-           
             
-            for row in dataframe.rows[0:]:
-                print('Column {}'.format(row))
+            for rowIndex, rowContent in dataframe.iterrows():
+                if (pd.notnull(rowContent['type']) and pd.notnull(rowContent['value'])):
+                    tagId = 0 if pd.isnull(rowContent['tag']) else uniqueTags[rowContent['tag']]
+                    typeId = 0 if pd.isnull(rowContent['type']) else uniqueTypes[rowContent['type']]
+                    dateInteger = datetime.datetime.timestamp(rowContent['date'])
+                    value = rowContent['value']
+                    print('{} ({}): {} ({}) {} ({}) {}'.format(rowContent['date'], dateInteger, rowContent['type'], typeId, rowContent['tag'], tagId, rowContent['value']))
+                    self.add_record((typeId, groupId, dateInteger, value))
+                    recordId = self.get_last_id()
+                    if (tagId > 0):
+                        self.add_record_tag_reference((recordId, tagId))
