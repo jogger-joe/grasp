@@ -1,6 +1,5 @@
 from sqlite3 import connect, Error
 from connector import Connector
-import time
 import datetime
 import pandas as pd
 
@@ -81,7 +80,7 @@ class Importer:
                 if (pd.notnull(rowContent['type']) and pd.notnull(rowContent['value'])):
                     tagId = 0 if pd.isnull(rowContent['tag']) else uniqueTags[rowContent['tag']]
                     typeId = 0 if pd.isnull(rowContent['type']) else uniqueTypes[rowContent['type']]
-                    dateInteger = datetime.datetime.timestamp(rowContent['date'])
+                    dateInteger = round(datetime.datetime.timestamp(rowContent['date']) * 1000)
                     value = rowContent['value']
                     print('{} ({}): {} ({}) {} ({}) {}'.format(rowContent['date'], dateInteger, rowContent['type'], typeId, rowContent['tag'], tagId, rowContent['value']))
                     self.add_record((typeId, groupId, dateInteger, value))
