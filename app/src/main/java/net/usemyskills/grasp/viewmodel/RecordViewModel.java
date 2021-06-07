@@ -1,0 +1,57 @@
+package net.usemyskills.grasp.viewmodel;
+
+import android.app.Application;
+import android.util.Log;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import net.usemyskills.grasp.model.RecordDto;
+import net.usemyskills.grasp.model.RecordGroupDto;
+import net.usemyskills.grasp.repository.RecordRepository;
+
+import java.util.List;
+
+public class RecordViewModel extends AndroidViewModel {
+
+    private final RecordRepository recordRepository;
+    private final LiveData<List<RecordDto>> records;
+    private final MutableLiveData<RecordDto> editElement;
+
+    public RecordViewModel(Application application) {
+        super(application);
+        this.recordRepository = new RecordRepository(application);
+        this.records = this.recordRepository.getElements();
+        this.editElement = new MutableLiveData<>();
+    }
+
+    public void loadRecordsByGroup(RecordGroupDto recordGroup) {
+        this.recordRepository.getAllByGroupId(recordGroup.id);
+    }
+
+    public void loadRecords() {
+        this.recordRepository.getAll();
+    }
+
+    public LiveData<List<RecordDto>> getRecords() {
+        return this.records;
+    }
+
+    public void save(RecordDto record) {
+        if (record.id == 0) {
+            this.recordRepository.insert(record);
+        } else {
+            this.recordRepository.insert(record);
+        }
+    }
+
+    public MutableLiveData<RecordDto> getEditElement() {
+        return editElement;
+    }
+
+    public void setEditElement(RecordDto editElement) {
+        this.editElement.postValue(editElement);
+    }
+}
+

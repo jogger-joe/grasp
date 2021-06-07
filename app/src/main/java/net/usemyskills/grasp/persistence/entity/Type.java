@@ -3,39 +3,35 @@ package net.usemyskills.grasp.persistence.entity;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
-import net.usemyskills.grasp.model.Selectable;
-
 @Entity
-public class Type extends Tag implements Selectable {
-    private String unit;
+public class Type extends Tag {
+    public String format;
+    public String suffix;
 
-    public Type(int id, String name, String description, String unit) {
-        super(id, name, description);
-        this.unit = unit;
+    public Type(long tagId, String name, String description, long groupId, String format, String suffix) {
+        super(tagId, name, description, groupId);
+        this.format = format;
+        this.suffix = suffix;
     }
 
     @Ignore
-    public Type(String name, String description, String unit) {
-        super(name, description);
-        this.unit = unit;
+    public Type(String name, String description, long groupId, String format, String suffix) {
+        this(0, name, description, groupId, format, suffix);
+    }
+
+    @Ignore
+    public Type(String name, String description) {
+        this(name, description, 0, "", "");
     }
 
     @Ignore
     public Type(String name) {
-        super(name);
+        this(name, "");
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.getName();
+    @Ignore
+    public Type() {
+        this("", "");
     }
 }
 
