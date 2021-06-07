@@ -30,7 +30,7 @@ public class TagViewModel extends AndroidViewModel {
         this.editTypeElement = new MutableLiveData<>();
     }
 
-    public void setRecordGroup(RecordGroupDto recordGroup) {
+    public void loadTagsByGroup(RecordGroupDto recordGroup) {
         this.tagRepository.getTagsByGroupId(recordGroup.id);
         this.tagRepository.getTypesByGroupId(recordGroup.id);
     }

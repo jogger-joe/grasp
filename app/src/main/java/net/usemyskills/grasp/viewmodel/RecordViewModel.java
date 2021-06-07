@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.model.RecordDto;
+import net.usemyskills.grasp.model.RecordGroupDto;
 import net.usemyskills.grasp.repository.RecordRepository;
 
 import java.util.List;
@@ -22,8 +23,15 @@ public class RecordViewModel extends AndroidViewModel {
         super(application);
         this.recordRepository = new RecordRepository(application);
         this.records = this.recordRepository.getElements();
-        this.recordRepository.getAll();
         this.editElement = new MutableLiveData<>();
+    }
+
+    public void loadRecordsByGroup(RecordGroupDto recordGroup) {
+        this.recordRepository.getAllByGroupId(recordGroup.id);
+    }
+
+    public void loadRecords() {
+        this.recordRepository.getAll();
     }
 
     public LiveData<List<RecordDto>> getRecords() {

@@ -21,9 +21,9 @@ import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
 public class ListRecordGroupsFragment extends Fragment implements OnItemClickListener<RecordGroupDto> {
-    private RecordViewModel recordViewModel;
     private TagViewModel tagViewModel;
     private RecordGroupViewModel recordGroupViewModel;
+    private RecordViewModel recordViewModel;
     private RecordGroupRecyclerViewAdapter recordGroupRecyclerViewAdapter;
     private NavController navController;
 
@@ -43,7 +43,8 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
     @Override
     public void onClickItem(RecordGroupDto recordGroup) {
         this.recordGroupViewModel.setEditElement(recordGroup);
-        this.tagViewModel.setRecordGroup(recordGroup);
+        this.recordViewModel.loadRecordsByGroup(recordGroup);
+        this.tagViewModel.loadTagsByGroup(recordGroup);
         this.navController.navigate(R.id.action_select_record_group);
     }
 
@@ -51,8 +52,8 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.tagViewModel = viewModelProvider.get(TagViewModel.class);
-        this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
+        this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel.getRecordGroups().observe(this.requireActivity(), recordGroups -> {
             this.recordGroupRecyclerViewAdapter.setValues(recordGroups);
         });

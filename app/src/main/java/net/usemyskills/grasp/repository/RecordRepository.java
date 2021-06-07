@@ -20,7 +20,6 @@ public class RecordRepository {
     protected final RecordDao recordDao;
     protected final TagDao tagDao;
     protected final RecordTagsReferenceDao recordTagsReferenceDao;
-    private long groupId;
 
     protected MutableLiveData<List<RecordDto>> elements;
 
@@ -44,11 +43,6 @@ public class RecordRepository {
     }
 
     public void getAllByGroupId(long groupId) {
-        this.groupId = groupId;
-        if (groupId == 0) {
-            this.getAll();
-            return;
-        }
         AppDatabase.databaseWriteExecutor.execute(() -> {
             List<RecordWithTypeAndTags> records = this.recordDao.findByGroup(groupId);
             this.elements.postValue(RecordMapper.toDto(records));
@@ -64,7 +58,6 @@ public class RecordRepository {
                 this.tagDao.insert(tag);
                 this.recordTagsReferenceDao.insert(new RecordTagsReference(element.record.recordId, tag.tagId));
             }
-            this.getAllByGroupId(this.groupId);
         });
     }
 
