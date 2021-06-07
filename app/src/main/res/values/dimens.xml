@@ -6,5 +6,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="big_font">20sp</dimen>
     <dimen name="list_font">16sp</dimen>
+    <dimen name="small_font">12sp</dimen>
+    <dimen name="extra_small_font">10sp</dimen>
     <dimen name="select_font">14sp</dimen>
 </resources>

@@ -1,7 +1,6 @@
 package net.usemyskills.grasp.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import net.usemyskills.grasp.R;
@@ -16,36 +16,49 @@ import net.usemyskills.grasp.adapter.RecordRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentRecordListBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.model.RecordDto;
+import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
 public class ListRecordsFragment extends Fragment implements OnItemClickListener<RecordDto> {
     private RecordViewModel recordViewModel;
+    private RecordGroupViewModel recordGroupViewModel;
     private RecordRecyclerViewAdapter recordRecyclerViewAdapter;
+    private NavController navController;
+    private FragmentRecordListBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "ListRecordsFragment.onCreateView");
-        FragmentRecordListBinding binding = FragmentRecordListBinding.inflate(inflater, container, false);
+        this.navController = NavHostFragment.findNavController(ListRecordsFragment.this);
         this.recordRecyclerViewAdapter = new RecordRecyclerViewAdapter(this);
-        binding.recordList.setAdapter(this.recordRecyclerViewAdapter);
-        return binding.getRoot();
+        this.binding = FragmentRecordListBinding.inflate(inflater, container, false);
+        this.binding.recordList.setAdapter(this.recordRecyclerViewAdapter);
+        this.binding.addRecord.setOnClickListener(v -> {
+            recordViewModel.setEditElement(new RecordDto());
+            navController.navigate(R.id.action_edit_record);
+        });
+        this.binding.recordGroupBox.setOnClickListener(v -> {
+            navController.navigate(R.id.action_edit_record_group);
+        });
+        return this.binding.getRoot();
     }
 
     @Override
     public void onClickItem(RecordDto item) {
-        Log.d("GRASP_LOG", "ListRecordsFragment.onClickItem");
         this.recordViewModel.setEditElement(item);
-        NavHostFragment.findNavController(ListRecordsFragment.this)
-                .navigate(R.id.action_edit_record);
+        this.navController.navigate(R.id.action_edit_record);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "ListRecordsFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordViewModel.getRecords().observe(this.requireActivity(), records -> {
             this.recordRecyclerViewAdapter.setValues(records);
+        });
+        this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
+        this.recordGroupViewModel.getEditElement().observe(this.requireActivity(), recordGroup -> {
+            this.binding.recordGroupIcon.setImageResource(recordGroup.iconId);
+            this.binding.recordGroupName.setText(recordGroup.name);
         });
         super.onActivityCreated(savedInstanceState);
     }

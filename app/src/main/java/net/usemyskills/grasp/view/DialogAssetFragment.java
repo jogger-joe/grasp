@@ -12,12 +12,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import net.usemyskills.grasp.adapter.AssetRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentAssetListBinding;
+import net.usemyskills.grasp.listener.OnItemClickListener;
+import net.usemyskills.grasp.model.Asset;
 
 public class DialogAssetFragment extends BottomSheetDialogFragment {
     private final AssetRecyclerViewAdapter assetRecyclerViewAdapter;
 
-    public DialogAssetFragment(AssetRecyclerViewAdapter assetRecyclerViewAdapter) {
-        this.assetRecyclerViewAdapter = assetRecyclerViewAdapter;
+    public DialogAssetFragment(OnItemClickListener<Asset> onClickRecordListener) {
+        this.assetRecyclerViewAdapter = new AssetRecyclerViewAdapter(onClickRecordListener);
     }
 
     @Override

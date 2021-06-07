@@ -1,8 +1,6 @@
 package net.usemyskills.grasp.view;
 
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,39 +25,35 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
     private TagViewModel tagViewModel;
     private RecordGroupViewModel recordGroupViewModel;
     private RecordGroupRecyclerViewAdapter recordGroupRecyclerViewAdapter;
+    private NavController navController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onCreateView");
-        FragmentRecordGroupListBinding binding = FragmentRecordGroupListBinding.inflate(inflater, container, false);
+        this.navController = NavHostFragment.findNavController(ListRecordGroupsFragment.this);
         this.recordGroupRecyclerViewAdapter = new RecordGroupRecyclerViewAdapter(this);
+        FragmentRecordGroupListBinding binding = FragmentRecordGroupListBinding.inflate(inflater, container, false);
         binding.recordGroupList.setAdapter(this.recordGroupRecyclerViewAdapter);
+        binding.addRecordGroup.setOnClickListener(v -> {
+            recordGroupViewModel.setEditElement(new RecordGroupDto());
+            navController.navigate(R.id.action_add_record_group);
+        });
         return binding.getRoot();
     }
 
     @Override
     public void onClickItem(RecordGroupDto recordGroup) {
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onClickItem: " + recordGroup.name + "(" + recordGroup.id + ")");
-        NavController navController = NavHostFragment.findNavController(ListRecordGroupsFragment.this);
-        if (recordGroup.isPlaceholder()) {
-            this.recordGroupViewModel.setEditElement(recordGroup);
-            navController.navigate(R.id.action_edit_record_group);
-        } else {
-            this.recordViewModel.setRecordGroup(recordGroup);
-            this.tagViewModel.setRecordGroup(recordGroup);
-            navController.navigate(R.id.action_select_record_group);
-        }
+        this.recordGroupViewModel.setEditElement(recordGroup);
+        this.tagViewModel.setRecordGroup(recordGroup);
+        this.navController.navigate(R.id.action_select_record_group);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "ListRecordGroupsFragment.onActivityCreated");
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.tagViewModel = viewModelProvider.get(TagViewModel.class);
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
         this.recordGroupViewModel.getRecordGroups().observe(this.requireActivity(), recordGroups -> {
-            Log.d("GRASP_LOG", "ListRecordGroupsFragment.recordGroupViewModel.getRecordGroups().observe: " + recordGroups.toString());
             this.recordGroupRecyclerViewAdapter.setValues(recordGroups);
         });
         super.onActivityCreated(savedInstanceState);

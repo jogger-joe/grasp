@@ -1,5 +1,6 @@
 package net.usemyskills.grasp.repository;
 
+import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.model.RecordGroupDto;
 import net.usemyskills.grasp.persistence.entity.RecordGroup;
 
@@ -21,7 +22,7 @@ public class RecordGroupMapper {
         recordGroupDto.id = recordGroup.tagId;
         recordGroupDto.name = recordGroup.name;
         recordGroupDto.description = recordGroup.description;
-        recordGroupDto.iconId = recordGroup.iconId;
+        recordGroupDto.iconId = recordGroup.iconId != 0 ? recordGroup.iconId : R.drawable.ic_default;
         return recordGroupDto;
     }
 

@@ -15,7 +15,7 @@
             android:id="@+id/action_select_record_group"
             app:destination="@id/list_records" />
         <action
-            android:id="@+id/action_edit_record_group"
+            android:id="@+id/action_add_record_group"
             app:destination="@id/edit_record_group" />
     </fragment>
 
@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_edit_record"
             app:destination="@id/edit_record" />
+        <action
+            android:id="@+id/action_edit_record_group"
+            app:destination="@id/edit_record_group" />
     </fragment>
     <fragment
         android:id="@+id/edit_record"

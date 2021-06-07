@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.databinding.FragmentRecordGroupListItemBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.model.RecordGroupDto;
@@ -15,31 +14,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordGroupRecyclerViewAdapter.ViewHolder> {
-    private final OnItemClickListener<RecordGroupDto> onClickRecordListener;
+    private final OnItemClickListener<RecordGroupDto> onClickRecordGroupListener;
     private List<RecordGroupDto> recordGroups;
-    private int newColor;
 
-    public RecordGroupRecyclerViewAdapter(List<RecordGroupDto> recordGroups, OnItemClickListener<RecordGroupDto> onClickRecordListener) {
+    public RecordGroupRecyclerViewAdapter(List<RecordGroupDto> recordGroups, OnItemClickListener<RecordGroupDto> onClickRecordGroupListener) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter construct");
         this.recordGroups = recordGroups;
-        this.onClickRecordListener = onClickRecordListener;
+        this.onClickRecordGroupListener = onClickRecordGroupListener;
     }
 
-    public RecordGroupRecyclerViewAdapter(OnItemClickListener<RecordGroupDto> onClickRecordListener) {
-        this(new ArrayList<>(), onClickRecordListener);
+    public RecordGroupRecyclerViewAdapter(OnItemClickListener<RecordGroupDto> onClickRecordGroupListener) {
+        this(new ArrayList<>(), onClickRecordGroupListener);
     }
 
     public void setValues(List<RecordGroupDto> recordGroups) {
         Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.setValues: " + recordGroups.toString() );
         this.recordGroups = new ArrayList<>(recordGroups);
-        this.recordGroups.add(new RecordGroupDto("create new", R.drawable.ic_add));
         this.notifyDataSetChanged();
     }
 
     @Override
     public RecordGroupRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.onCreateViewHolder");
-        this.newColor = parent.getContext().getResources().getColor(R.color.design_default_color_secondary);
         return new ViewHolder(FragmentRecordGroupListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
@@ -66,15 +61,9 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
 
         public void bind(RecordGroupDto recordGroup){
             Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.bind: " + recordGroup.toString());
-            if (recordGroup.isPlaceholder()) {
-                this.binding.labelView.setText(R.string.create_entry);
-                this.binding.iconView.setImageResource(R.drawable.ic_add);
-                this.itemView.setBackgroundColor(newColor);
-            } else {
-                this.binding.labelView.setText(recordGroup.name);
-                this.binding.iconView.setImageResource(recordGroup.iconId);
-            }
-            this.itemView.setOnClickListener(v -> onClickRecordListener.onClickItem(recordGroup));
+            this.binding.labelView.setText(recordGroup.name);
+            this.binding.iconView.setImageResource(recordGroup.iconId);
+            this.itemView.setOnClickListener(v -> onClickRecordGroupListener.onClickItem(recordGroup));
         }
     }
 

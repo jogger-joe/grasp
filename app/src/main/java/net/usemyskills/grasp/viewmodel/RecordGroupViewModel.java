@@ -1,7 +1,6 @@
 package net.usemyskills.grasp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -20,17 +19,13 @@ public class RecordGroupViewModel extends AndroidViewModel {
 
     public RecordGroupViewModel(Application application) {
         super(application);
-        Log.d("GRASP_LOG", "RecordGroupViewModel");
         this.recordGroupRepository = new RecordGroupRepository(application);
         this.recordGroups = this.recordGroupRepository.getElements();
         this.recordGroupRepository.getAll();
         this.editElement = new MutableLiveData<>();
     }
 
-    //new RecordGroup("create new", R.drawable.ic_add)
-
     public LiveData<List<RecordGroupDto>> getRecordGroups() {
-        Log.d("GRASP_LOG", "RecordGroupViewModel.getRecordGroups");
         return this.recordGroups;
     }
 
@@ -40,6 +35,7 @@ public class RecordGroupViewModel extends AndroidViewModel {
         } else {
             this.recordGroupRepository.update(recordGroup);
         }
+        this.editElement.postValue(recordGroup);
     }
 
     public MutableLiveData<RecordGroupDto> getEditElement() {

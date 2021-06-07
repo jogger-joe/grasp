@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
-import net.usemyskills.grasp.databinding.FragmentTagListBinding;
+import net.usemyskills.grasp.databinding.FragmentTagListDialogBinding;
 import net.usemyskills.grasp.model.TagDto;
 
 public class DialogTagFragment<T extends TagDto> extends BottomSheetDialogFragment {
@@ -27,10 +27,9 @@ public class DialogTagFragment<T extends TagDto> extends BottomSheetDialogFragme
     }
 
     @Nullable
-    @org.jetbrains.annotations.Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        net.usemyskills.grasp.databinding.FragmentTagListBinding binding = FragmentTagListBinding.inflate(inflater, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentTagListDialogBinding binding = FragmentTagListDialogBinding.inflate(inflater, container, false);
         binding.tagList.setAdapter(this.tagRecyclerViewAdapter);
         return binding.tagList;
     }

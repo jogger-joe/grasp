@@ -39,7 +39,7 @@ public class RecordDto implements HasPlaceholder {
             StringBuilder tagsStringBuilder = new StringBuilder();
             for (TagDto tag : this.tags) {
                 if (tag != null) {
-                    tagsStringBuilder.append(tag.name).append(", ");
+                    tagsStringBuilder.append(tag.name).append(" ");
                 }
             }
             return tagsStringBuilder.toString();

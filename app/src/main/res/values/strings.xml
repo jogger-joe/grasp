@@ -28,4 +28,6 @@
     <string name="tag_description">Beschreibung</string>
     <string name="type_suffix">Einheit</string>
     <string name="save_successful">Erfolgreich gespeichert</string>
+    <string name="add_record_group">Gruppe erstellen</string>
+    <string name="add_tag">Tag erstellen</string>
 </resources>

@@ -4,12 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class DialogDateFragment extends DialogFragment {
+public class DialogDateFragment extends BottomSheetDialogFragment {
     private final Calendar calendar;
     private final DatePickerDialog.OnDateSetListener onDateSetListener;
 

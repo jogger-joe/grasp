@@ -7,36 +7,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/big_padding">
-
+        android:layout_margin="@dimen/big_padding"
+        android:orientation="vertical">
         <TextView
             android:id="@+id/dateView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/big_padding"
             android:text="@string/placeholder_date"
-            android:textSize="@dimen/list_font" />
+            android:textSize="@dimen/small_font" />
 
-        <TextView
-            android:id="@+id/typeView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/placeholder_text"
-            android:textSize="@dimen/list_font" />
-
-        <TextView
-            android:id="@+id/tagsView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/placeholder_text"
-            android:textSize="@dimen/list_font" />
-
-        <TextView
-            android:id="@+id/valueView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="end"
-            android:text="@string/placeholder_value"
-            android:textSize="@dimen/list_font" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/typeView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/placeholder_text"
+                android:layout_marginEnd="@dimen/big_padding"
+                android:textSize="@dimen/list_font" />
+            <TextView
+                android:id="@+id/tagsView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/placeholder_text"
+                android:textSize="@dimen/extra_small_font" />
+            <TextView
+                android:id="@+id/valueView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:text="@string/placeholder_value"
+                android:textSize="@dimen/list_font" />
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

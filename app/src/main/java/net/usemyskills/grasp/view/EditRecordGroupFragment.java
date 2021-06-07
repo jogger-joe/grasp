@@ -10,14 +10,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import net.usemyskills.grasp.R;
-import net.usemyskills.grasp.adapter.AssetRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentEditRecordGroupBinding;
 import net.usemyskills.grasp.model.Asset;
 import net.usemyskills.grasp.model.RecordGroupDto;
-import net.usemyskills.grasp.service.AssetProvider;
 import net.usemyskills.grasp.viewmodel.RecordGroupViewModel;
 
 public class EditRecordGroupFragment extends Fragment implements View.OnClickListener {
@@ -31,7 +28,7 @@ public class EditRecordGroupFragment extends Fragment implements View.OnClickLis
         this.binding = FragmentEditRecordGroupBinding.inflate(inflater, container, false);
         this.binding.buttonRecordGroupSave.setOnClickListener(this);
 
-        DialogAssetFragment dateSelectTagFragment = new DialogAssetFragment(new AssetRecyclerViewAdapter(AssetProvider.getAvailableIcons(), this::updateIcon));
+        DialogAssetFragment dateSelectTagFragment = new DialogAssetFragment(this::updateIcon);
         this.binding.recordGroupIcon.setOnClickListener(v -> dateSelectTagFragment.show(this.getParentFragmentManager(), "dialog"));
 
         return binding.getRoot();

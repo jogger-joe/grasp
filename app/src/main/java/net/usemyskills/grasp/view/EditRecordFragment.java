@@ -49,8 +49,8 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         this.bindElement(this.record);
 
         // init adapter
-        this.typeAdapter = new TagRecyclerViewAdapter<>(this::clickType);
-        this.tagAdapter = new TagRecyclerViewAdapter<>(this::clickTag);
+        this.typeAdapter = new TagRecyclerViewAdapter<>();
+        this.tagAdapter = new TagRecyclerViewAdapter<>();
 
         // init dialogs
         DialogDateFragment dateDialogFragment = new DialogDateFragment(this::updateDate);

@@ -1,5 +1,7 @@
 package net.usemyskills.grasp.model;
 
+import net.usemyskills.grasp.R;
+
 public class RecordGroupDto extends TagDto {
     public int iconId;
 
@@ -14,6 +16,6 @@ public class RecordGroupDto extends TagDto {
     }
 
     public RecordGroupDto() {
-        super("", 0);
+        this("", R.drawable.ic_default);
     }
 }
