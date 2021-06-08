@@ -16,6 +16,7 @@ public class RecordMapper {
         recordWithTypeAndTags.record.groupId = recordDto.groupId;
         recordWithTypeAndTags.record.date = recordDto.date;
         recordWithTypeAndTags.record.value = recordDto.value;
+        recordWithTypeAndTags.record.typeId = recordDto.type != null ? recordDto.type.id : 0;
         recordWithTypeAndTags.tags = TagMapper.toEntity(recordDto.tags);
         recordWithTypeAndTags.type = TypeMapper.toEntity(recordDto.type);
         return recordWithTypeAndTags;

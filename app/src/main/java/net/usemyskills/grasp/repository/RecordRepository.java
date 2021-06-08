@@ -1,6 +1,7 @@
 package net.usemyskills.grasp.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -50,6 +51,7 @@ public class RecordRepository {
     }
 
     public void insert(RecordDto elementDto) {
+        Log.d("RecordRepository.insert", elementDto.toString() + " " + elementDto.value );
         AppDatabase.databaseWriteExecutor.execute(() -> {
             RecordWithTypeAndTags element = RecordMapper.toEntity(elementDto);
             this.tagDao.insert(element.type);

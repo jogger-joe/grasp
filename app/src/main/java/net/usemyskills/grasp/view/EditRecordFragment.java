@@ -86,6 +86,7 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         try {
+            this.record.value = Double.parseDouble(this.binding.recordValue.getText().toString());
             this.recordViewModel.save(this.record);
             Toast.makeText(this.getContext(), R.string.save_successful, Toast.LENGTH_SHORT).show();
         } catch (Exception exception) {
