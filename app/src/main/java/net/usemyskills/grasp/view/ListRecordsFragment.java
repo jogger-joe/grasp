@@ -1,10 +1,15 @@
 package net.usemyskills.grasp.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +44,7 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
         this.binding.recordGroupBox.setOnClickListener(v -> {
             navController.navigate(R.id.action_edit_record_group);
         });
+        this.setHasOptionsMenu(true);
         return this.binding.getRoot();
     }
 
@@ -61,5 +67,28 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
             this.binding.recordGroupName.setText(recordGroup.name);
         });
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.list_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Log.d("GRASP: onOptionsItemSelected", item.toString());
+
+        if (id == R.id.list_tags_button) {
+            navController.navigate(R.id.action_list_tags);
+            return true;
+        }
+        if (id == R.id.list_types_button) {
+            navController.navigate(R.id.action_list_types);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class RecordDto implements HasPlaceholder {
+public class RecordDto {
     public long id;
     public Date date;
     public TypeDto type;
@@ -50,8 +50,4 @@ public class RecordDto implements HasPlaceholder {
         return this.date == null ? "invalid" : new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN).format(this.date);
     }
 
-    @Override
-    public boolean isPlaceholder() {
-        return this.id == 0;
-    }
 }

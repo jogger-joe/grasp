@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
-import net.usemyskills.grasp.databinding.FragmentRecordListBinding;
+import net.usemyskills.grasp.databinding.FragmentTagListBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
 import net.usemyskills.grasp.model.TypeDto;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
@@ -23,17 +23,16 @@ public class ListTypesFragment extends Fragment implements OnItemClickListener<T
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentRecordListBinding binding = FragmentRecordListBinding.inflate(inflater, container, false);
+        FragmentTagListBinding binding = FragmentTagListBinding.inflate(inflater, container, false);
         this.tagRecyclerViewAdapter = new TagRecyclerViewAdapter<>();
-        binding.recordList.setAdapter(this.tagRecyclerViewAdapter);
+        binding.tagList.setAdapter(this.tagRecyclerViewAdapter);
         return binding.getRoot();
     }
 
     @Override
     public void onClickItem(TypeDto type) {
         this.tagViewModel.setEditTagElement(type);
-        NavHostFragment.findNavController(ListTypesFragment.this)
-                .navigate(R.id.action_edit_record);
+        NavHostFragment.findNavController(ListTypesFragment.this).navigate(R.id.action_edit_type);
     }
 
     @Override

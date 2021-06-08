@@ -1,6 +1,6 @@
 package net.usemyskills.grasp.model;
 
-public class TagDto implements HasPlaceholder {
+public class TagDto {
     public long id;
     public String name;
     public String description;
@@ -19,16 +19,8 @@ public class TagDto implements HasPlaceholder {
         this.groupId = groupId;
     }
 
-    public static TagDto create() {
-        return new TagDto();
-    }
-
     public TagDto() {
         this("", 0);
     }
 
-    @Override
-    public boolean isPlaceholder() {
-        return this.id == 0;
-    }
 }

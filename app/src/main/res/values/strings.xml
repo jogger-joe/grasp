@@ -20,7 +20,7 @@
     <string name="edit_tag">Tag bearbeiten</string>
     <string name="edit_record_group">Gruppe bearbeiten</string>
     <string name="edit_record">Eintrag bearbeiten</string>
-    <string name="list_types">Typen</string>
+    <string name="list_types">Typen verwalten</string>
     <string name="edit_type">Type bearbeiten</string>
     <string name="record_group_name">Name</string>
     <string name="record_group_icon">Icon</string>
@@ -30,4 +30,6 @@
     <string name="save_successful">Erfolgreich gespeichert</string>
     <string name="add_record_group">Gruppe erstellen</string>
     <string name="add_tag">Tag erstellen</string>
+    <string name="list_tags">Tags verwalten</string>
+    <string name="types">Types</string>
 </resources>

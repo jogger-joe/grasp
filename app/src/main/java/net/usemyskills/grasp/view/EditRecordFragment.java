@@ -80,24 +80,14 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
 
     private void clickType(TypeDto type) {
         Log.d("GRASP_LOG", "EditRecordFragment.updateType " + type.toString() );
-        if (type.isPlaceholder()) {
-            this.tagViewModel.setEditTypeElement(type);
-            this.navController.navigate(R.id.action_edit_tag);
-        } else if (this.record != null) {
-            this.record.type = type;
-            this.bindElement(this.record);
-        }
+        this.record.type = type;
+        this.bindElement(this.record);
     }
 
     private void clickTag(TagDto tag) {
         Log.d("GRASP_LOG", "EditRecordFragment.addTag");
-        if (tag.isPlaceholder()) {
-            this.tagViewModel.setEditTagElement(tag);
-            this.navController.navigate(R.id.action_edit_type);
-        } else if (this.record != null) {
-            this.record.tags.add(tag);
-            this.bindElement(this.record);
-        }
+        this.record.tags.add(tag);
+        this.bindElement(this.record);
     }
 
     @Override
