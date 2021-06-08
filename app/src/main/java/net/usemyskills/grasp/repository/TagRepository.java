@@ -78,11 +78,15 @@ public class TagRepository {
     }
 
     public void update(TagDto element) {
-        this.tagDao.update(TagMapper.toEntity(element));
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.tagDao.update(TagMapper.toEntity(element));
+        });
     }
 
     public void update(TypeDto element) {
-        this.typeDao.update(TypeMapper.toEntity(element));
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.typeDao.update(TypeMapper.toEntity(element));
+        });
     }
 
     public void delete(TagDto element) {

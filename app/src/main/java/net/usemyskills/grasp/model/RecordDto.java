@@ -8,6 +8,7 @@ import java.util.Locale;
 
 public class RecordDto {
     public long id;
+    public long groupId;
     public Date date;
     public TypeDto type;
     public List<TagDto> tags;
@@ -15,6 +16,7 @@ public class RecordDto {
 
     public RecordDto(RecordDto recordDto) {
         this.id = recordDto.id;
+        this.groupId = recordDto.groupId;
         this.date = recordDto.date;
         this.type = recordDto.type;
         this.tags = recordDto.tags;
@@ -23,6 +25,7 @@ public class RecordDto {
 
     public RecordDto() {
         this.id = 0;
+        this.groupId = 0;
         this.date = new Date();
         this.type = new TypeDto();
         this.tags = new ArrayList<>();

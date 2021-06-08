@@ -13,6 +13,7 @@ public class RecordMapper {
     public static RecordWithTypeAndTags toEntity(RecordDto recordDto) {
         RecordWithTypeAndTags recordWithTypeAndTags = new RecordWithTypeAndTags();
         recordWithTypeAndTags.record.recordId = recordDto.id;
+        recordWithTypeAndTags.record.groupId = recordDto.groupId;
         recordWithTypeAndTags.record.date = recordDto.date;
         recordWithTypeAndTags.record.value = recordDto.value;
         recordWithTypeAndTags.tags = TagMapper.toEntity(recordDto.tags);
@@ -24,6 +25,7 @@ public class RecordMapper {
         RecordDto recordDto = new RecordDto();
         Record record = recordWithTypeAndTags.record;
         recordDto.id = record != null ? record.recordId : 0;
+        recordDto.groupId = record != null ? record.groupId : 0;
         recordDto.date = record != null ? record.date : new Date();
         recordDto.value = record != null ? record.value : 0.0;
         recordDto.tags = recordWithTypeAndTags.tags != null ? TagMapper.toDto(recordWithTypeAndTags.tags) : new ArrayList<>();

@@ -14,6 +14,7 @@ import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.adapter.TagRecyclerViewAdapter;
 import net.usemyskills.grasp.databinding.FragmentTagListBinding;
 import net.usemyskills.grasp.listener.OnItemClickListener;
+import net.usemyskills.grasp.model.RecordDto;
 import net.usemyskills.grasp.model.TagDto;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
@@ -25,7 +26,12 @@ public class ListTagsFragment extends Fragment implements OnItemClickListener<Ta
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentTagListBinding binding = FragmentTagListBinding.inflate(inflater, container, false);
         this.tagRecyclerViewAdapter = new TagRecyclerViewAdapter<>();
+        this.tagRecyclerViewAdapter.setOnClickTagListener(this);
         binding.tagList.setAdapter(this.tagRecyclerViewAdapter);
+        binding.addTag.setOnClickListener(v -> {
+            tagViewModel.setEditTagElement(new TagDto());
+            NavHostFragment.findNavController(ListTagsFragment.this).navigate(R.id.action_edit_tag);
+        });
         return binding.getRoot();
     }
 
@@ -42,6 +48,7 @@ public class ListTagsFragment extends Fragment implements OnItemClickListener<Ta
         this.tagViewModel.getTags().observe(this.requireActivity(), tags -> {
             this.tagRecyclerViewAdapter.setValues(tags);
         });
+        this.tagViewModel.reloadTags();
         super.onActivityCreated(savedInstanceState);
     }
 }

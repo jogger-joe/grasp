@@ -30,18 +30,13 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
     private FragmentEditRecordBinding binding;
 
     private RecordViewModel recordViewModel;
-    private TagViewModel tagViewModel;
     private RecordDto record;
 
     private TagRecyclerViewAdapter<TypeDto> typeAdapter;
     private TagRecyclerViewAdapter<TagDto> tagAdapter;
 
-    private NavController navController;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "EditRecordFragment.onCreateView");
-        this.navController = NavHostFragment.findNavController(EditRecordFragment.this);
 
         // init bindings
         this.binding = FragmentEditRecordBinding.inflate(inflater, container, false);
@@ -50,28 +45,28 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
 
         // init adapter
         this.typeAdapter = new TagRecyclerViewAdapter<>();
+        this.typeAdapter.setOnClickTagListener(this::clickType);
         this.tagAdapter = new TagRecyclerViewAdapter<>();
+        this.tagAdapter.setOnClickTagListener(this::clickTag);
 
         // init dialogs
         DialogDateFragment dateDialogFragment = new DialogDateFragment(this::updateDate);
-        DialogTagFragment<TypeDto> dateSelectTypeFragment = new DialogTagFragment<>(this.typeAdapter);
-        DialogTagFragment<TagDto> dateSelectTagFragment = new DialogTagFragment<>(this.tagAdapter);
+        DialogTagFragment<TypeDto> tagSelectDialogFragment = new DialogTagFragment<>(this.typeAdapter);
+        DialogTagFragment<TagDto> typeSelectDialogFragment = new DialogTagFragment<>(this.tagAdapter);
 
         // init listener
         this.binding.recordDate.setOnClickListener(v -> dateDialogFragment.show(this.getParentFragmentManager(), "dialog"));
-        this.binding.recordType.setOnClickListener(v -> dateSelectTypeFragment.show(this.getParentFragmentManager(), "dialog"));
-        this.binding.recordTag.setOnClickListener(v -> dateSelectTagFragment.show(this.getParentFragmentManager(), "dialog"));
+        this.binding.recordType.setOnClickListener(v -> tagSelectDialogFragment.show(this.getParentFragmentManager(), "dialog"));
+        this.binding.recordTag.setOnClickListener(v -> typeSelectDialogFragment.show(this.getParentFragmentManager(), "dialog"));
 
         return binding.getRoot();
     }
 
     private void updateDate(DatePicker view, int year, int month, int dayOfMonth) {
-        Log.d("GRASP_LOG", "EditRecordFragment.updateDate");
         this.setDate(new GregorianCalendar(year, month, dayOfMonth).getTime());
     }
 
     private void setDate(Date date) {
-        Log.d("GRASP_LOG", "EditRecordFragment.updateDate");
         if (this.record != null) {
             this.record.date = date;
             this.bindElement(this.record);
@@ -79,44 +74,39 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
     }
 
     private void clickType(TypeDto type) {
-        Log.d("GRASP_LOG", "EditRecordFragment.updateType " + type.toString() );
         this.record.type = type;
         this.bindElement(this.record);
     }
 
     private void clickTag(TagDto tag) {
-        Log.d("GRASP_LOG", "EditRecordFragment.addTag");
         this.record.tags.add(tag);
         this.bindElement(this.record);
     }
 
     @Override
     public void onClick(View view) {
-        Log.d("GRASP_LOG", "EditRecordFragment.onClick");
         try {
             this.recordViewModel.save(this.record);
             Toast.makeText(this.getContext(), R.string.save_successful, Toast.LENGTH_SHORT).show();
         } catch (Exception exception) {
             Toast.makeText(this.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e("GRASP_LOG", exception.getMessage());
         }
     }
 
     @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        Log.d("GRASP_LOG", "EditRecordFragment.onActivityCreated");
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         ViewModelProvider viewModelProvider = new ViewModelProvider(this.requireActivity());
         this.recordViewModel = viewModelProvider.get(RecordViewModel.class);
         this.recordViewModel.getEditElement().observe(this.requireActivity(), element -> {
             this.record = new RecordDto(element);
             this.bindElement(this.record);
         });
-        this.tagViewModel = viewModelProvider.get(TagViewModel.class);
-        this.tagViewModel.getTags().observe(this.requireActivity(), tags -> {
+        TagViewModel tagViewModel = viewModelProvider.get(TagViewModel.class);
+        tagViewModel.getTags().observe(this.requireActivity(), tags -> {
             this.tagAdapter.setValues(tags);
             this.tagAdapter.addValue(new TagDto());
         });
-        this.tagViewModel.getTypes().observe(this.requireActivity(), types -> {
+        tagViewModel.getTypes().observe(this.requireActivity(), types -> {
             this.typeAdapter.setValues(types);
             this.typeAdapter.addValue(new TypeDto());
         });
@@ -125,7 +115,6 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
 
     protected void bindElement(RecordDto element) {
         if (element == null) return;
-        Log.d("GRASP_LOG", "EditRecordFragment.bindElement " + element);
         this.binding.recordDate.setText(element.getDateLabel());
         this.binding.recordType.setText(element.getTypeLabel());
         this.binding.recordTag.setText(element.getTagsLabel());

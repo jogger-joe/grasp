@@ -25,13 +25,18 @@ public class ListTypesFragment extends Fragment implements OnItemClickListener<T
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentTagListBinding binding = FragmentTagListBinding.inflate(inflater, container, false);
         this.tagRecyclerViewAdapter = new TagRecyclerViewAdapter<>();
+        this.tagRecyclerViewAdapter.setOnClickTagListener(this);
         binding.tagList.setAdapter(this.tagRecyclerViewAdapter);
+        binding.addTag.setOnClickListener(v -> {
+            tagViewModel.setEditTypeElement(new TypeDto());
+            NavHostFragment.findNavController(ListTypesFragment.this).navigate(R.id.action_edit_type);
+        });
         return binding.getRoot();
     }
 
     @Override
     public void onClickItem(TypeDto type) {
-        this.tagViewModel.setEditTagElement(type);
+        this.tagViewModel.setEditTypeElement(type);
         NavHostFragment.findNavController(ListTypesFragment.this).navigate(R.id.action_edit_type);
     }
 
@@ -42,6 +47,7 @@ public class ListTypesFragment extends Fragment implements OnItemClickListener<T
         this.tagViewModel.getTypes().observe(this.requireActivity(), types -> {
             this.tagRecyclerViewAdapter.setValues(types);
         });
+        this.tagViewModel.reloadTags();
         super.onActivityCreated(savedInstanceState);
     }
 }

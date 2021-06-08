@@ -1,7 +1,6 @@
 package net.usemyskills.grasp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -20,6 +19,7 @@ public class TagViewModel extends AndroidViewModel {
     private final LiveData<List<TypeDto>> types;
     private final MutableLiveData<TagDto> editTagElement;
     private final MutableLiveData<TypeDto> editTypeElement;
+    private RecordGroupDto recordGroup;
 
     public TagViewModel(Application application) {
         super(application);
@@ -30,9 +30,20 @@ public class TagViewModel extends AndroidViewModel {
         this.editTypeElement = new MutableLiveData<>();
     }
 
-    public void loadTagsByGroup(RecordGroupDto recordGroup) {
-        this.tagRepository.getTagsByGroupId(recordGroup.id);
-        this.tagRepository.getTypesByGroupId(recordGroup.id);
+    public void setRecordGroup(RecordGroupDto recordGroup) {
+        this.recordGroup = recordGroup;
+        this.reloadTags();
+    }
+
+    public void reloadTags() {
+        if (this.recordGroup != null) {
+            long recordGroupId = this.recordGroup.id;
+            this.tagRepository.getTagsByGroupId(recordGroupId);
+            this.tagRepository.getTypesByGroupId(recordGroupId);
+        } else {
+            this.tagRepository.getAllTags();
+            this.tagRepository.getAllTypes();
+        }
     }
 
     public LiveData<List<TagDto>> getTags() {
@@ -44,19 +55,23 @@ public class TagViewModel extends AndroidViewModel {
     }
 
     public void save(TagDto tag) {
+        tag.groupId = this.recordGroup != null ? this.recordGroup.id : 0;
         if (tag.id == 0) {
             this.tagRepository.insert(tag);
         } else {
             this.tagRepository.update(tag);
         }
+        this.reloadTags();
     }
 
     public void save(TypeDto type) {
+        type.groupId = this.recordGroup != null ? this.recordGroup.id : 0;
         if (type.id == 0) {
             this.tagRepository.insert(type);
         } else {
             this.tagRepository.update(type);
         }
+        this.reloadTags();
     }
 
     public MutableLiveData<TagDto> getEditTagElement() {
@@ -68,12 +83,10 @@ public class TagViewModel extends AndroidViewModel {
     }
 
     public void setEditTagElement(TagDto editElement) {
-        Log.d("GRASP_LOG", "TagViewModel.setEditElement: " + editElement.toString());
         this.editTagElement.postValue(editElement);
     }
 
     public void setEditTypeElement(TypeDto editElement) {
-        Log.d("GRASP_LOG", "TagViewModel.setEditElement: " + editElement.toString());
         this.editTypeElement.postValue(editElement);
     }
 }

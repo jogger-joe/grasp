@@ -43,8 +43,8 @@ public class ListRecordGroupsFragment extends Fragment implements OnItemClickLis
     @Override
     public void onClickItem(RecordGroupDto recordGroup) {
         this.recordGroupViewModel.setEditElement(recordGroup);
-        this.recordViewModel.loadRecordsByGroup(recordGroup);
-        this.tagViewModel.loadTagsByGroup(recordGroup);
+        this.recordViewModel.setRecordGroup(recordGroup);
+        this.tagViewModel.setRecordGroup(recordGroup);
         this.navController.navigate(R.id.action_select_record_group);
     }
 

@@ -1,7 +1,6 @@
 package net.usemyskills.grasp.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -18,6 +17,7 @@ public class RecordViewModel extends AndroidViewModel {
     private final RecordRepository recordRepository;
     private final LiveData<List<RecordDto>> records;
     private final MutableLiveData<RecordDto> editElement;
+    private RecordGroupDto recordGroup;
 
     public RecordViewModel(Application application) {
         super(application);
@@ -26,12 +26,17 @@ public class RecordViewModel extends AndroidViewModel {
         this.editElement = new MutableLiveData<>();
     }
 
-    public void loadRecordsByGroup(RecordGroupDto recordGroup) {
-        this.recordRepository.getAllByGroupId(recordGroup.id);
+    public void setRecordGroup(RecordGroupDto recordGroup) {
+        this.recordGroup = recordGroup;
+        this.reloadRecords();
     }
 
-    public void loadRecords() {
-        this.recordRepository.getAll();
+    public void reloadRecords() {
+        if (this.recordGroup != null) {
+            this.recordRepository.getAllByGroupId(this.recordGroup.id);
+        } else {
+            this.recordRepository.getAll();
+        }
     }
 
     public LiveData<List<RecordDto>> getRecords() {
@@ -39,11 +44,9 @@ public class RecordViewModel extends AndroidViewModel {
     }
 
     public void save(RecordDto record) {
-        if (record.id == 0) {
-            this.recordRepository.insert(record);
-        } else {
-            this.recordRepository.insert(record);
-        }
+        record.groupId = this.recordGroup != null ? this.recordGroup.id : 0;
+        this.recordRepository.insert(record);
+        this.reloadRecords();
     }
 
     public MutableLiveData<RecordDto> getEditElement() {

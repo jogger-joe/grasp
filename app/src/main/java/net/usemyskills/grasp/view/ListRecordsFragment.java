@@ -1,7 +1,6 @@
 package net.usemyskills.grasp.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +25,6 @@ import net.usemyskills.grasp.viewmodel.RecordViewModel;
 
 public class ListRecordsFragment extends Fragment implements OnItemClickListener<RecordDto> {
     private RecordViewModel recordViewModel;
-    private RecordGroupViewModel recordGroupViewModel;
     private RecordRecyclerViewAdapter recordRecyclerViewAdapter;
     private NavController navController;
     private FragmentRecordListBinding binding;
@@ -61,11 +59,12 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
         this.recordViewModel.getRecords().observe(this.requireActivity(), records -> {
             this.recordRecyclerViewAdapter.setValues(records);
         });
-        this.recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
-        this.recordGroupViewModel.getEditElement().observe(this.requireActivity(), recordGroup -> {
+        RecordGroupViewModel recordGroupViewModel = viewModelProvider.get(RecordGroupViewModel.class);
+        recordGroupViewModel.getEditElement().observe(this.requireActivity(), recordGroup -> {
             this.binding.recordGroupIcon.setImageResource(recordGroup.iconId);
             this.binding.recordGroupName.setText(recordGroup.name);
         });
+        this.recordViewModel.reloadRecords();
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -78,7 +77,6 @@ public class ListRecordsFragment extends Fragment implements OnItemClickListener
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Log.d("GRASP: onOptionsItemSelected", item.toString());
 
         if (id == R.id.list_tags_button) {
             navController.navigate(R.id.action_list_tags);
