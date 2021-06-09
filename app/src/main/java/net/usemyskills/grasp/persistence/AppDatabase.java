@@ -74,7 +74,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 recordGroupDaoDao.insert(new RecordGroup(3,"Serien", "", 0, R.drawable.ic_play));
                 recordGroupDaoDao.insert(new RecordGroup(4,"Schlafenszeiten", "", 0, R.drawable.ic_bedtime));
                 recordGroupDaoDao.insert(new RecordGroup(5,"Temperatur", "", 0, R.drawable.ic_frost));
-                recordGroupDaoDao.insert(new RecordGroup(6,"Einkäfe", "", 0, R.drawable.ic_card));
+                recordGroupDaoDao.insert(new RecordGroup(6,"Einkäufe", "", 0, R.drawable.ic_card));
 
                 Type[] sportTypes = {
                     new Type(1, "Crosstrainer", "",1,"", "min"),

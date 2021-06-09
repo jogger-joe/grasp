@@ -1,6 +1,5 @@
 package net.usemyskills.grasp.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -18,7 +17,6 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
     private List<RecordGroupDto> recordGroups;
 
     public RecordGroupRecyclerViewAdapter(List<RecordGroupDto> recordGroups, OnItemClickListener<RecordGroupDto> onClickRecordGroupListener) {
-        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter construct");
         this.recordGroups = recordGroups;
         this.onClickRecordGroupListener = onClickRecordGroupListener;
     }
@@ -28,7 +26,6 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
     }
 
     public void setValues(List<RecordGroupDto> recordGroups) {
-        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.setValues: " + recordGroups.toString() );
         this.recordGroups = new ArrayList<>(recordGroups);
         this.notifyDataSetChanged();
     }
@@ -40,7 +37,6 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
 
     @Override
     public void onBindViewHolder(final RecordGroupRecyclerViewAdapter.ViewHolder holder, int position) {
-        Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.onBindViewHolder");
         RecordGroupDto recordGroup = recordGroups.get(position);
         holder.bind(recordGroup);
     }
@@ -55,12 +51,10 @@ public class RecordGroupRecyclerViewAdapter extends RecyclerView.Adapter<RecordG
 
         public ViewHolder(FragmentRecordGroupListItemBinding binding) {
             super(binding.getRoot());
-            Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.create");
             this.binding = binding;
         }
 
         public void bind(RecordGroupDto recordGroup){
-            Log.d("GRASP_LOG", "RecordGroupRecyclerViewAdapter.ViewHolder.bind: " + recordGroup.toString());
             this.binding.labelView.setText(recordGroup.name);
             this.binding.iconView.setImageResource(recordGroup.iconId);
             this.itemView.setOnClickListener(v -> onClickRecordGroupListener.onClickItem(recordGroup));
