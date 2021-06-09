@@ -19,6 +19,7 @@ public class AssetProvider {
         availableAssets.add(new Asset(R.drawable.ic_frost, "frost"));
         availableAssets.add(new Asset(R.drawable.ic_money, "money"));
         availableAssets.add(new Asset(R.drawable.ic_stopwatch, "stopwatch"));
+        availableAssets.add(new Asset(R.drawable.ic_play, "play"));
         return availableAssets;
     }
 }
