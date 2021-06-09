@@ -9,12 +9,17 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import net.usemyskills.grasp.R;
 import net.usemyskills.grasp.persistence.converter.DateConverter;
-import net.usemyskills.grasp.persistence.dao.DataContainerDao;
-import net.usemyskills.grasp.persistence.dao.DataDao;
+import net.usemyskills.grasp.persistence.dao.RecordDao;
+import net.usemyskills.grasp.persistence.dao.RecordGroupDao;
+import net.usemyskills.grasp.persistence.dao.RecordTagsReferenceDao;
 import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.dao.TypeDao;
-import net.usemyskills.grasp.persistence.entity.Data;
+import net.usemyskills.grasp.persistence.entity.RecordGroup;
+import net.usemyskills.grasp.persistence.entity.Record;
+import net.usemyskills.grasp.persistence.entity.RecordTagsReference;
+import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
 import net.usemyskills.grasp.persistence.entity.Tag;
 import net.usemyskills.grasp.persistence.entity.Type;
 
@@ -24,13 +29,14 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Data.class, Tag.class, Type.class}, version = 1)
+@Database(entities = {RecordGroup.class, Record.class, RecordTagsReference.class, Tag.class, Type.class}, version = 1)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract DataContainerDao getDataContainerDao();
     public abstract TagDao getTagDao();
     public abstract TypeDao getTypeDao();
-    public abstract DataDao getDataDao();
+    public abstract RecordDao getRecordDao();
+    public abstract RecordGroupDao getRecordGroupDao();
+    public abstract RecordTagsReferenceDao getRecordTagsReferenceDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -55,42 +61,73 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-
+            // create dummy content
             databaseWriteExecutor.execute(() -> {
                 TagDao tagDao = INSTANCE.getTagDao();
                 TypeDao typeDao = INSTANCE.getTypeDao();
-                DataDao dataDao = INSTANCE.getDataDao();
+                RecordDao recordDao = INSTANCE.getRecordDao();
+                RecordGroupDao recordGroupDaoDao = INSTANCE.getRecordGroupDao();
+                RecordTagsReferenceDao recordTagsReferenceDao = INSTANCE.getRecordTagsReferenceDao();
 
-                Type[] types = {
-                    new Type(1, "Burpee Max", "Maximum Burpees in 5min", "x"),
-                    new Type(2, "Aphrodite", "Multiple Exercises 1", "Min"),
-                    new Type(3, "Hades", "Multiple Exercises 2", "Min"),
-                    new Type(4, "12 Min Run", "Maximum Distance in 12 Minutes", "Km")
+                recordGroupDaoDao.insert(new RecordGroup(1,"Sport", "", 0, R.drawable.ic_run));
+                recordGroupDaoDao.insert(new RecordGroup(2,"Körper", "", 0, R.drawable.ic_person));
+                recordGroupDaoDao.insert(new RecordGroup(3,"Serien", "", 0, R.drawable.ic_play));
+                recordGroupDaoDao.insert(new RecordGroup(4,"Schlafenszeiten", "", 0, R.drawable.ic_bedtime));
+                recordGroupDaoDao.insert(new RecordGroup(5,"Temperatur", "", 0, R.drawable.ic_frost));
+                recordGroupDaoDao.insert(new RecordGroup(6,"Einkäufe", "", 0, R.drawable.ic_card));
+
+                Type[] sportTypes = {
+                    new Type(1, "Crosstrainer", "",1,"", "min"),
+                    new Type(2, "Joggen", "",1,"", "min"),
+                    new Type(3, "Kniebeuge", "", 1,"","x")
                 };
-                for (Type type : types) {
+                Type[] bodyTypes = {
+                    new Type(4, "Gewicht", "",2,"", "Kg"),
+                    new Type(5, "Bauchumfang", "",2,"", "cm"),
+                    new Type(6, "Puls", "",2,"", "bpm"),
+                };
+                for (Type type : sportTypes) {
+                    typeDao.insert(type);
+                }
+                for (Type type : bodyTypes) {
                     typeDao.insert(type);
                 }
 
-                Tag[] tags = {
-                    new Tag(1, "Easy", ""),
-                    new Tag(2, "Hard", "")
+                Tag[] sportTags = {
+                    new Tag(1, "5km", "", 1),
+                    new Tag(2, "5min", "", 1),
                 };
 
-                for (Tag tag : tags) {
+                Tag[] bodyTags = {
+                    new Tag(3, "morgens", "", 2),
+                    new Tag(4, "mittags", "", 2),
+                    new Tag(5, "abends", "", 2),
+                    new Tag(6, "vor dem Essen", "", 2),
+                    new Tag(7, "nach dem Essen", "", 2),
+                };
+
+                for (Tag tag : sportTags) {
+                    tagDao.insert(tag);
+                }
+                for (Tag tag : bodyTags) {
                     tagDao.insert(tag);
                 }
 
-                int amountOfGeneratedData = 20;
-                int iteration = 0;
-                Random rnd = new Random();
-                while (iteration < amountOfGeneratedData) {
-                    iteration++;
-                    int rndTypeId = rnd.nextInt(types.length);
-                    int rndTagId = rnd.nextInt(tags.length);
-                    int rndValue = rnd.nextInt(200);
-                    Date rndDate = new GregorianCalendar(rnd.nextInt(20)+2000, rnd.nextInt(12), rnd.nextInt(29)).getTime();
-                    dataDao.insert(new Data(rndTypeId+1, rndTagId+1, rndDate, rndValue));
-                }
+                recordDao.insert(new Record(1,1, 1, new Date(), 10));
+                recordTagsReferenceDao.insert(new RecordTagsReference(1, 1));
+
+                recordDao.insert(new Record(2,2, 1, new Date(), 3));
+                recordTagsReferenceDao.insert(new RecordTagsReference(2, 1));
+
+                recordDao.insert(new Record(3,3, 1, new Date(), 81));
+                recordTagsReferenceDao.insert(new RecordTagsReference(3, 2));
+
+                recordDao.insert(new Record(4,4, 2, new Date(), 90.7));
+                recordTagsReferenceDao.insert(new RecordTagsReference(4, 3));
+                recordTagsReferenceDao.insert(new RecordTagsReference(4, 6));
+
+                recordDao.insert(new Record(5,6, 2, new Date(), 109));
+                recordTagsReferenceDao.insert(new RecordTagsReference(5, 5));
 
             });
         }

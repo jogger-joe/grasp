@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="small_padding">5dp</dimen>
     <dimen name="big_padding">10dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="big_font">20sp</dimen>
     <dimen name="list_font">16sp</dimen>
+    <dimen name="small_font">12sp</dimen>
+    <dimen name="extra_small_font">10sp</dimen>
     <dimen name="select_font">14sp</dimen>
 </resources>

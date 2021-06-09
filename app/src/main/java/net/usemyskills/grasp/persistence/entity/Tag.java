@@ -1,19 +1,32 @@
 package net.usemyskills.grasp.persistence.entity;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-import net.usemyskills.grasp.model.Selectable;
+import net.usemyskills.grasp.model.HasFilterableValues;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Tag extends BaseEntity implements Selectable {
-    private String name;
-    private String description;
+public class Tag extends BaseEntity implements HasFilterableValues {
+    @PrimaryKey(autoGenerate = true)
+    public long tagId;
+    public String name;
+    public String description;
+    public long groupId = 0;
 
-    public Tag(int id, String name, String description) {
-        this(name, description);
-        this.id = id;
+    public Tag(long tagId, String name, String description, long groupId) {
+        this.tagId = tagId;
+        this.name = name;
+        this.description = description;
+        this.groupId = groupId;
+    }
+
+    @Ignore
+    public Tag(String name, String description) {
+        this(0, name, description, 0);
     }
 
     @Ignore
@@ -22,35 +35,17 @@ public class Tag extends BaseEntity implements Selectable {
     }
 
     @Ignore
-    public Tag(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
+    public Tag() {}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @NonNull
     @Override
-    public String toString() {
-        return this.getName();
+    public List<String> getFilterValues() {
+        ArrayList<String> result = new ArrayList<>();
+        result.add(this.name);
+        return result;
     }
 
     @Override
-    public String getLabel() {
-        return this.getName();
+    public String toString() {
+        return this.name;
     }
 }

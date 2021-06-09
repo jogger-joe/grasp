@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/asset_icon_list"
+    android:name="net.usemyskills.grasp.fragment_asset_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/background"
+    android:layout_margin="@dimen/list_padding"
+    app:layoutManager="GridLayoutManager"
+    app:spanCount="3"
+    tools:context=".view.DialogAssetFragment"
+    tools:listitem="@layout/fragment_asset_list_item" />
