@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,15 +11,26 @@
         android:layout_margin="@dimen/big_padding"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/type_name"
+            android:text="@string/tag_name" />
+
         <EditText
             android:id="@+id/type_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/big_padding"
             android:autofillHints=""
-            android:hint="@string/tag_name"
             android:inputType="text"
             android:textSize="@dimen/big_font" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/type_description"
+            android:text="@string/tag_description" />
 
         <EditText
             android:id="@+id/type_description"
@@ -28,9 +38,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/big_padding"
             android:autofillHints=""
-            android:hint="@string/tag_description"
             android:inputType="text"
             android:textSize="@dimen/big_font" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/type_suffix"
+            android:text="@string/type_suffix" />
 
         <EditText
             android:id="@+id/type_suffix"
@@ -38,7 +53,21 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/big_padding"
             android:autofillHints=""
-            android:hint="@string/type_suffix"
+            android:inputType="text"
+            android:textSize="@dimen/big_font" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/type_format"
+            android:text="@string/type_format" />
+
+        <EditText
+            android:id="@+id/type_format"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/big_padding"
+            android:autofillHints=""
             android:inputType="text"
             android:textSize="@dimen/big_font" />
 
@@ -47,5 +76,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_save" />
+
+        <Button
+            android:id="@+id/button_type_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/design_default_color_error"
+            android:text="@string/button_delete" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

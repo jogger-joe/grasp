@@ -32,4 +32,11 @@
     <string name="add_tag">Tag erstellen</string>
     <string name="list_tags">Tags verwalten</string>
     <string name="types">Types</string>
+    <string name="description">Beschreibung</string>
+    <string name="button_delete">Löschen</string>
+    <string name="type_format">Werteformat</string>
+    <string name="record_date">Datum</string>
+    <string name="record_type">Eintragstyp</string>
+    <string name="record_tags">Schlagworte</string>
+    <string name="record_value">Wert</string>
 </resources>

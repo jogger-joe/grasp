@@ -9,6 +9,6 @@
     android:backgroundTint="@color/background"
     android:layout_margin="@dimen/list_padding"
     app:layoutManager="GridLayoutManager"
-    app:spanCount="2"
+    app:spanCount="3"
     tools:context=".view.DialogAssetFragment"
     tools:listitem="@layout/fragment_asset_list_item" />
