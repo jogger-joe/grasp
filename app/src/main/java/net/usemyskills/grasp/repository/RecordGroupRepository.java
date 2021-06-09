@@ -47,7 +47,9 @@ public class RecordGroupRepository {
     }
 
     public void delete(RecordGroupDto element) {
-        this.dao.delete(RecordGroupMapper.toEntity(element));
-        this.getAll();
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.dao.delete(RecordGroupMapper.toEntity(element));
+            this.getAll();
+        });
     }
 }

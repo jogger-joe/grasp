@@ -39,4 +39,5 @@
     <string name="record_type">Eintragstyp</string>
     <string name="record_tags">Schlagworte</string>
     <string name="record_value">Wert</string>
+    <string name="delete_successful">erfolgreich gelöscht</string>
 </resources>

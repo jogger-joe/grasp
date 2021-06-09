@@ -72,7 +72,7 @@
             android:textSize="@dimen/big_font" />
 
         <Button
-            android:id="@+id/button_tag_save"
+            android:id="@+id/button_type_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_save" />

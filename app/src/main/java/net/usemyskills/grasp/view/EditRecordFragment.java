@@ -2,7 +2,6 @@ package net.usemyskills.grasp.view;
 
 import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ import net.usemyskills.grasp.viewmodel.TagViewModel;
 
 import java.util.Date;
 
-public class EditRecordFragment extends Fragment implements View.OnClickListener {
+public class EditRecordFragment extends Fragment {
     private FragmentEditRecordBinding binding;
 
     private RecordViewModel recordViewModel;
@@ -35,12 +34,16 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
     private TagRecyclerViewAdapter<TypeDto> typeAdapter;
     private TagRecyclerViewAdapter<TagDto> tagAdapter;
 
+    private NavController navController;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.navController = NavHostFragment.findNavController(EditRecordFragment.this);
 
         // init bindings
         this.binding = FragmentEditRecordBinding.inflate(inflater, container, false);
-        this.binding.buttonRecordSave.setOnClickListener(this);
+        this.binding.buttonRecordSave.setOnClickListener(this::onClickSave);
+        this.binding.buttonRecordDelete.setOnClickListener(this::onClickDelete);
         this.bindElement(this.record);
 
         // init adapter
@@ -83,12 +86,22 @@ public class EditRecordFragment extends Fragment implements View.OnClickListener
         this.bindElement(this.record);
     }
 
-    @Override
-    public void onClick(View view) {
+    public void onClickSave(View view) {
         try {
             this.record.value = Double.parseDouble(this.binding.recordValue.getText().toString());
             this.recordViewModel.save(this.record);
             Toast.makeText(this.getContext(), R.string.save_successful, Toast.LENGTH_SHORT).show();
+            this.navController.navigateUp();
+        } catch (Exception exception) {
+            Toast.makeText(this.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClickDelete(View view) {
+        try {
+            this.recordViewModel.delete(this.record);
+            Toast.makeText(this.getContext(), R.string.delete_successful, Toast.LENGTH_SHORT).show();
+            this.navController.navigateUp();
         } catch (Exception exception) {
             Toast.makeText(this.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
         }

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import net.usemyskills.grasp.model.RecordGroupDto;
+import net.usemyskills.grasp.model.TagDto;
 import net.usemyskills.grasp.repository.RecordGroupRepository;
 
 import java.util.List;
@@ -44,6 +45,10 @@ public class RecordGroupViewModel extends AndroidViewModel {
 
     public void setEditElement(RecordGroupDto editElement) {
         this.editElement.postValue(editElement);
+    }
+
+    public void delete(RecordGroupDto recordGroup) {
+        this.recordGroupRepository.delete(recordGroup);
     }
 }
 

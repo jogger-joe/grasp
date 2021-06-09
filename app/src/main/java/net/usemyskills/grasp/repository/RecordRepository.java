@@ -12,7 +12,6 @@ import net.usemyskills.grasp.persistence.dao.RecordTagsReferenceDao;
 import net.usemyskills.grasp.persistence.dao.TagDao;
 import net.usemyskills.grasp.persistence.entity.RecordTagsReference;
 import net.usemyskills.grasp.persistence.entity.RecordWithTypeAndTags;
-import net.usemyskills.grasp.persistence.entity.Record;
 import net.usemyskills.grasp.persistence.entity.Tag;
 
 import java.util.List;
@@ -63,18 +62,13 @@ public class RecordRepository {
         });
     }
 
-    public void delete(RecordWithTypeAndTags element) {
+    public void delete(RecordDto elementDto) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
+            RecordWithTypeAndTags element = RecordMapper.toEntity(elementDto);
             for (Tag tag : element.tags) {
                 this.recordTagsReferenceDao.delete(new RecordTagsReference(element.record.recordId, tag.tagId));
             }
             this.recordDao.delete(element.record);
-        });
-    }
-
-    public void insert(Record element) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            this.recordDao.insert(element);
         });
     }
 }

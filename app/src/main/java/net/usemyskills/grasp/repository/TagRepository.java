@@ -90,10 +90,14 @@ public class TagRepository {
     }
 
     public void delete(TagDto element) {
-        this.tagDao.delete(TagMapper.toEntity(element));
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.tagDao.delete(TagMapper.toEntity(element));
+        });
     }
 
     public void delete(TypeDto element) {
-        this.typeDao.delete(TypeMapper.toEntity(element));
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            this.typeDao.delete(TypeMapper.toEntity(element));
+        });
     }
 }

@@ -89,5 +89,15 @@ public class TagViewModel extends AndroidViewModel {
     public void setEditTypeElement(TypeDto editElement) {
         this.editTypeElement.postValue(editElement);
     }
+
+    public void delete(TagDto tag) {
+        this.tagRepository.delete(tag);
+        this.reloadTags();
+    }
+
+    public void delete(TypeDto type) {
+        this.tagRepository.delete(type);
+        this.reloadTags();
+    }
 }
 
