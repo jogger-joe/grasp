@@ -53,14 +53,14 @@ public class TagRepository {
 
     public void getTagsByGroupId(long groupId) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<Tag> tags = this.tagDao.findByGroup(groupId);
+            List<Tag> tags = this.tagDao.getByGroupId(groupId);
             this.tagElements.postValue(TagMapper.toDto(tags));
         });
     }
 
     public void getTypesByGroupId(long groupId) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<Type> types = this.typeDao.findByGroup(groupId);
+            List<Type> types = this.typeDao.getByGroupId(groupId);
             this.typeElements.postValue(TypeMapper.toDto(types));
         });
     }
