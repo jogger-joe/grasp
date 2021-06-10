@@ -8,4 +8,25 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#AFAFAF</color>
+
+    <!--colors for dark theme -->
+    <color name="dark_blue">#22223B</color>
+    <color name="dark_gray">#4A4E69</color>
+    <color name="gray">#9A8C98</color>
+    <color name="brown">#C9ADA7</color>
+    <color name="light_brown">#F2E9E4</color>
+
+    <!--colors for light theme -->
+    <color name="darker_gray">#555B6E</color>
+    <color name="strange_blue">#89B0AE</color>
+    <color name="light_strange_blue">#BEE3DB</color>
+    <color name="muddy_white">#FAF9F9</color>
+    <color name="skin">#FFD6BA</color>
+
+
+    <color name="skin1">#f7c59f</color>
+    <color name="blue1">#2a324b</color>
+    <color name="blue2">#767b91</color>
+    <color name="blue3">#c7ccdb</color>
+    <color name="blue4">#e1e5ee</color>
 </resources>

@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">grasp</string>
+    <string name="app_name">GRASP</string>
     <string name="add">hinzufügen</string>
     <string name="button_save">speichern</string>
     <string name="empty_not_saved">feld ist leer - speichern abgebrochen</string>
     <string name="date">Datum</string>
     <string name="type">Typ</string>
-    <string name="tag">Intensität</string>
+    <string name="tag">Tag</string>
     <string name="value">Wert</string>
     <string name="button_cancel">abbrechen</string>
     <string name="search">Suche</string>

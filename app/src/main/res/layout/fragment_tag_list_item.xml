@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?attr/colorSecondary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_marginBottom="4dp">
 
     <TextView
         android:id="@+id/labelView"
+        android:textColor="?attr/colorOnSecondary"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/big_padding"
-        android:textSize="@dimen/select_font" />
-</LinearLayout>
+        android:textSize="@dimen/list_font" />
+</androidx.cardview.widget.CardView>
