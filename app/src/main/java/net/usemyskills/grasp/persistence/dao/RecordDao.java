@@ -15,9 +15,11 @@ public interface RecordDao extends BaseDao<Record> {
     @Query("SELECT * FROM Record ORDER BY date DESC")
     List<RecordWithTypeAndTags> getAll();
 
+    @Transaction
     @Query("SELECT * FROM Record where groupId=:id ORDER BY date DESC")
     List<RecordWithTypeAndTags> getByGroupId(long id);
 
+    @Transaction
     @Query("SELECT * FROM Record where recordId=:id")
     RecordWithTypeAndTags getById(long id);
 }
