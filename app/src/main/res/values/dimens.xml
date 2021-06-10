@@ -9,4 +9,5 @@
     <dimen name="small_font">12sp</dimen>
     <dimen name="extra_small_font">10sp</dimen>
     <dimen name="select_font">14sp</dimen>
+    <dimen name="splash_font">40sp</dimen>
 </resources>
