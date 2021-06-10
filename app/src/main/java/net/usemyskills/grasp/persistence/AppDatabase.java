@@ -29,7 +29,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {RecordGroup.class, Record.class, RecordTagsReference.class, Tag.class, Type.class}, version = 1)
+@Database(entities = {RecordGroup.class, Record.class, RecordTagsReference.class, Tag.class, Type.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TagDao getTagDao();

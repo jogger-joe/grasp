@@ -13,8 +13,8 @@ public interface TypeDao extends BaseDao<Type> {
     List<Type> getAll();
 
     @Query("SELECT * FROM Type where groupId=:id")
-    List<Type> findByGroup(long id);
+    List<Type> getByGroupId(long id);
 
     @Query("SELECT * FROM Type where tagId=:id")
-    Type findById(long id);
+    Type getById(long id);
 }

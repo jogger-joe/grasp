@@ -13,8 +13,8 @@ public interface TagDao extends BaseDao<Tag> {
     List<Tag> getAll();
 
     @Query("SELECT * FROM Tag where groupId=:id")
-    List<Tag> findByGroup(long id);
+    List<Tag> getByGroupId(long id);
 
     @Query("SELECT * FROM Tag where tagId=:id")
-    Tag findById(long id);
+    Tag getById(long id);
 }
