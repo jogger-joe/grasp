@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?attr/colorSecondary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp">
@@ -11,6 +13,7 @@
         android:orientation="vertical">
         <TextView
             android:id="@+id/dateView"
+            android:textColor="?attr/colorOnSecondary"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/placeholder_date"
@@ -23,6 +26,7 @@
 
             <TextView
                 android:id="@+id/typeView"
+                android:textColor="?attr/colorOnSecondary"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/placeholder_text"
@@ -30,12 +34,14 @@
                 android:textSize="@dimen/list_font" />
             <TextView
                 android:id="@+id/tagsView"
+                android:textColor="?attr/colorOnSecondary"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/placeholder_text"
                 android:textSize="@dimen/extra_small_font" />
             <TextView
                 android:id="@+id/valueView"
+                android:textColor="?attr/colorOnSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="end"
