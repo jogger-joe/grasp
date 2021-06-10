@@ -44,7 +44,7 @@ public class RecordRepository {
 
     public void getAllByGroupId(long groupId) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            List<RecordWithTypeAndTags> records = this.recordDao.findByGroup(groupId);
+            List<RecordWithTypeAndTags> records = this.recordDao.getByGroupId(groupId);
             this.elements.postValue(RecordMapper.toDto(records));
         });
     }

@@ -13,5 +13,5 @@ public interface RecordGroupDao extends BaseDao<RecordGroup> {
     List<RecordGroup> getAll();
 
     @Query("SELECT * FROM RecordGroup where tagId=:id")
-    RecordGroup findById(long id);
+    RecordGroup getById(long id);
 }
