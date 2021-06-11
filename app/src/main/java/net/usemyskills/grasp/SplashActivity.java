@@ -13,8 +13,7 @@ import net.usemyskills.grasp.viewmodel.RecordViewModel;
 import net.usemyskills.grasp.viewmodel.TagViewModel;
 
 public class SplashActivity extends AppCompatActivity {
-
-    /** Called when the activity is first created. */
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

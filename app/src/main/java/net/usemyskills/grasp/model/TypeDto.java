@@ -2,12 +2,12 @@ package net.usemyskills.grasp.model;
 
 
 public class TypeDto extends TagDto {
-    public String format;
+    public boolean displayAsInteger;
     public String suffix;
 
     public TypeDto(TypeDto typeDto) {
         super(typeDto);
-        this.format = typeDto.format;
+        this.displayAsInteger = typeDto.displayAsInteger;
         this.suffix = typeDto.suffix;
     }
 

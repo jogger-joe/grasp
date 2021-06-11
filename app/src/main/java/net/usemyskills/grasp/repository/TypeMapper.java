@@ -14,7 +14,7 @@ public class TypeMapper {
         type.name = tagDto.name;
         type.description = tagDto.description;
         type.suffix = tagDto.suffix;
-        type.format = tagDto.format;
+        type.displayAsInteger = tagDto.displayAsInteger;
         return type;
     }
 
@@ -25,7 +25,7 @@ public class TypeMapper {
         typeDto.name = type.name;
         typeDto.description = type.description;
         typeDto.suffix = type.suffix;
-        typeDto.format = type.format;
+        typeDto.displayAsInteger = type.displayAsInteger;
         return typeDto;
     }
 
