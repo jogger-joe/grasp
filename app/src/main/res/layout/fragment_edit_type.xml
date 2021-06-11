@@ -56,20 +56,13 @@
             android:inputType="text"
             android:textSize="@dimen/big_font" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/type_format"
-            android:text="@string/type_format" />
-
-        <EditText
-            android:id="@+id/type_format"
+        <CheckBox
+            android:id="@+id/displayAsInteger"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/big_padding"
-            android:autofillHints=""
-            android:inputType="text"
-            android:textSize="@dimen/big_font" />
+            android:text="@string/type_display_as_integer"
+            android:textSize="@dimen/big_font"/>
 
         <Button
             android:id="@+id/button_type_save"

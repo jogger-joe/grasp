@@ -5,23 +5,23 @@ import androidx.room.Ignore;
 
 @Entity
 public class Type extends Tag {
-    public String format;
+    public boolean displayAsInteger;
     public String suffix;
 
-    public Type(long tagId, String name, String description, long groupId, String format, String suffix) {
+    public Type(long tagId, String name, String description, long groupId, boolean displayAsInteger, String suffix) {
         super(tagId, name, description, groupId);
-        this.format = format;
+        this.displayAsInteger = displayAsInteger;
         this.suffix = suffix;
     }
 
     @Ignore
-    public Type(String name, String description, long groupId, String format, String suffix) {
-        this(0, name, description, groupId, format, suffix);
+    public Type(String name, String description, long groupId, boolean displayAsInteger, String suffix) {
+        this(0, name, description, groupId, displayAsInteger, suffix);
     }
 
     @Ignore
     public Type(String name, String description) {
-        this(name, description, 0, "", "");
+        this(name, description, 0, false, "");
     }
 
     @Ignore

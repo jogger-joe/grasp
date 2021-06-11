@@ -77,14 +77,14 @@ public abstract class AppDatabase extends RoomDatabase {
                 recordGroupDaoDao.insert(new RecordGroup(6,"Einkäufe", "", 0, R.drawable.ic_card));
 
                 Type[] sportTypes = {
-                    new Type(1, "Crosstrainer", "",1,"", "min"),
-                    new Type(2, "Joggen", "",1,"", "min"),
-                    new Type(3, "Kniebeuge", "", 1,"","x")
+                    new Type(1, "Crosstrainer", "",1,false, "min"),
+                    new Type(2, "Joggen", "",1,false, "min"),
+                    new Type(3, "Kniebeuge", "", 1,true,"x")
                 };
                 Type[] bodyTypes = {
-                    new Type(4, "Gewicht", "",2,"", "Kg"),
-                    new Type(5, "Bauchumfang", "",2,"", "cm"),
-                    new Type(6, "Puls", "",2,"", "bpm"),
+                    new Type(4, "Gewicht", "",2,false, "Kg"),
+                    new Type(5, "Bauchumfang", "",2,false, "cm"),
+                    new Type(6, "Puls", "",2,true, "bpm"),
                 };
                 for (Type type : sportTypes) {
                     typeDao.insert(type);

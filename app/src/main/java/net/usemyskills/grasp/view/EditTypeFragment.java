@@ -37,6 +37,7 @@ public class EditTypeFragment extends Fragment {
             this.type.name = this.binding.typeName.getText().toString();
             this.type.description = this.binding.typeDescription.getText().toString();
             this.type.suffix = this.binding.typeSuffix.getText().toString();
+            this.type.displayAsInteger = this.binding.displayAsInteger.isChecked();
             this.tagViewModel.save(type);
             Toast.makeText(this.getContext(), R.string.save_successful, Toast.LENGTH_SHORT).show();
             this.navController.navigateUp();
@@ -70,5 +71,6 @@ public class EditTypeFragment extends Fragment {
         this.binding.typeName.setText(element.name);
         this.binding.typeDescription.setText(element.description);
         this.binding.typeSuffix.setText(element.suffix);
+        this.binding.displayAsInteger.setChecked(element.displayAsInteger);
     }
 }

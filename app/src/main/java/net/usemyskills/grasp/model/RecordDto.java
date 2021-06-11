@@ -1,5 +1,7 @@
 package net.usemyskills.grasp.model;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +35,13 @@ public class RecordDto {
     }
 
     public String getValueLabel() {
-        return this.value + " " + this.type.suffix;
+        boolean displayAsInteger = this.type != null && this.type.displayAsInteger;
+        String suffix = this.type != null ? this.type.suffix : "";
+        String valueString = String.valueOf(this.value);
+        if (displayAsInteger) {
+            valueString = String.valueOf((int)this.value);
+        }
+        return valueString + " " + suffix;
     }
     public String getTypeLabel() { return this.type.name; }
 
